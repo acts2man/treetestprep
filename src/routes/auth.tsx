@@ -13,7 +13,7 @@ const description =
 export const Route = createFileRoute("/auth")({
   ssr: false,
   validateSearch: (search: Record<string, unknown>) => ({
-    redirect: typeof search.redirect === "string" ? search.redirect : undefined,
+    redirect: typeof search["redirect"] === "string" ? (search["redirect"] as string) : undefined,
   }),
   head: () => ({
     meta: [
@@ -32,7 +32,8 @@ const safePath = (value: string | undefined) =>
   value && value.startsWith("/") && !value.startsWith("//") ? value : undefined;
 
 function AuthPage() {
-  const { redirect } = Route.useSearch();
+  const search = Route.useSearch();
+  const redirect = search["redirect"];
   const navigate = useNavigate();
   const { user, loading, isAdmin } = useAuth();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -48,7 +49,7 @@ function AuthPage() {
       window.location.assign(target);
       return;
     }
-    void navigate({ to: isAdmin ? "/admin" : "/portal", replace: true });
+    void navigate({ to: isAdmin ? "/admin/" : "/portal/", replace: true });
   }, [loading, user, isAdmin, redirect, navigate]);
 
   async function handleSubmit(event: React.FormEvent) {

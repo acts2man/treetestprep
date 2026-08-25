@@ -39,8 +39,8 @@ function AdminRegistrations() {
   });
 
   const update = useMutation({
-    mutationFn: async ({ id, patch }: { id: string; patch: Record<string, string> }) => {
-      const { error } = await supabase.from("registrations").update(patch).eq("id", id);
+    mutationFn: async ({ id, patch }: { id: string; patch: Record<string, string | number> }) => {
+      const { error } = await supabase.from("registrations").update(patch as never).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
