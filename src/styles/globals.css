@@ -24,8 +24,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .wrap { width: min(var(--wrap), calc(100% - 40px)); margin-inline: auto; }
 
 .brand-bar { background: var(--navy); color: #fff; }
-.brand-inner { min-height: 118px; display: flex; align-items: center; justify-content: space-between; }
-.brand img { width: 330px; height: auto; }
+.brand-inner { width: 100%; padding: 0 40px; min-height: 132px; display: flex; align-items: center; justify-content: space-between; }
+.brand img { width: 420px; height: auto; }
 .email { font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 3px; }
 .navigation { background: #fff; }
 .nav-inner { min-height: 64px; display: flex; align-items: center; justify-content: center; position: relative; }
@@ -246,8 +246,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 @media (max-width: 767px) {
   .wrap { width: min(100% - 28px, var(--wrap)); }
-  .brand-inner { min-height: 87px; }
-  .brand img { width: 260px; }
+  .brand-inner { min-height: 92px; padding: 0 18px; }
+  .brand img { width: 300px; }
   .email { display: none; }
   .nav-inner { justify-content: flex-end; min-height: 54px; }
   .menu-button { display: block; }
