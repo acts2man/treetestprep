@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { CallToAction, SiteFooter, SiteHeader } from "../components/SiteChrome";
 
 const weeks = [
@@ -64,7 +65,7 @@ export default function Home() {
                   allowFullScreen
                 />
               </div>
-              <a className="button hero-button" href="/class-registration-page/">Register for the course</a>
+              <Link className="button hero-button" to="/class-registration-page">Register for the course</Link>
             </div>
           </div>
         </div>
@@ -82,7 +83,7 @@ export default function Home() {
           <p className="exam-note" id="exam">
             You must apply and register separately with the ISA to take the exam. See our <a href="https://treetestprep.com/exam-information/">Exam Information page</a> for details, or read the <a href="https://www.isa-arbor.com/Credentials/Common-Questions">ISA’s common questions about certification</a>.
           </p>
-          <a className="button outline-button" href="/events/location/">Course Overview</a>
+          <Link className="button outline-button" to="/events/location">Course Overview</Link>
         </div>
         <img
           className="course-image"
