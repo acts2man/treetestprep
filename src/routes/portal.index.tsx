@@ -81,7 +81,7 @@ function PortalDashboard() {
       <section className="rounded-xl border border-white/10 bg-gradient-to-br from-[#0a1228] to-[#05070d] p-4">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-white">My registrations</h2>
-          <Link to="/portal/registrations" className="text-xs text-[#d9c58c] underline">
+          <Link to="/portal/registrations/" className="text-xs text-[#d9c58c] underline">
             View all
           </Link>
         </div>
@@ -103,7 +103,7 @@ function PortalDashboard() {
           {registrations.length === 0 && (
             <li className="py-6 text-center text-sm text-white/50">
               You have no registrations yet.{" "}
-              <Link to="/class-registration-page" className="text-[#d9c58c] underline">
+              <Link to="/class-registration-page/" className="text-[#d9c58c] underline">
                 Register for the course
               </Link>
             </li>
@@ -114,7 +114,7 @@ function PortalDashboard() {
       <section className="rounded-xl border border-white/10 bg-gradient-to-br from-[#0a1228] to-[#05070d] p-4">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-white">Upcoming classes</h2>
-          <Link to="/portal/classes" className="text-xs text-[#d9c58c] underline">
+          <Link to="/portal/classes/" className="text-xs text-[#d9c58c] underline">
             View all
           </Link>
         </div>

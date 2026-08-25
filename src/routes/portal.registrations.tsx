@@ -67,7 +67,7 @@ function PortalRegistrations() {
         title="My registrations"
         description="Your seats in the ISA Certified Arborist prep course."
         action={
-          <Link to="/class-registration-page" className={buttonClass}>
+          <Link to="/class-registration-page/" className={buttonClass}>
             Register for a class
           </Link>
         }

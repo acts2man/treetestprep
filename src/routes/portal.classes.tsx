@@ -68,7 +68,7 @@ function PortalClasses() {
                 <span>{row.location ?? "Location to be announced"}</span>
               </div>
             </dl>
-            <Link to="/class-registration-page" className={`${buttonClass} mt-4`}>
+            <Link to="/class-registration-page/" className={`${buttonClass} mt-4`}>
               Register
             </Link>
           </article>
