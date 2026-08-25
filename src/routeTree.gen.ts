@@ -25,6 +25,7 @@ import { Route as AdminInquiriesRouteImport } from './routes/admin.inquiries'
 import { Route as AdminInstructorsRouteImport } from './routes/admin.instructors'
 import { Route as AdminRegistrationsRouteImport } from './routes/admin.registrations'
 import { Route as AdminResourcesRouteImport } from './routes/admin.resources'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminStudentsRouteImport } from './routes/admin.students'
 import { Route as EventsLocationRouteImport } from './routes/events.location'
 
@@ -108,6 +109,11 @@ const AdminResourcesRoute = AdminResourcesRouteImport.update({
   path: '/resources',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminStudentsRoute = AdminStudentsRouteImport.update({
   id: '/students',
   path: '/students',
@@ -135,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/admin/instructors': typeof AdminInstructorsRoute
   '/admin/registrations': typeof AdminRegistrationsRoute
   '/admin/resources': typeof AdminResourcesRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/students': typeof AdminStudentsRoute
   '/events/location': typeof EventsLocationRoute
   '/admin/': typeof AdminIndexRoute
@@ -154,6 +161,7 @@ export interface FileRoutesByTo {
   '/admin/instructors': typeof AdminInstructorsRoute
   '/admin/registrations': typeof AdminRegistrationsRoute
   '/admin/resources': typeof AdminResourcesRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/students': typeof AdminStudentsRoute
   '/events/location': typeof EventsLocationRoute
   '/admin': typeof AdminIndexRoute
@@ -175,6 +183,7 @@ export interface FileRoutesById {
   '/admin/instructors': typeof AdminInstructorsRoute
   '/admin/registrations': typeof AdminRegistrationsRoute
   '/admin/resources': typeof AdminResourcesRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/students': typeof AdminStudentsRoute
   '/events/location': typeof EventsLocationRoute
   '/admin/': typeof AdminIndexRoute
@@ -197,6 +206,7 @@ export interface FileRouteTypes {
     | '/admin/instructors'
     | '/admin/registrations'
     | '/admin/resources'
+    | '/admin/settings'
     | '/admin/students'
     | '/events/location'
     | '/admin/'
@@ -216,6 +226,7 @@ export interface FileRouteTypes {
     | '/admin/instructors'
     | '/admin/registrations'
     | '/admin/resources'
+    | '/admin/settings'
     | '/admin/students'
     | '/events/location'
     | '/admin'
@@ -236,6 +247,7 @@ export interface FileRouteTypes {
     | '/admin/instructors'
     | '/admin/registrations'
     | '/admin/resources'
+    | '/admin/settings'
     | '/admin/students'
     | '/events/location'
     | '/admin/'
@@ -369,6 +381,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminResourcesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/students': {
       id: '/admin/students'
       path: '/students'
@@ -392,6 +411,7 @@ interface AdminRouteChildren {
   AdminInstructorsRoute: typeof AdminInstructorsRoute
   AdminRegistrationsRoute: typeof AdminRegistrationsRoute
   AdminResourcesRoute: typeof AdminResourcesRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
   AdminStudentsRoute: typeof AdminStudentsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -402,6 +422,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminInstructorsRoute: AdminInstructorsRoute,
   AdminRegistrationsRoute: AdminRegistrationsRoute,
   AdminResourcesRoute: AdminResourcesRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
   AdminStudentsRoute: AdminStudentsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
