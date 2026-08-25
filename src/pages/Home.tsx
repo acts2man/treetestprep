@@ -1,39 +1,17 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { SiteFooter, SiteHeader } from "../components/SiteChrome";
-
-const weeks = [
-  "Week 1: Tree Biology, Tree Identification",
-  "Week 2: Soil Science, Pruning",
-  "Week 3: Water Management, Tree Selection",
-  "Week 4: Installation and Establishment, Tree Nutrition and Fertilizer",
-  "Week 5: Tree Support and Lightning Protection, Urban Forestry",
-  "Week 6: Diagnosis of Plant Disorders, Plant Healthcare",
-  "Week 7: Tree Assessment and Risk Management, Trees and Construction",
-  "Week 8: Tree Worker Safety, Climbing and Working in Trees",
-];
-
-const faqs = [
-  [
-    "How hard is the Certified Arborist exam?",
-    "The exam can be difficult, but not impossible. By attending this course, you will be more than prepared to pass the exam.",
-  ],
-  [
-    "How many questions are on the Certified Arborist exam?",
-    "The computer-based exam contains 200 multiple-choice questions. Candidates should review the current ISA candidate guide for complete testing details.",
-  ],
-  [
-    "How long is the Certified Arborist exam?",
-    "Candidates are given 3.5 hours to complete the Certified Arborist examination.",
-  ],
-  [
-    "What is a passing score for the Certified Arborist exam?",
-    "A scaled score of 76 percent is required to pass the Certified Arborist examination.",
-  ],
-];
+import { usePageCopy } from "@/hooks/usePageContent";
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState(0);
+  const copy = usePageCopy("home");
+
+  const weeks = copy.list<{ text: string }>("course", "weeks");
+  const faqs = copy.list<{ question: string; answer: string }>("faq", "items");
+  const heroCta = copy.link("hero", "cta");
+  const courseCta = copy.link("course", "cta");
+  const examNote = copy.text("course", "exam_note");
 
   return (
     <main id="top">
@@ -42,30 +20,36 @@ export default function Home() {
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero-shade" />
         <div className="wrap hero-inner">
-          <h1 id="hero-title">Become An ISA Certified Arborist</h1>
+          <h1 id="hero-title">{copy.text("hero", "title")}</h1>
           <div className="hero-grid">
             <img
               className="credential"
-              src="/assets/isa-certified-arborist-credential-badge.webp"
+              src={copy.text("hero", "badge")}
               alt="ISA Certified Arborist credential badge"
             />
             <div className="hero-copy">
+              <p>{copy.text("hero", "body")}</p>
               <p>
-                Take your tree care career to the next level by becoming an ISA Certified Arborist. Let your customers know that you possess the high degree of knowledge that it takes to become certified by the International Society of Arboriculture.
+                <strong>{copy.text("hero", "schedule").split("·")[0]?.trim()}</strong> ·{" "}
+                {copy.text("hero", "schedule").split("·").slice(1).join("·").trim()}
               </p>
-              <p><strong>Tuesdays</strong> · 6:00 – 8:30 PM</p>
-              <p><strong>Dates:</strong> Sep 15, 22, 29 · Oct 6, 13, 20, 27 · Nov 3, 2026</p>
+              <p>
+                <strong>Dates:</strong>{" "}
+                {copy.text("hero", "dates").replace(/^Dates:\s*/i, "")}
+              </p>
             </div>
             <div className="video-column">
               <div className="video-frame">
                 <iframe
-                  src="https://fast.wistia.net/embed/iframe/mjst5n61w1?seo=true&videoFoam=true"
+                  src={copy.text("hero", "video")}
                   title="Tree Test Prep course video"
                   allow="autoplay; fullscreen"
                   allowFullScreen
                 />
               </div>
-              <Link className="button hero-button" to="/class-registration-page/">Register for the course</Link>
+              <Link className="button hero-button" to={heroCta.href as string}>
+                {heroCta.label}
+              </Link>
             </div>
           </div>
         </div>
@@ -73,21 +57,39 @@ export default function Home() {
 
       <section className="course wrap" id="course">
         <div className="course-copy">
-          <h2>Arborist Certification Study Guide, Fourth Edition is the program material covered in this course</h2>
+          <h2>{copy.text("course", "heading")}</h2>
           <ul className="week-list">
-            {weeks.map((week) => <li key={week}>{week}</li>)}
+            {weeks.map((week) => (
+              <li key={week.text}>{week.text}</li>
+            ))}
           </ul>
           <div className="week-nine">
-            <span>Week 9: Take the Arborist Certification Exam</span>
+            <span>{copy.text("course", "week_nine")}</span>
           </div>
           <p className="exam-note" id="exam">
-            You must apply and register separately with the ISA to take the exam. See our <a href="https://treetestprep.com/exam-information/">Exam Information page</a> for details, or read the <a href="https://www.isa-arbor.com/Credentials/Common-Questions">ISA’s common questions about certification</a>.
+            {examNote.split("Exam Information page").length > 1 ? (
+              <>
+                {examNote.split("Exam Information page")[0]}
+                <a href="https://treetestprep.com/exam-information/">Exam Information page</a>
+                {examNote
+                  .split("Exam Information page")[1]
+                  ?.split("ISA’s common questions about certification")[0]}
+                <a href="https://www.isa-arbor.com/Credentials/Common-Questions">
+                  ISA’s common questions about certification
+                </a>
+                {examNote.split("ISA’s common questions about certification")[1]}
+              </>
+            ) : (
+              examNote
+            )}
           </p>
-          <Link className="button outline-button" to="/events/location/">Course Overview</Link>
+          <Link className="button outline-button" to={courseCta.href as string}>
+            {courseCta.label}
+          </Link>
         </div>
         <img
           className="course-image"
-          src="/assets/two-mature-trees-at-sunset-with-the-sun-flaring-through-a-wooden-fence.webp"
+          src={copy.text("course", "image")}
           alt="Two mature trees at sunset with the sun flaring through a wooden fence"
         />
       </section>
@@ -96,26 +98,28 @@ export default function Home() {
         <div className="wrap faq-grid">
           <img
             className="faq-image"
-            src="/assets/looking-up-at-the-trunk-and-spreading-branches-of-a-large-oak-tree.webp"
+            src={copy.text("faq", "image")}
             alt="Looking up at the trunk and spreading branches of a large oak tree"
           />
           <div className="faq-content">
-            <h2>Frequently Asked Question</h2>
-            <p className="eyebrow">General Questions</p>
+            <h2>{copy.text("faq", "heading")}</h2>
+            <p className="eyebrow">{copy.text("faq", "eyebrow")}</p>
             <div className="accordion">
-              {faqs.map(([question, answer], index) => {
+              {faqs.map((faq, index) => {
                 const isOpen = openFaq === index;
                 return (
-                  <div className={`faq-item ${isOpen ? "open" : ""}`} key={question}>
+                  <div className={`faq-item ${isOpen ? "open" : ""}`} key={faq.question}>
                     <button
                       type="button"
                       aria-expanded={isOpen}
                       onClick={() => setOpenFaq(isOpen ? -1 : index)}
                     >
-                      <span>{question}</span>
-                      <span className="faq-icon" aria-hidden="true">{isOpen ? "−" : "+"}</span>
+                      <span>{faq.question}</span>
+                      <span className="faq-icon" aria-hidden="true">
+                        {isOpen ? "−" : "+"}
+                      </span>
                     </button>
-                    {isOpen && <div className="answer">{answer}</div>}
+                    {isOpen && <div className="answer">{faq.answer}</div>}
                   </div>
                 );
               })}

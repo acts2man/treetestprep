@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { usePageCopy } from "@/hooks/usePageContent";
+import { useAuth } from "@/hooks/use-auth";
 
 export const navItems = [
   ["Home", "/"],
@@ -31,18 +33,37 @@ function NavLinks({ activePath, onSelect }: { activePath: string; onSelect?: () 
   );
 }
 
+function AccountLink({ onSelect }: { onSelect?: () => void }) {
+  const { user, isAdmin, loading } = useAuth();
+  if (loading) return null;
+  if (!user) {
+    return (
+      <Link to="/auth" onClick={onSelect}>
+        Sign In
+      </Link>
+    );
+  }
+  return (
+    <Link to={isAdmin ? "/admin" : "/portal"} onClick={onSelect}>
+      My Account
+    </Link>
+  );
+}
+
 export function SiteHeader({ activePath }: { activePath: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const copy = usePageCopy("shared");
+  const email = copy.text("header", "email");
 
   return (
     <header>
       <div className="brand-bar">
         <div className="brand-inner">
           <Link className="brand" to="/" aria-label="Tree Test Prep home">
-            <img src="/assets/tree-test-prep-logo.webp" alt="Tree Test Prep" />
+            <img src={copy.text("header", "logo")} alt="Tree Test Prep" />
           </Link>
-          <a className="email" href="mailto:Treetestprep@gmail.com">
-            <span aria-hidden="true">✉</span> Treetestprep@gmail.com
+          <a className="email" href={`mailto:${email}`}>
+            <span aria-hidden="true">✉</span> {email}
           </a>
         </div>
       </div>
@@ -62,6 +83,7 @@ export function SiteHeader({ activePath }: { activePath: string }) {
           </button>
           <nav className={`nav-links ${menuOpen ? "open" : ""}`} aria-label="Main navigation">
             <NavLinks activePath={activePath} onSelect={() => setMenuOpen(false)} />
+            <AccountLink onSelect={() => setMenuOpen(false)} />
           </nav>
         </div>
       </div>
@@ -70,35 +92,47 @@ export function SiteHeader({ activePath }: { activePath: string }) {
 }
 
 export function SiteFooter() {
+  const copy = usePageCopy("shared");
+  const cta = copy.link("footer", "cta");
+
   return (
     <footer>
       <div className="footer-main">
         <div className="wrap footer-grid">
           <div className="footer-about">
-            <img src="/assets/tree-test-prep-logo.webp" alt="Tree Test Prep" />
-            <p>Take your tree care career to the next level by becoming an ISA Certified Arborist.</p>
-            <p>Let your customers know that you possess the high degree of knowledge that it takes to become certified by the International Society of Arboriculture.</p>
-            <Link className="button footer-button" to="/class-registration-page/">Register For The Course</Link>
+            <img src={copy.text("footer", "logo")} alt="Tree Test Prep" />
+            <p>{copy.text("footer", "blurb_one")}</p>
+            <p>{copy.text("footer", "blurb_two")}</p>
+            <a className="button footer-button" href={cta.href}>
+              {cta.label}
+            </a>
           </div>
           <div className="footer-links">
-            <h2>Navigation Links</h2>
-            <nav aria-label="Footer navigation"><NavLinks activePath="" /></nav>
+            <h2>{copy.text("footer", "links_heading")}</h2>
+            <nav aria-label="Footer navigation">
+              <NavLinks activePath="" />
+            </nav>
           </div>
           <img
             className="footer-image"
-            src="/assets/flowering-tree-in-bloom-beside-a-marsh-with-hills-behind-it.webp"
+            src={copy.text("footer", "image")}
             alt="Flowering tree in bloom beside a marsh with hills behind it"
           />
         </div>
       </div>
       <div className="footer-bottom">
         <div className="wrap footer-bottom-grid">
-          <p>© 2026 Tree Test Prep. All Rights Reserved.</p>
+          <p>{copy.text("footer", "copyright")}</p>
           <p>
             <a href="https://treetestprep.com/privacy-policy">Privacy Policy</a> |{" "}
             <a href="https://treetestprep.com/terms-of-service">Terms of Service</a>
           </p>
-          <p>Site designed by <a href="https://reputationguardians.net/"><strong>Reputation Guardians</strong></a></p>
+          <p>
+            Site designed by{" "}
+            <a href="https://reputationguardians.net/">
+              <strong>Reputation Guardians</strong>
+            </a>
+          </p>
         </div>
       </div>
     </footer>

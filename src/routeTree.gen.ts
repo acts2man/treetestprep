@@ -11,11 +11,31 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutUsRouteImport } from './routes/about-us'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClassRegistrationPageRouteImport } from './routes/class-registration-page'
 import { Route as ContactUsRouteImport } from './routes/contact-us'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ExamInformationRouteImport } from './routes/exam-information'
 import { Route as MeetYourInstructorsRouteImport } from './routes/meet-your-instructors'
+import { Route as PortalRouteImport } from './routes/portal'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminClassesRouteImport } from './routes/admin.classes'
+import { Route as AdminInquiriesRouteImport } from './routes/admin.inquiries'
+import { Route as AdminInstructorsRouteImport } from './routes/admin.instructors'
+import { Route as AdminRegistrationsRouteImport } from './routes/admin.registrations'
+import { Route as AdminResourcesRouteImport } from './routes/admin.resources'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminStudentsRouteImport } from './routes/admin.students'
 import { Route as EventsLocationRouteImport } from './routes/events.location'
+import { Route as PortalIndexRouteImport } from './routes/portal.index'
+import { Route as PortalClassesRouteImport } from './routes/portal.classes'
+import { Route as PortalMessagesRouteImport } from './routes/portal.messages'
+import { Route as PortalProfileRouteImport } from './routes/portal.profile'
+import { Route as PortalRegistrationsRouteImport } from './routes/portal.registrations'
+import { Route as PortalResourcesRouteImport } from './routes/portal.resources'
+import { Route as AdminPagesIndexRouteImport } from './routes/admin.pages.index'
+import { Route as AdminPagesSlugRouteImport } from './routes/admin.pages.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -25,6 +45,16 @@ const IndexRoute = IndexRouteImport.update({
 const AboutUsRoute = AboutUsRouteImport.update({
   id: '/about-us',
   path: '/about-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ClassRegistrationPageRoute = ClassRegistrationPageRouteImport.update({
@@ -37,6 +67,11 @@ const ContactUsRoute = ContactUsRouteImport.update({
   path: '/contact-us',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExamInformationRoute = ExamInformationRouteImport.update({
   id: '/exam-information',
   path: '/exam-information',
@@ -47,77 +82,282 @@ const MeetYourInstructorsRoute = MeetYourInstructorsRouteImport.update({
   path: '/meet-your-instructors',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminClassesRoute = AdminClassesRouteImport.update({
+  id: '/classes',
+  path: '/classes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminInquiriesRoute = AdminInquiriesRouteImport.update({
+  id: '/inquiries',
+  path: '/inquiries',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminInstructorsRoute = AdminInstructorsRouteImport.update({
+  id: '/instructors',
+  path: '/instructors',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminRegistrationsRoute = AdminRegistrationsRouteImport.update({
+  id: '/registrations',
+  path: '/registrations',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminResourcesRoute = AdminResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminStudentsRoute = AdminStudentsRouteImport.update({
+  id: '/students',
+  path: '/students',
+  getParentRoute: () => AdminRoute,
+} as any)
 const EventsLocationRoute = EventsLocationRouteImport.update({
   id: '/events/location',
   path: '/events/location',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalIndexRoute = PortalIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalClassesRoute = PortalClassesRouteImport.update({
+  id: '/classes',
+  path: '/classes',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalMessagesRoute = PortalMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalProfileRoute = PortalProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalRegistrationsRoute = PortalRegistrationsRouteImport.update({
+  id: '/registrations',
+  path: '/registrations',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalResourcesRoute = PortalResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
+  getParentRoute: () => PortalRoute,
+} as any)
+const AdminPagesIndexRoute = AdminPagesIndexRouteImport.update({
+  id: '/pages/',
+  path: '/pages/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPagesSlugRoute = AdminPagesSlugRouteImport.update({
+  id: '/pages/$slug',
+  path: '/pages/$slug',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about-us': typeof AboutUsRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/auth': typeof AuthRoute
   '/class-registration-page': typeof ClassRegistrationPageRoute
   '/contact-us': typeof ContactUsRoute
+  '/dashboard': typeof DashboardRoute
   '/exam-information': typeof ExamInformationRoute
   '/meet-your-instructors': typeof MeetYourInstructorsRoute
+  '/portal': typeof PortalRouteWithChildren
+  '/admin/classes': typeof AdminClassesRoute
+  '/admin/inquiries': typeof AdminInquiriesRoute
+  '/admin/instructors': typeof AdminInstructorsRoute
+  '/admin/registrations': typeof AdminRegistrationsRoute
+  '/admin/resources': typeof AdminResourcesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/students': typeof AdminStudentsRoute
   '/events/location': typeof EventsLocationRoute
+  '/portal/classes': typeof PortalClassesRoute
+  '/portal/messages': typeof PortalMessagesRoute
+  '/portal/profile': typeof PortalProfileRoute
+  '/portal/registrations': typeof PortalRegistrationsRoute
+  '/portal/resources': typeof PortalResourcesRoute
+  '/admin/': typeof AdminIndexRoute
+  '/portal/': typeof PortalIndexRoute
+  '/admin/pages/$slug': typeof AdminPagesSlugRoute
+  '/admin/pages/': typeof AdminPagesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about-us': typeof AboutUsRoute
+  '/auth': typeof AuthRoute
   '/class-registration-page': typeof ClassRegistrationPageRoute
   '/contact-us': typeof ContactUsRoute
+  '/dashboard': typeof DashboardRoute
   '/exam-information': typeof ExamInformationRoute
   '/meet-your-instructors': typeof MeetYourInstructorsRoute
+  '/admin/classes': typeof AdminClassesRoute
+  '/admin/inquiries': typeof AdminInquiriesRoute
+  '/admin/instructors': typeof AdminInstructorsRoute
+  '/admin/registrations': typeof AdminRegistrationsRoute
+  '/admin/resources': typeof AdminResourcesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/students': typeof AdminStudentsRoute
   '/events/location': typeof EventsLocationRoute
+  '/portal/classes': typeof PortalClassesRoute
+  '/portal/messages': typeof PortalMessagesRoute
+  '/portal/profile': typeof PortalProfileRoute
+  '/portal/registrations': typeof PortalRegistrationsRoute
+  '/portal/resources': typeof PortalResourcesRoute
+  '/admin': typeof AdminIndexRoute
+  '/portal': typeof PortalIndexRoute
+  '/admin/pages/$slug': typeof AdminPagesSlugRoute
+  '/admin/pages': typeof AdminPagesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about-us': typeof AboutUsRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/auth': typeof AuthRoute
   '/class-registration-page': typeof ClassRegistrationPageRoute
   '/contact-us': typeof ContactUsRoute
+  '/dashboard': typeof DashboardRoute
   '/exam-information': typeof ExamInformationRoute
   '/meet-your-instructors': typeof MeetYourInstructorsRoute
+  '/portal': typeof PortalRouteWithChildren
+  '/admin/classes': typeof AdminClassesRoute
+  '/admin/inquiries': typeof AdminInquiriesRoute
+  '/admin/instructors': typeof AdminInstructorsRoute
+  '/admin/registrations': typeof AdminRegistrationsRoute
+  '/admin/resources': typeof AdminResourcesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/students': typeof AdminStudentsRoute
   '/events/location': typeof EventsLocationRoute
+  '/portal/classes': typeof PortalClassesRoute
+  '/portal/messages': typeof PortalMessagesRoute
+  '/portal/profile': typeof PortalProfileRoute
+  '/portal/registrations': typeof PortalRegistrationsRoute
+  '/portal/resources': typeof PortalResourcesRoute
+  '/admin/': typeof AdminIndexRoute
+  '/portal/': typeof PortalIndexRoute
+  '/admin/pages/$slug': typeof AdminPagesSlugRoute
+  '/admin/pages/': typeof AdminPagesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about-us'
+    | '/admin'
+    | '/auth'
     | '/class-registration-page'
     | '/contact-us'
+    | '/dashboard'
     | '/exam-information'
     | '/meet-your-instructors'
+    | '/portal'
+    | '/admin/classes'
+    | '/admin/inquiries'
+    | '/admin/instructors'
+    | '/admin/registrations'
+    | '/admin/resources'
+    | '/admin/settings'
+    | '/admin/students'
     | '/events/location'
+    | '/portal/classes'
+    | '/portal/messages'
+    | '/portal/profile'
+    | '/portal/registrations'
+    | '/portal/resources'
+    | '/admin/'
+    | '/portal/'
+    | '/admin/pages/$slug'
+    | '/admin/pages/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about-us'
+    | '/auth'
     | '/class-registration-page'
     | '/contact-us'
+    | '/dashboard'
     | '/exam-information'
     | '/meet-your-instructors'
+    | '/admin/classes'
+    | '/admin/inquiries'
+    | '/admin/instructors'
+    | '/admin/registrations'
+    | '/admin/resources'
+    | '/admin/settings'
+    | '/admin/students'
     | '/events/location'
+    | '/portal/classes'
+    | '/portal/messages'
+    | '/portal/profile'
+    | '/portal/registrations'
+    | '/portal/resources'
+    | '/admin'
+    | '/portal'
+    | '/admin/pages/$slug'
+    | '/admin/pages'
   id:
     | '__root__'
     | '/'
     | '/about-us'
+    | '/admin'
+    | '/auth'
     | '/class-registration-page'
     | '/contact-us'
+    | '/dashboard'
     | '/exam-information'
     | '/meet-your-instructors'
+    | '/portal'
+    | '/admin/classes'
+    | '/admin/inquiries'
+    | '/admin/instructors'
+    | '/admin/registrations'
+    | '/admin/resources'
+    | '/admin/settings'
+    | '/admin/students'
     | '/events/location'
+    | '/portal/classes'
+    | '/portal/messages'
+    | '/portal/profile'
+    | '/portal/registrations'
+    | '/portal/resources'
+    | '/admin/'
+    | '/portal/'
+    | '/admin/pages/$slug'
+    | '/admin/pages/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutUsRoute: typeof AboutUsRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  AuthRoute: typeof AuthRoute
   ClassRegistrationPageRoute: typeof ClassRegistrationPageRoute
   ContactUsRoute: typeof ContactUsRoute
+  DashboardRoute: typeof DashboardRoute
   ExamInformationRoute: typeof ExamInformationRoute
   MeetYourInstructorsRoute: typeof MeetYourInstructorsRoute
+  PortalRoute: typeof PortalRouteWithChildren
   EventsLocationRoute: typeof EventsLocationRoute
 }
 
@@ -137,6 +377,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutUsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/class-registration-page': {
       id: '/class-registration-page'
       path: '/class-registration-page'
@@ -149,6 +403,13 @@ declare module '@tanstack/react-router' {
       path: '/contact-us'
       fullPath: '/contact-us'
       preLoaderRoute: typeof ContactUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/exam-information': {
@@ -165,6 +426,69 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MeetYourInstructorsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/classes': {
+      id: '/admin/classes'
+      path: '/classes'
+      fullPath: '/admin/classes'
+      preLoaderRoute: typeof AdminClassesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/inquiries': {
+      id: '/admin/inquiries'
+      path: '/inquiries'
+      fullPath: '/admin/inquiries'
+      preLoaderRoute: typeof AdminInquiriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/instructors': {
+      id: '/admin/instructors'
+      path: '/instructors'
+      fullPath: '/admin/instructors'
+      preLoaderRoute: typeof AdminInstructorsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/registrations': {
+      id: '/admin/registrations'
+      path: '/registrations'
+      fullPath: '/admin/registrations'
+      preLoaderRoute: typeof AdminRegistrationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/resources': {
+      id: '/admin/resources'
+      path: '/resources'
+      fullPath: '/admin/resources'
+      preLoaderRoute: typeof AdminResourcesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/students': {
+      id: '/admin/students'
+      path: '/students'
+      fullPath: '/admin/students'
+      preLoaderRoute: typeof AdminStudentsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/events/location': {
       id: '/events/location'
       path: '/events/location'
@@ -172,16 +496,125 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsLocationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal/': {
+      id: '/portal/'
+      path: '/'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof PortalIndexRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/classes': {
+      id: '/portal/classes'
+      path: '/classes'
+      fullPath: '/portal/classes'
+      preLoaderRoute: typeof PortalClassesRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/messages': {
+      id: '/portal/messages'
+      path: '/messages'
+      fullPath: '/portal/messages'
+      preLoaderRoute: typeof PortalMessagesRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/profile': {
+      id: '/portal/profile'
+      path: '/profile'
+      fullPath: '/portal/profile'
+      preLoaderRoute: typeof PortalProfileRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/registrations': {
+      id: '/portal/registrations'
+      path: '/registrations'
+      fullPath: '/portal/registrations'
+      preLoaderRoute: typeof PortalRegistrationsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/resources': {
+      id: '/portal/resources'
+      path: '/resources'
+      fullPath: '/portal/resources'
+      preLoaderRoute: typeof PortalResourcesRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/admin/pages/': {
+      id: '/admin/pages/'
+      path: '/pages'
+      fullPath: '/admin/pages/'
+      preLoaderRoute: typeof AdminPagesIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/pages/$slug': {
+      id: '/admin/pages/$slug'
+      path: '/pages/$slug'
+      fullPath: '/admin/pages/$slug'
+      preLoaderRoute: typeof AdminPagesSlugRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
+
+interface AdminRouteChildren {
+  AdminClassesRoute: typeof AdminClassesRoute
+  AdminInquiriesRoute: typeof AdminInquiriesRoute
+  AdminInstructorsRoute: typeof AdminInstructorsRoute
+  AdminRegistrationsRoute: typeof AdminRegistrationsRoute
+  AdminResourcesRoute: typeof AdminResourcesRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminStudentsRoute: typeof AdminStudentsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminPagesSlugRoute: typeof AdminPagesSlugRoute
+  AdminPagesIndexRoute: typeof AdminPagesIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminClassesRoute: AdminClassesRoute,
+  AdminInquiriesRoute: AdminInquiriesRoute,
+  AdminInstructorsRoute: AdminInstructorsRoute,
+  AdminRegistrationsRoute: AdminRegistrationsRoute,
+  AdminResourcesRoute: AdminResourcesRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminStudentsRoute: AdminStudentsRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  AdminPagesSlugRoute: AdminPagesSlugRoute,
+  AdminPagesIndexRoute: AdminPagesIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface PortalRouteChildren {
+  PortalClassesRoute: typeof PortalClassesRoute
+  PortalMessagesRoute: typeof PortalMessagesRoute
+  PortalProfileRoute: typeof PortalProfileRoute
+  PortalRegistrationsRoute: typeof PortalRegistrationsRoute
+  PortalResourcesRoute: typeof PortalResourcesRoute
+  PortalIndexRoute: typeof PortalIndexRoute
+}
+
+const PortalRouteChildren: PortalRouteChildren = {
+  PortalClassesRoute: PortalClassesRoute,
+  PortalMessagesRoute: PortalMessagesRoute,
+  PortalProfileRoute: PortalProfileRoute,
+  PortalRegistrationsRoute: PortalRegistrationsRoute,
+  PortalResourcesRoute: PortalResourcesRoute,
+  PortalIndexRoute: PortalIndexRoute,
+}
+
+const PortalRouteWithChildren =
+  PortalRoute._addFileChildren(PortalRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutUsRoute: AboutUsRoute,
+  AdminRoute: AdminRouteWithChildren,
+  AuthRoute: AuthRoute,
   ClassRegistrationPageRoute: ClassRegistrationPageRoute,
   ContactUsRoute: ContactUsRoute,
+  DashboardRoute: DashboardRoute,
   ExamInformationRoute: ExamInformationRoute,
   MeetYourInstructorsRoute: MeetYourInstructorsRoute,
+  PortalRoute: PortalRouteWithChildren,
   EventsLocationRoute: EventsLocationRoute,
 }
 export const routeTree = rootRouteImport
