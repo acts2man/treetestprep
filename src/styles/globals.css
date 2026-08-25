@@ -247,7 +247,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 767px) {
   .wrap { width: min(100% - 28px, var(--wrap)); }
   .brand-inner { min-height: 87px; }
-  .brand img { width: 205px; }
+  .brand img { width: 260px; }
   .email { display: none; }
   .nav-inner { justify-content: flex-end; min-height: 54px; }
   .menu-button { display: block; }
