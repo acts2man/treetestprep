@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { SiteFooter, SiteHeader } from "../components/SiteChrome";
+import { usePageCopy } from "@/hooks/usePageContent";
 
 const weeks = [
   ["Week 1", "Chapter 1 – Biology", "This session covers tree biology, anatomy and physiology. The presentation addresses tree structure, anatomy and function. Class discussions cover the process of photosynthesis, respiration, transpiration, the vascular system and defense systems.", "Chapter 2 – Tree Identification", "This chapter will give you the basic skills and knowledge to recognize the differences in flowers, fruit, form, bark buds, twigs and leaves."],
