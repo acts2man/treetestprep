@@ -28,6 +28,8 @@ import { Route as AdminResourcesRouteImport } from './routes/admin.resources'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminStudentsRouteImport } from './routes/admin.students'
 import { Route as EventsLocationRouteImport } from './routes/events.location'
+import { Route as AdminPagesIndexRouteImport } from './routes/admin.pages.index'
+import { Route as AdminPagesSlugRouteImport } from './routes/admin.pages.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -124,6 +126,16 @@ const EventsLocationRoute = EventsLocationRouteImport.update({
   path: '/events/location',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPagesIndexRoute = AdminPagesIndexRouteImport.update({
+  id: '/pages/',
+  path: '/pages/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPagesSlugRoute = AdminPagesSlugRouteImport.update({
+  id: '/pages/$slug',
+  path: '/pages/$slug',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -145,6 +157,8 @@ export interface FileRoutesByFullPath {
   '/admin/students': typeof AdminStudentsRoute
   '/events/location': typeof EventsLocationRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/pages/$slug': typeof AdminPagesSlugRoute
+  '/admin/pages/': typeof AdminPagesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -165,6 +179,8 @@ export interface FileRoutesByTo {
   '/admin/students': typeof AdminStudentsRoute
   '/events/location': typeof EventsLocationRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/pages/$slug': typeof AdminPagesSlugRoute
+  '/admin/pages': typeof AdminPagesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -187,6 +203,8 @@ export interface FileRoutesById {
   '/admin/students': typeof AdminStudentsRoute
   '/events/location': typeof EventsLocationRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/pages/$slug': typeof AdminPagesSlugRoute
+  '/admin/pages/': typeof AdminPagesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -210,6 +228,8 @@ export interface FileRouteTypes {
     | '/admin/students'
     | '/events/location'
     | '/admin/'
+    | '/admin/pages/$slug'
+    | '/admin/pages/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -230,6 +250,8 @@ export interface FileRouteTypes {
     | '/admin/students'
     | '/events/location'
     | '/admin'
+    | '/admin/pages/$slug'
+    | '/admin/pages'
   id:
     | '__root__'
     | '/'
@@ -251,6 +273,8 @@ export interface FileRouteTypes {
     | '/admin/students'
     | '/events/location'
     | '/admin/'
+    | '/admin/pages/$slug'
+    | '/admin/pages/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -402,6 +426,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsLocationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/pages/': {
+      id: '/admin/pages/'
+      path: '/pages'
+      fullPath: '/admin/pages/'
+      preLoaderRoute: typeof AdminPagesIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/pages/$slug': {
+      id: '/admin/pages/$slug'
+      path: '/pages/$slug'
+      fullPath: '/admin/pages/$slug'
+      preLoaderRoute: typeof AdminPagesSlugRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
@@ -414,6 +452,8 @@ interface AdminRouteChildren {
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminStudentsRoute: typeof AdminStudentsRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminPagesSlugRoute: typeof AdminPagesSlugRoute
+  AdminPagesIndexRoute: typeof AdminPagesIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -425,6 +465,8 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminSettingsRoute: AdminSettingsRoute,
   AdminStudentsRoute: AdminStudentsRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminPagesSlugRoute: AdminPagesSlugRoute,
+  AdminPagesIndexRoute: AdminPagesIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
