@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutUsRouteImport } from './routes/about-us'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClassRegistrationPageRouteImport } from './routes/class-registration-page'
 import { Route as ContactUsRouteImport } from './routes/contact-us'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -33,6 +34,11 @@ const AboutUsRoute = AboutUsRouteImport.update({
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ClassRegistrationPageRoute = ClassRegistrationPageRouteImport.update({
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about-us': typeof AboutUsRoute
   '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
   '/class-registration-page': typeof ClassRegistrationPageRoute
   '/contact-us': typeof ContactUsRoute
   '/dashboard': typeof DashboardRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about-us': typeof AboutUsRoute
   '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
   '/class-registration-page': typeof ClassRegistrationPageRoute
   '/contact-us': typeof ContactUsRoute
   '/dashboard': typeof DashboardRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about-us': typeof AboutUsRoute
   '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
   '/class-registration-page': typeof ClassRegistrationPageRoute
   '/contact-us': typeof ContactUsRoute
   '/dashboard': typeof DashboardRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about-us'
     | '/admin'
+    | '/auth'
     | '/class-registration-page'
     | '/contact-us'
     | '/dashboard'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about-us'
     | '/admin'
+    | '/auth'
     | '/class-registration-page'
     | '/contact-us'
     | '/dashboard'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about-us'
     | '/admin'
+    | '/auth'
     | '/class-registration-page'
     | '/contact-us'
     | '/dashboard'
@@ -151,6 +163,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutUsRoute: typeof AboutUsRoute
   AdminRoute: typeof AdminRoute
+  AuthRoute: typeof AuthRoute
   ClassRegistrationPageRoute: typeof ClassRegistrationPageRoute
   ContactUsRoute: typeof ContactUsRoute
   DashboardRoute: typeof DashboardRoute
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/class-registration-page': {
@@ -239,6 +259,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutUsRoute: AboutUsRoute,
   AdminRoute: AdminRoute,
+  AuthRoute: AuthRoute,
   ClassRegistrationPageRoute: ClassRegistrationPageRoute,
   ContactUsRoute: ContactUsRoute,
   DashboardRoute: DashboardRoute,
