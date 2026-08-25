@@ -1,0 +1,59 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-brand: #1d3770;
+  --color-brand-deep: #162b5c;
+  --color-brand-green: #349e49;
+  --color-brand-gold: #d9c58c;
+
+  --color-background: #ffffff;
+  --color-foreground: #1f2328;
+  --color-card: #ffffff;
+  --color-card-foreground: #1f2328;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #1f2328;
+  --color-primary: #1d3770;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #eef1f7;
+  --color-secondary-foreground: #1d3770;
+  --color-muted: #f1f4f9;
+  --color-muted-foreground: #6b7488;
+  --color-accent: #eef1f7;
+  --color-accent-foreground: #1d3770;
+  --color-destructive: #e11d48;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #dfe4ee;
+  --color-input: #dfe4ee;
+  --color-ring: #1d3770;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+}
+
+/* Dashboard shell surfaces are intentionally dark (back-office tool). */
+.dashboard-shell {
+  --color-background: #0a0f1e;
+  --color-foreground: #f8fafc;
+  --color-card: #0a1228;
+  --color-card-foreground: #f8fafc;
+  --color-popover: #0a1228;
+  --color-popover-foreground: #f8fafc;
+  --color-muted: #101a33;
+  --color-muted-foreground: #93a0bd;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-input: rgba(255, 255, 255, 0.16);
+  --color-secondary: #101a33;
+  --color-secondary-foreground: #f8fafc;
+  --color-accent: #16224a;
+  --color-accent-foreground: #f8fafc;
+}
+
+.dashboard-shell,
+.dashboard-shell * {
+  font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+}
