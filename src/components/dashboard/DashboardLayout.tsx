@@ -61,7 +61,7 @@ function SidebarNav({
 }: {
   items: NavItem[];
   rootPath: string;
-  onSelect?: () => void;
+  onSelect?: (() => void) | undefined;
 }) {
   const pathname = normalize(
     useRouterState({ select: (state) => state.location.pathname }),
@@ -100,7 +100,7 @@ function SidebarBody({
 }: {
   items: NavItem[];
   rootPath: string;
-  onSelect?: () => void;
+  onSelect?: (() => void) | undefined;
 }) {
   const { signOut } = useAuth();
 
