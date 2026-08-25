@@ -23,7 +23,7 @@ export const Route = createFileRoute("/admin/")({
 });
 
 const count = async (table: string, filter?: (query: any) => any) => {
-  let query = supabase.from(table).select("id", { count: "exact", head: true });
+  let query = supabase.from(table as never).select("id", { count: "exact", head: true });
   if (filter) query = filter(query);
   const { count: total } = await query;
   return total ?? 0;
