@@ -19,7 +19,7 @@ function AdminPagesIndex() {
         {ALL_PAGES.map((page) => (
           <Link
             key={page.slug}
-            to="/admin/pages/$slug"
+            to="/admin/pages/$slug/"
             params={{ slug: page.slug }}
             className="group rounded-xl border border-white/10 bg-gradient-to-br from-[#0a1228] to-[#05070d] p-4 transition hover:border-[#349e49]/60"
           >

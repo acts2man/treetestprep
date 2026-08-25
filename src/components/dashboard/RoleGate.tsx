@@ -16,11 +16,11 @@ export function RoleGate({
   useEffect(() => {
     if (loading) return;
     if (!user) {
-      void navigate({ to: "/auth", search: { redirect: href }, replace: true });
+      void navigate({ to: "/auth/", replace: true });
       return;
     }
     if (require === "admin" && !isAdmin) {
-      void navigate({ to: "/portal", replace: true });
+      void navigate({ to: "/portal/", replace: true });
     }
   }, [loading, user, isAdmin, require, navigate, href]);
 

@@ -105,7 +105,7 @@ function AdminPageEditor() {
       const key = `${sectionKey}.${field.key}`;
       const value = state[key];
       if (!value) return;
-      const payload: Record<string, unknown> = {
+      const payload: Record<string, any> = {
         page_slug: slug,
         section_key: sectionKey,
         field_key: field.key,
@@ -115,18 +115,18 @@ function AdminPageEditor() {
         video_url: null,
         link_url: null,
       };
-      if (field.type === "list") payload.value_json = value.list;
-      else if (field.type === "image") payload.image_url = value.text;
-      else if (field.type === "video") payload.video_url = value.text;
+      if (field.type === "list") payload["value_json"] = value.list;
+      else if (field.type === "image") payload["image_url"] = value.text;
+      else if (field.type === "video") payload["video_url"] = value.text;
       else if (field.type === "link") {
-        payload.value_text = value.text;
-        payload.link_url = value.href;
-      } else if (field.type === "url") payload.link_url = value.text;
-      else payload.value_text = value.text;
+        payload["value_text"] = value.text;
+        payload["link_url"] = value.href;
+      } else if (field.type === "url") payload["link_url"] = value.text;
+      else payload["value_text"] = value.text;
 
       const { error } = await supabase
         .from("page_content_overrides")
-        .upsert(payload, { onConflict: "page_slug,section_key,field_key" });
+        .upsert(payload as never, { onConflict: "page_slug,section_key,field_key" });
       if (error) throw error;
     },
     onSuccess: () => {
@@ -175,7 +175,7 @@ function AdminPageEditor() {
     return (
       <div className="space-y-4">
         <PageHeader title="Page not found" description="This page is not in the content registry." />
-        <Link to="/admin/pages" className={ghostButtonClass}>
+        <Link to="/admin/pages/" className={ghostButtonClass}>
           <ArrowLeft className="h-4 w-4" /> Back to pages
         </Link>
       </div>
@@ -192,7 +192,7 @@ function AdminPageEditor() {
 
   return (
     <div className="space-y-6">
-      <Link to="/admin/pages" className="inline-flex items-center gap-2 text-sm text-white/60">
+      <Link to="/admin/pages/" className="inline-flex items-center gap-2 text-sm text-white/60">
         <ArrowLeft className="h-4 w-4" /> All pages
       </Link>
 

@@ -23,10 +23,10 @@ function DashboardRedirect() {
   useEffect(() => {
     if (loading) return;
     if (!user) {
-      void navigate({ to: "/auth", replace: true });
+      void navigate({ to: "/auth/", replace: true });
       return;
     }
-    void navigate({ to: isAdmin ? "/admin" : "/portal", replace: true });
+    void navigate({ to: isAdmin ? "/admin/" : "/portal/", replace: true });
   }, [loading, user, isAdmin, navigate]);
 
   return (

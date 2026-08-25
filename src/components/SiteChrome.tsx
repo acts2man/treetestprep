@@ -38,13 +38,13 @@ function AccountLink({ onSelect }: { onSelect?: () => void }) {
   if (loading) return null;
   if (!user) {
     return (
-      <Link to="/auth" onClick={onSelect}>
+      <Link to="/auth/" onClick={onSelect}>
         Sign In
       </Link>
     );
   }
   return (
-    <Link to={isAdmin ? "/admin" : "/portal"} onClick={onSelect}>
+    <Link to={isAdmin ? "/admin/" : "/portal/"} onClick={onSelect}>
       My Account
     </Link>
   );

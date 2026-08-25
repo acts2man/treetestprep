@@ -61,7 +61,7 @@ function SidebarNav({
 }: {
   items: NavItem[];
   rootPath: string;
-  onSelect?: () => void;
+  onSelect?: (() => void) | undefined;
 }) {
   const pathname = normalize(
     useRouterState({ select: (state) => state.location.pathname }),
@@ -100,7 +100,7 @@ function SidebarBody({
 }: {
   items: NavItem[];
   rootPath: string;
-  onSelect?: () => void;
+  onSelect?: (() => void) | undefined;
 }) {
   const { signOut } = useAuth();
 
@@ -190,7 +190,7 @@ export function DashboardLayout({
               <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-[#349e49]" />
             </button>
             <Link
-              to={role === "admin" ? "/admin/settings" : "/portal/profile"}
+              to={role === "admin" ? "/admin/settings/" : "/portal/profile/"}
               aria-label="Settings"
               className="rounded-md p-2 text-white/80 transition hover:bg-white/10"
             >
@@ -213,7 +213,7 @@ export function DashboardLayout({
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link to={role === "admin" ? "/admin/settings" : "/portal/profile"}>
+                  <Link to={role === "admin" ? "/admin/settings/" : "/portal/profile/"}>
                     Account settings
                   </Link>
                 </DropdownMenuItem>
