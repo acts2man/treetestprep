@@ -28,7 +28,7 @@ export default function ExamInformation() {
         <h2>How to Apply</h2>
         <p>Submit your application to the ISA here: <a href="https://www.isa-arbor.com/Credentials/Apply-Now/Apply-for-Eligibility">Apply for Eligibility</a>.</p>
         <p>Once your application is approved, you will be able to register for the exam.</p>
-        <Link className="button hero-button page-button" to="/class-registration-page">Register for the course</Link>
+        <Link className="button hero-button page-button" to="/class-registration-page/">Register for the course</Link>
       </article>
       <CallToAction />
       <SiteFooter />

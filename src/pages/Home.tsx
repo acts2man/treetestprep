@@ -65,7 +65,7 @@ export default function Home() {
                   allowFullScreen
                 />
               </div>
-              <Link className="button hero-button" to="/class-registration-page">Register for the course</Link>
+              <Link className="button hero-button" to="/class-registration-page/">Register for the course</Link>
             </div>
           </div>
         </div>
@@ -83,7 +83,7 @@ export default function Home() {
           <p className="exam-note" id="exam">
             You must apply and register separately with the ISA to take the exam. See our <a href="https://treetestprep.com/exam-information/">Exam Information page</a> for details, or read the <a href="https://www.isa-arbor.com/Credentials/Common-Questions">ISA’s common questions about certification</a>.
           </p>
-          <Link className="button outline-button" to="/events/location">Course Overview</Link>
+          <Link className="button outline-button" to="/events/location/">Course Overview</Link>
         </div>
         <img
           className="course-image"

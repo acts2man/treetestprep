@@ -3,12 +3,12 @@ import { Link } from "@tanstack/react-router";
 
 export const navItems = [
   ["Home", "/"],
-  ["Course Overview", "/events/location"],
-  ["Exam Information", "/exam-information"],
-  ["The Inspiration", "/about-us"],
-  ["Meet The Instructors", "/meet-your-instructors"],
-  ["Contact Us", "/contact-us"],
-  ["Register", "/class-registration-page"],
+  ["Course Overview", "/events/location/"],
+  ["Exam Information", "/exam-information/"],
+  ["The Inspiration", "/about-us/"],
+  ["Meet The Instructors", "/meet-your-instructors/"],
+  ["Contact Us", "/contact-us/"],
+  ["Register", "/class-registration-page/"],
 ] as const;
 
 const normalize = (path: string) =>
@@ -77,7 +77,7 @@ export function CallToAction() {
           <h2>Take Your Tree Care Career To The Next Level</h2>
           <p>Build the knowledge and confidence you need to become an ISA Certified Arborist.</p>
         </div>
-        <Link className="button cta-button" to="/class-registration-page">Register For The Course</Link>
+        <Link className="button cta-button" to="/class-registration-page/">Register For The Course</Link>
       </div>
     </section>
   );
@@ -92,7 +92,7 @@ export function SiteFooter() {
             <img src="/assets/tree-test-prep-logo.webp" alt="Tree Test Prep" />
             <p>Take your tree care career to the next level by becoming an ISA Certified Arborist.</p>
             <p>Let your customers know that you possess the high degree of knowledge that it takes to become certified by the International Society of Arboriculture.</p>
-            <Link className="button footer-button" to="/class-registration-page">Register For The Course</Link>
+            <Link className="button footer-button" to="/class-registration-page/">Register For The Course</Link>
           </div>
           <div className="footer-links">
             <h2>Navigation Links</h2>

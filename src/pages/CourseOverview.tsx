@@ -41,7 +41,7 @@ export default function CourseOverview() {
           <div><strong>Course Price</strong><span>$395</span></div>
           <div><strong>Email</strong><a href="mailto:Treetestprep@gmail.com">Treetestprep@gmail.com</a></div>
           <div><strong>Location</strong><span>Sierra 2 Center Curtis Hall 2791 24th St Sacramento, CA 95818</span></div>
-          <Link className="button hero-button" to="/class-registration-page">Register for the course</Link>
+          <Link className="button hero-button" to="/class-registration-page/">Register for the course</Link>
         </aside>
       </section>
       <CallToAction />
