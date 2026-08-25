@@ -13,19 +13,25 @@ const weeks = [
 ] as const;
 
 export default function CourseOverview() {
+  const copy = usePageCopy("course-overview");
+  const cardCta = copy.link("card", "cta");
+
   return (
     <main>
       <SiteHeader activePath="/events/location/" />
       <section className="course-overview wrap">
         <div className="course-overview-main">
-          <img src="/assets/course-classroom.webp" alt="Students attending an arborist preparation course" />
-          <h1>8-Week In-Person and Online Course</h1>
+          <img
+            src={copy.text("main", "image")}
+            alt="Students attending an arborist preparation course"
+          />
+          <h1>{copy.text("main", "title")}</h1>
           <div className="event-meta">
-            <span>▣ Tuesdays, Sep 15 – Nov 3, 2026</span>
-            <span>◷ 6:00 – 8:30 PM</span>
-            <span>⌖ Sierra 2 Center Curtis Hall 2791 24th St Sacramento, CA 95818</span>
+            <span>▣ {copy.text("main", "meta_dates")}</span>
+            <span>◷ {copy.text("main", "meta_time")}</span>
+            <span>⌖ {copy.text("main", "meta_location")}</span>
           </div>
-          <h2>Course Description</h2>
+          <h2>{copy.text("main", "description_heading")}</h2>
           <div className="week-descriptions">
             {weeks.map(([week, firstTitle, firstCopy, secondTitle, secondCopy]) => (
               <section key={week}>
@@ -37,11 +43,22 @@ export default function CourseOverview() {
           </div>
         </div>
         <aside className="course-card">
-          <h2>ISA Certified Arborist Prep Course</h2>
-          <div><strong>Course Price</strong><span>$395</span></div>
-          <div><strong>Email</strong><a href="mailto:Treetestprep@gmail.com">Treetestprep@gmail.com</a></div>
-          <div><strong>Location</strong><span>Sierra 2 Center Curtis Hall 2791 24th St Sacramento, CA 95818</span></div>
-          <Link className="button hero-button" to="/class-registration-page/">Register for the course</Link>
+          <h2>{copy.text("card", "heading")}</h2>
+          <div>
+            <strong>Course Price</strong>
+            <span>{copy.text("card", "price")}</span>
+          </div>
+          <div>
+            <strong>Email</strong>
+            <a href={`mailto:${copy.text("card", "email")}`}>{copy.text("card", "email")}</a>
+          </div>
+          <div>
+            <strong>Location</strong>
+            <span>{copy.text("card", "location")}</span>
+          </div>
+          <Link className="button hero-button" to={cardCta.href as string}>
+            {cardCta.label}
+          </Link>
         </aside>
       </section>
       <SiteFooter />
