@@ -11,10 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutUsRouteImport } from './routes/about-us'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ClassRegistrationPageRouteImport } from './routes/class-registration-page'
 import { Route as ContactUsRouteImport } from './routes/contact-us'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ExamInformationRouteImport } from './routes/exam-information'
 import { Route as MeetYourInstructorsRouteImport } from './routes/meet-your-instructors'
+import { Route as PortalRouteImport } from './routes/portal'
 import { Route as EventsLocationRouteImport } from './routes/events.location'
 
 const IndexRoute = IndexRouteImport.update({
@@ -27,6 +30,11 @@ const AboutUsRoute = AboutUsRouteImport.update({
   path: '/about-us',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ClassRegistrationPageRoute = ClassRegistrationPageRouteImport.update({
   id: '/class-registration-page',
   path: '/class-registration-page',
@@ -35,6 +43,11 @@ const ClassRegistrationPageRoute = ClassRegistrationPageRouteImport.update({
 const ContactUsRoute = ContactUsRouteImport.update({
   id: '/contact-us',
   path: '/contact-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExamInformationRoute = ExamInformationRouteImport.update({
@@ -47,6 +60,11 @@ const MeetYourInstructorsRoute = MeetYourInstructorsRouteImport.update({
   path: '/meet-your-instructors',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EventsLocationRoute = EventsLocationRouteImport.update({
   id: '/events/location',
   path: '/events/location',
@@ -56,29 +74,38 @@ const EventsLocationRoute = EventsLocationRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about-us': typeof AboutUsRoute
+  '/admin': typeof AdminRoute
   '/class-registration-page': typeof ClassRegistrationPageRoute
   '/contact-us': typeof ContactUsRoute
+  '/dashboard': typeof DashboardRoute
   '/exam-information': typeof ExamInformationRoute
   '/meet-your-instructors': typeof MeetYourInstructorsRoute
+  '/portal': typeof PortalRoute
   '/events/location': typeof EventsLocationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about-us': typeof AboutUsRoute
+  '/admin': typeof AdminRoute
   '/class-registration-page': typeof ClassRegistrationPageRoute
   '/contact-us': typeof ContactUsRoute
+  '/dashboard': typeof DashboardRoute
   '/exam-information': typeof ExamInformationRoute
   '/meet-your-instructors': typeof MeetYourInstructorsRoute
+  '/portal': typeof PortalRoute
   '/events/location': typeof EventsLocationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about-us': typeof AboutUsRoute
+  '/admin': typeof AdminRoute
   '/class-registration-page': typeof ClassRegistrationPageRoute
   '/contact-us': typeof ContactUsRoute
+  '/dashboard': typeof DashboardRoute
   '/exam-information': typeof ExamInformationRoute
   '/meet-your-instructors': typeof MeetYourInstructorsRoute
+  '/portal': typeof PortalRoute
   '/events/location': typeof EventsLocationRoute
 }
 export interface FileRouteTypes {
@@ -86,38 +113,50 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about-us'
+    | '/admin'
     | '/class-registration-page'
     | '/contact-us'
+    | '/dashboard'
     | '/exam-information'
     | '/meet-your-instructors'
+    | '/portal'
     | '/events/location'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about-us'
+    | '/admin'
     | '/class-registration-page'
     | '/contact-us'
+    | '/dashboard'
     | '/exam-information'
     | '/meet-your-instructors'
+    | '/portal'
     | '/events/location'
   id:
     | '__root__'
     | '/'
     | '/about-us'
+    | '/admin'
     | '/class-registration-page'
     | '/contact-us'
+    | '/dashboard'
     | '/exam-information'
     | '/meet-your-instructors'
+    | '/portal'
     | '/events/location'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutUsRoute: typeof AboutUsRoute
+  AdminRoute: typeof AdminRoute
   ClassRegistrationPageRoute: typeof ClassRegistrationPageRoute
   ContactUsRoute: typeof ContactUsRoute
+  DashboardRoute: typeof DashboardRoute
   ExamInformationRoute: typeof ExamInformationRoute
   MeetYourInstructorsRoute: typeof MeetYourInstructorsRoute
+  PortalRoute: typeof PortalRoute
   EventsLocationRoute: typeof EventsLocationRoute
 }
 
@@ -137,6 +176,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutUsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/class-registration-page': {
       id: '/class-registration-page'
       path: '/class-registration-page'
@@ -149,6 +195,13 @@ declare module '@tanstack/react-router' {
       path: '/contact-us'
       fullPath: '/contact-us'
       preLoaderRoute: typeof ContactUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/exam-information': {
@@ -165,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MeetYourInstructorsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/events/location': {
       id: '/events/location'
       path: '/events/location'
@@ -178,10 +238,13 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutUsRoute: AboutUsRoute,
+  AdminRoute: AdminRoute,
   ClassRegistrationPageRoute: ClassRegistrationPageRoute,
   ContactUsRoute: ContactUsRoute,
+  DashboardRoute: DashboardRoute,
   ExamInformationRoute: ExamInformationRoute,
   MeetYourInstructorsRoute: MeetYourInstructorsRoute,
+  PortalRoute: PortalRoute,
   EventsLocationRoute: EventsLocationRoute,
 }
 export const routeTree = rootRouteImport
