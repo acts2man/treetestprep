@@ -30,6 +30,8 @@ import { Route as AdminStudentsRouteImport } from './routes/admin.students'
 import { Route as EventsLocationRouteImport } from './routes/events.location'
 import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as PortalClassesRouteImport } from './routes/portal.classes'
+import { Route as PortalMessagesRouteImport } from './routes/portal.messages'
+import { Route as PortalProfileRouteImport } from './routes/portal.profile'
 import { Route as PortalRegistrationsRouteImport } from './routes/portal.registrations'
 import { Route as PortalResourcesRouteImport } from './routes/portal.resources'
 import { Route as AdminPagesIndexRouteImport } from './routes/admin.pages.index'
@@ -140,6 +142,16 @@ const PortalClassesRoute = PortalClassesRouteImport.update({
   path: '/classes',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalMessagesRoute = PortalMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalProfileRoute = PortalProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => PortalRoute,
+} as any)
 const PortalRegistrationsRoute = PortalRegistrationsRouteImport.update({
   id: '/registrations',
   path: '/registrations',
@@ -181,6 +193,8 @@ export interface FileRoutesByFullPath {
   '/admin/students': typeof AdminStudentsRoute
   '/events/location': typeof EventsLocationRoute
   '/portal/classes': typeof PortalClassesRoute
+  '/portal/messages': typeof PortalMessagesRoute
+  '/portal/profile': typeof PortalProfileRoute
   '/portal/registrations': typeof PortalRegistrationsRoute
   '/portal/resources': typeof PortalResourcesRoute
   '/admin/': typeof AdminIndexRoute
@@ -206,6 +220,8 @@ export interface FileRoutesByTo {
   '/admin/students': typeof AdminStudentsRoute
   '/events/location': typeof EventsLocationRoute
   '/portal/classes': typeof PortalClassesRoute
+  '/portal/messages': typeof PortalMessagesRoute
+  '/portal/profile': typeof PortalProfileRoute
   '/portal/registrations': typeof PortalRegistrationsRoute
   '/portal/resources': typeof PortalResourcesRoute
   '/admin': typeof AdminIndexRoute
@@ -234,6 +250,8 @@ export interface FileRoutesById {
   '/admin/students': typeof AdminStudentsRoute
   '/events/location': typeof EventsLocationRoute
   '/portal/classes': typeof PortalClassesRoute
+  '/portal/messages': typeof PortalMessagesRoute
+  '/portal/profile': typeof PortalProfileRoute
   '/portal/registrations': typeof PortalRegistrationsRoute
   '/portal/resources': typeof PortalResourcesRoute
   '/admin/': typeof AdminIndexRoute
@@ -263,6 +281,8 @@ export interface FileRouteTypes {
     | '/admin/students'
     | '/events/location'
     | '/portal/classes'
+    | '/portal/messages'
+    | '/portal/profile'
     | '/portal/registrations'
     | '/portal/resources'
     | '/admin/'
@@ -288,6 +308,8 @@ export interface FileRouteTypes {
     | '/admin/students'
     | '/events/location'
     | '/portal/classes'
+    | '/portal/messages'
+    | '/portal/profile'
     | '/portal/registrations'
     | '/portal/resources'
     | '/admin'
@@ -315,6 +337,8 @@ export interface FileRouteTypes {
     | '/admin/students'
     | '/events/location'
     | '/portal/classes'
+    | '/portal/messages'
+    | '/portal/profile'
     | '/portal/registrations'
     | '/portal/resources'
     | '/admin/'
@@ -486,6 +510,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalClassesRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/portal/messages': {
+      id: '/portal/messages'
+      path: '/messages'
+      fullPath: '/portal/messages'
+      preLoaderRoute: typeof PortalMessagesRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/profile': {
+      id: '/portal/profile'
+      path: '/profile'
+      fullPath: '/portal/profile'
+      preLoaderRoute: typeof PortalProfileRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/portal/registrations': {
       id: '/portal/registrations'
       path: '/registrations'
@@ -547,6 +585,8 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface PortalRouteChildren {
   PortalClassesRoute: typeof PortalClassesRoute
+  PortalMessagesRoute: typeof PortalMessagesRoute
+  PortalProfileRoute: typeof PortalProfileRoute
   PortalRegistrationsRoute: typeof PortalRegistrationsRoute
   PortalResourcesRoute: typeof PortalResourcesRoute
   PortalIndexRoute: typeof PortalIndexRoute
@@ -554,6 +594,8 @@ interface PortalRouteChildren {
 
 const PortalRouteChildren: PortalRouteChildren = {
   PortalClassesRoute: PortalClassesRoute,
+  PortalMessagesRoute: PortalMessagesRoute,
+  PortalProfileRoute: PortalProfileRoute,
   PortalRegistrationsRoute: PortalRegistrationsRoute,
   PortalResourcesRoute: PortalResourcesRoute,
   PortalIndexRoute: PortalIndexRoute,
