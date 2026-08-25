@@ -10,33 +10,115 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutUsRouteImport } from './routes/about-us'
+import { Route as ClassRegistrationPageRouteImport } from './routes/class-registration-page'
+import { Route as ContactUsRouteImport } from './routes/contact-us'
+import { Route as ExamInformationRouteImport } from './routes/exam-information'
+import { Route as MeetYourInstructorsRouteImport } from './routes/meet-your-instructors'
+import { Route as EventsLocationRouteImport } from './routes/events.location'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutUsRoute = AboutUsRouteImport.update({
+  id: '/about-us',
+  path: '/about-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClassRegistrationPageRoute = ClassRegistrationPageRouteImport.update({
+  id: '/class-registration-page',
+  path: '/class-registration-page',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactUsRoute = ContactUsRouteImport.update({
+  id: '/contact-us',
+  path: '/contact-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExamInformationRoute = ExamInformationRouteImport.update({
+  id: '/exam-information',
+  path: '/exam-information',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MeetYourInstructorsRoute = MeetYourInstructorsRouteImport.update({
+  id: '/meet-your-instructors',
+  path: '/meet-your-instructors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsLocationRoute = EventsLocationRouteImport.update({
+  id: '/events/location',
+  path: '/events/location',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about-us': typeof AboutUsRoute
+  '/class-registration-page': typeof ClassRegistrationPageRoute
+  '/contact-us': typeof ContactUsRoute
+  '/exam-information': typeof ExamInformationRoute
+  '/meet-your-instructors': typeof MeetYourInstructorsRoute
+  '/events/location': typeof EventsLocationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about-us': typeof AboutUsRoute
+  '/class-registration-page': typeof ClassRegistrationPageRoute
+  '/contact-us': typeof ContactUsRoute
+  '/exam-information': typeof ExamInformationRoute
+  '/meet-your-instructors': typeof MeetYourInstructorsRoute
+  '/events/location': typeof EventsLocationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about-us': typeof AboutUsRoute
+  '/class-registration-page': typeof ClassRegistrationPageRoute
+  '/contact-us': typeof ContactUsRoute
+  '/exam-information': typeof ExamInformationRoute
+  '/meet-your-instructors': typeof MeetYourInstructorsRoute
+  '/events/location': typeof EventsLocationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about-us'
+    | '/class-registration-page'
+    | '/contact-us'
+    | '/exam-information'
+    | '/meet-your-instructors'
+    | '/events/location'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about-us'
+    | '/class-registration-page'
+    | '/contact-us'
+    | '/exam-information'
+    | '/meet-your-instructors'
+    | '/events/location'
+  id:
+    | '__root__'
+    | '/'
+    | '/about-us'
+    | '/class-registration-page'
+    | '/contact-us'
+    | '/exam-information'
+    | '/meet-your-instructors'
+    | '/events/location'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutUsRoute: typeof AboutUsRoute
+  ClassRegistrationPageRoute: typeof ClassRegistrationPageRoute
+  ContactUsRoute: typeof ContactUsRoute
+  ExamInformationRoute: typeof ExamInformationRoute
+  MeetYourInstructorsRoute: typeof MeetYourInstructorsRoute
+  EventsLocationRoute: typeof EventsLocationRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +130,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about-us': {
+      id: '/about-us'
+      path: '/about-us'
+      fullPath: '/about-us'
+      preLoaderRoute: typeof AboutUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/class-registration-page': {
+      id: '/class-registration-page'
+      path: '/class-registration-page'
+      fullPath: '/class-registration-page'
+      preLoaderRoute: typeof ClassRegistrationPageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact-us': {
+      id: '/contact-us'
+      path: '/contact-us'
+      fullPath: '/contact-us'
+      preLoaderRoute: typeof ContactUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exam-information': {
+      id: '/exam-information'
+      path: '/exam-information'
+      fullPath: '/exam-information'
+      preLoaderRoute: typeof ExamInformationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meet-your-instructors': {
+      id: '/meet-your-instructors'
+      path: '/meet-your-instructors'
+      fullPath: '/meet-your-instructors'
+      preLoaderRoute: typeof MeetYourInstructorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events/location': {
+      id: '/events/location'
+      path: '/events/location'
+      fullPath: '/events/location'
+      preLoaderRoute: typeof EventsLocationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutUsRoute: AboutUsRoute,
+  ClassRegistrationPageRoute: ClassRegistrationPageRoute,
+  ContactUsRoute: ContactUsRoute,
+  ExamInformationRoute: ExamInformationRoute,
+  MeetYourInstructorsRoute: MeetYourInstructorsRoute,
+  EventsLocationRoute: EventsLocationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

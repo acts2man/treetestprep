@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Home from "../pages/Home";
+import Contact from "../pages/Contact";
 
-const title = "Become An ISA Certified Arborist | Tree Test Prep";
+const title = "Contact Us | Tree Test Prep";
 const description =
-  "Prepare for the ISA Certified Arborist exam with Tree Test Prep's 8-week in-person and online course in Sacramento, CA.";
+  "Have a question about the ISA Certified Arborist prep course? Email Tree Test Prep and hear back within one business day.";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/contact-us")({
   head: () => ({
     meta: [
       { title },
@@ -14,5 +14,5 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: description },
     ],
   }),
-  component: Home,
+  component: Contact,
 });
