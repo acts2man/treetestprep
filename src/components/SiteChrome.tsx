@@ -19,7 +19,7 @@ function NavLinks({ activePath, onSelect }: { activePath: string; onSelect?: () 
     <>
       {navItems.map(([label, href]) => (
         <Link
-          className={normalize(activePath) === href ? "active" : ""}
+          className={normalize(activePath) === normalize(href) ? "active" : ""}
           to={href}
           key={label}
           onClick={onSelect}
