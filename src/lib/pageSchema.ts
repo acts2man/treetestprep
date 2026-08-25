@@ -119,25 +119,28 @@ export const PAGE_SCHEMA: PageDefinition[] = [
     sections: [
       {
         key: "hero",
-        label: "Hero",
+        label: "Course header",
         fields: [
+          imageField("image", "Classroom photo"),
           textField("title", "Headline"),
-          areaField("subtitle", "Sub headline"),
-          imageField("image", "Hero photo"),
+          textField("meta_dates", "Dates line"),
+          textField("meta_time", "Time line"),
+          textField("meta_location", "Location line"),
+          textField("description_heading", "Description heading"),
         ],
       },
       {
-        key: "details",
-        label: "Course details",
+        key: "card",
+        label: "Course card",
         fields: [
-          textField("heading", "Heading"),
-          areaField("body", "Body copy"),
+          textField("heading", "Card heading"),
+          textField("price", "Course price"),
+          textField("email", "Email"),
           textField("location", "Location"),
-          textField("schedule", "Schedule"),
-          textField("price", "Price"),
-          linkField("cta", "Button"),
+          linkField("cta", "Card button"),
         ],
       },
+
     ],
   },
   {
