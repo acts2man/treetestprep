@@ -118,7 +118,7 @@ export const PAGE_SCHEMA: PageDefinition[] = [
     description: "Location, dates and what the course covers.",
     sections: [
       {
-        key: "hero",
+        key: "main",
         label: "Course header",
         fields: [
           imageField("image", "Classroom photo"),
