@@ -1,4 +1,4 @@
-import { CallToAction, SiteFooter, SiteHeader } from "../components/SiteChrome";
+import { SiteFooter, SiteHeader } from "../components/SiteChrome";
 
 export default function Registration() {
   return (
@@ -24,7 +24,6 @@ export default function Registration() {
         <h2>This course uses the Arborist Certification Study Guide, Fourth Edition By Sharon J. Lilly, Corinne G. Bassett, James Komen, and Lindsey Purcell.</h2>
         <a className="button outline-button" href="https://wwv.isa-arbor.com/store/product/7/">Purchase Book Here</a>
       </section>
-      <CallToAction />
       <SiteFooter />
     </main>
   );

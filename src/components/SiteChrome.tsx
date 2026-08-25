@@ -37,7 +37,7 @@ export function SiteHeader({ activePath }: { activePath: string }) {
   return (
     <header>
       <div className="brand-bar">
-        <div className="wrap brand-inner">
+        <div className="brand-inner">
           <Link className="brand" to="/" aria-label="Tree Test Prep home">
             <img src="/assets/tree-test-prep-logo.webp" alt="Tree Test Prep" />
           </Link>
@@ -66,20 +66,6 @@ export function SiteHeader({ activePath }: { activePath: string }) {
         </div>
       </div>
     </header>
-  );
-}
-
-export function CallToAction() {
-  return (
-    <section className="cta">
-      <div className="wrap cta-grid">
-        <div>
-          <h2>Take Your Tree Care Career To The Next Level</h2>
-          <p>Build the knowledge and confidence you need to become an ISA Certified Arborist.</p>
-        </div>
-        <Link className="button cta-button" to="/class-registration-page/">Register For The Course</Link>
-      </div>
-    </section>
   );
 }
 

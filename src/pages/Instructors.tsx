@@ -1,4 +1,4 @@
-import { CallToAction, InnerHero, SiteFooter, SiteHeader } from "../components/SiteChrome";
+import { InnerHero, SiteFooter, SiteHeader } from "../components/SiteChrome";
 
 const instructors = [
   {
@@ -64,7 +64,6 @@ export default function Instructors() {
           ))}
         </div>
       </section>
-      <CallToAction />
       <SiteFooter />
     </main>
   );

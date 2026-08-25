@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { CallToAction, InnerHero, SiteFooter, SiteHeader } from "../components/SiteChrome";
+import { InnerHero, SiteFooter, SiteHeader } from "../components/SiteChrome";
 
 export default function ExamInformation() {
   return (
@@ -30,7 +30,6 @@ export default function ExamInformation() {
         <p>Once your application is approved, you will be able to register for the exam.</p>
         <Link className="button hero-button page-button" to="/class-registration-page/">Register for the course</Link>
       </article>
-      <CallToAction />
       <SiteFooter />
     </main>
   );

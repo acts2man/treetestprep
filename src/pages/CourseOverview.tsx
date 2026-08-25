@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { CallToAction, SiteFooter, SiteHeader } from "../components/SiteChrome";
+import { SiteFooter, SiteHeader } from "../components/SiteChrome";
 
 const weeks = [
   ["Week 1", "Chapter 1 – Biology", "This session covers tree biology, anatomy and physiology. The presentation addresses tree structure, anatomy and function. Class discussions cover the process of photosynthesis, respiration, transpiration, the vascular system and defense systems.", "Chapter 2 – Tree Identification", "This chapter will give you the basic skills and knowledge to recognize the differences in flowers, fruit, form, bark buds, twigs and leaves."],
@@ -44,7 +44,6 @@ export default function CourseOverview() {
           <Link className="button hero-button" to="/class-registration-page/">Register for the course</Link>
         </aside>
       </section>
-      <CallToAction />
       <SiteFooter />
     </main>
   );

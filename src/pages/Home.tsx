@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { CallToAction, SiteFooter, SiteHeader } from "../components/SiteChrome";
+import { SiteFooter, SiteHeader } from "../components/SiteChrome";
 
 const weeks = [
   "Week 1: Tree Biology, Tree Identification",
@@ -124,7 +124,6 @@ export default function Home() {
         </div>
       </section>
 
-      <CallToAction />
       <SiteFooter />
     </main>
   );

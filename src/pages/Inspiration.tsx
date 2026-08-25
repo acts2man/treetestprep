@@ -1,4 +1,4 @@
-import { CallToAction, InnerHero, SiteFooter, SiteHeader } from "../components/SiteChrome";
+import { InnerHero, SiteFooter, SiteHeader } from "../components/SiteChrome";
 
 export default function Inspiration() {
   return (
@@ -21,7 +21,6 @@ export default function Inspiration() {
           <p>For the last five years of his life, Ken bravely battled non-Hodgkin&apos;s lymphoma.</p>
         </article>
       </section>
-      <CallToAction />
       <SiteFooter />
     </main>
   );
