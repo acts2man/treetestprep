@@ -105,7 +105,7 @@ function AdminPageEditor() {
       const key = `${sectionKey}.${field.key}`;
       const value = state[key];
       if (!value) return;
-      const payload: Record<string, unknown> = {
+      const payload: Record<string, any> = {
         page_slug: slug,
         section_key: sectionKey,
         field_key: field.key,
@@ -115,18 +115,18 @@ function AdminPageEditor() {
         video_url: null,
         link_url: null,
       };
-      if (field.type === "list") payload.value_json = value.list;
-      else if (field.type === "image") payload.image_url = value.text;
-      else if (field.type === "video") payload.video_url = value.text;
+      if (field.type === "list") payload["value_json"] = value.list;
+      else if (field.type === "image") payload["image_url"] = value.text;
+      else if (field.type === "video") payload["video_url"] = value.text;
       else if (field.type === "link") {
-        payload.value_text = value.text;
-        payload.link_url = value.href;
-      } else if (field.type === "url") payload.link_url = value.text;
-      else payload.value_text = value.text;
+        payload["value_text"] = value.text;
+        payload["link_url"] = value.href;
+      } else if (field.type === "url") payload["link_url"] = value.text;
+      else payload["value_text"] = value.text;
 
       const { error } = await supabase
         .from("page_content_overrides")
-        .upsert(payload, { onConflict: "page_slug,section_key,field_key" });
+        .upsert(payload as never, { onConflict: "page_slug,section_key,field_key" });
       if (error) throw error;
     },
     onSuccess: () => {
