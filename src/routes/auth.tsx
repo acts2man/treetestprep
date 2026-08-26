@@ -94,9 +94,13 @@ function AuthPage() {
   }
 
   return (
-    <div className="dashboard-shell flex min-h-screen flex-col items-center justify-center bg-[#0a0f1e] px-4 py-12">
-      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-gradient-to-br from-[#0a1228] to-[#05070d] p-8">
-        <div className="mb-6 flex justify-center rounded-xl bg-white p-4">
+    <div
+      className="dashboard-shell relative flex min-h-screen flex-col items-center justify-center bg-cover bg-center bg-no-repeat px-4 py-12"
+      style={{ backgroundImage: `url(${treeBgAsset.url})` }}
+    >
+      <div className="absolute inset-0 bg-[#0a0f1e]/75" aria-hidden="true" />
+      <div className="relative z-10 w-full max-w-md rounded-2xl border border-white/10 bg-gradient-to-br from-[#0a1228] to-[#05070d] p-8">
+        <div className="mb-6 flex justify-center rounded-xl bg-[#0a0f1e]/80 p-4">
           <img
             src="/assets/tree-test-prep-logo.webp"
             alt="Tree Test Prep"
