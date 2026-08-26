@@ -32,7 +32,6 @@ const emptyForm = {
   description: "",
   file_url: "",
   category: "study_guide",
-  visibility: "students",
   sort_order: "0",
 };
 
@@ -66,7 +65,7 @@ function AdminResources() {
         description: form.description || null,
         file_url: form.file_url || null,
         category: form.category,
-        visibility: form.visibility,
+        visibility: "public",
         sort_order: Number(form.sort_order || 0),
       });
       if (error) throw error;
@@ -141,23 +140,6 @@ function AdminResources() {
           "—"
         ),
     },
-    {
-      key: "visibility",
-      header: "Visibility",
-      render: (row) => (
-        <select
-          value={row.visibility}
-          onChange={(event) =>
-            update.mutate({ id: row.id, patch: { visibility: event.target.value } })
-          }
-          className="rounded-md border border-white/15 bg-[#0a0f1e] px-2 py-1 text-xs text-white"
-        >
-          <option value="public">Public</option>
-          <option value="students">Students only</option>
-          <option value="staff">Staff only</option>
-        </select>
-      ),
-    },
     { key: "order", header: "Order", render: (row) => row.sort_order },
     {
       key: "actions",
@@ -179,7 +161,7 @@ function AdminResources() {
     <div className="space-y-6">
       <PageHeader
         title="Resources & downloads"
-        description="Study guides, handouts and links shared with students."
+        description="Study guides, handouts and links you can share with course attendees."
         action={
           <button type="button" className={buttonClass} onClick={() => setShowForm((v) => !v)}>
             <Plus className="h-4 w-4" /> New resource
@@ -244,18 +226,6 @@ function AdminResources() {
                 if (file) void handleUpload(file);
               }}
             />
-          </label>
-          <label className="text-sm">
-            <span className="mb-1 block text-white/70">Visibility</span>
-            <select
-              className={inputClass}
-              value={form.visibility}
-              onChange={(event) => setForm({ ...form, visibility: event.target.value })}
-            >
-              <option value="public">Public</option>
-              <option value="students">Students only</option>
-              <option value="staff">Staff only</option>
-            </select>
           </label>
           <label className="text-sm">
             <span className="mb-1 block text-white/70">Sort order</span>
