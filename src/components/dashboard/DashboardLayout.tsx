@@ -4,12 +4,10 @@ import {
   Bell,
   BookOpen,
   CalendarDays,
-  ClipboardList,
   FileText,
   GraduationCap,
   LayoutDashboard,
   LogOut,
-  Mail,
   Menu,
   Settings,
 } from "lucide-react";
