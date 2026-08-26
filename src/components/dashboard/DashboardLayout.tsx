@@ -4,12 +4,10 @@ import {
   Bell,
   BookOpen,
   CalendarDays,
-  ClipboardList,
   FileText,
   GraduationCap,
   LayoutDashboard,
   LogOut,
-  Mail,
   Menu,
   Settings,
 } from "lucide-react";
@@ -30,10 +28,9 @@ type NavItem = { label: string; to: string; icon: ComponentType<{ className?: st
 const adminNav: NavItem[] = [
   { label: "Dashboard", to: "/admin", icon: LayoutDashboard },
   { label: "Classes", to: "/admin/classes", icon: CalendarDays },
-  { label: "Registrations", to: "/admin/registrations", icon: ClipboardList },
   { label: "Instructors", to: "/admin/instructors", icon: GraduationCap },
   { label: "Resources", to: "/admin/resources", icon: BookOpen },
-  { label: "Inquiries", to: "/admin/inquiries", icon: Mail },
+
   { label: "Website Pages", to: "/admin/pages", icon: FileText },
   { label: "Settings", to: "/admin/settings", icon: Settings },
 ];
