@@ -11,7 +11,6 @@ import {
   Mail,
   MessageSquare,
   UserPlus,
-  Users,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { StatTile } from "@/components/dashboard/StatTile";
@@ -45,9 +44,8 @@ function AdminDashboard() {
     staleTime: 60_000,
     queryFn: async () => {
       const [
-        students,
-        newStudents,
         classes,
+        totalClasses,
         registrations,
         confirmed,
         instructors,
@@ -55,9 +53,8 @@ function AdminDashboard() {
         inquiries,
         paidRows,
       ] = await Promise.all([
-        count("profiles"),
-        count("profiles", (q) => q.gte("created_at", startOfMonth)),
         count("classes", (q) => q.eq("status", "published")),
+        count("classes"),
         count("registrations"),
         count("registrations", (q) => q.eq("status", "confirmed")),
         count("instructors", (q) => q.eq("is_visible", true)),
@@ -79,9 +76,8 @@ function AdminDashboard() {
           .reduce((total, row) => total + (row.amount_cents ?? 0), 0) / 100;
 
       return {
-        students,
-        newStudents,
         classes,
+        totalClasses,
         registrations,
         confirmed,
         instructors,
@@ -159,13 +155,6 @@ function AdminDashboard() {
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <StatTile
-          label="Students"
-          value={stats?.students ?? 0}
-          delta={`+${stats?.newStudents ?? 0} this month`}
-          icon={Users}
-          tint="bg-blue-600/40"
-        />
-        <StatTile
           label="Registrations"
           value={stats?.registrations ?? 0}
           icon={ClipboardList}
@@ -182,6 +171,12 @@ function AdminDashboard() {
           value={stats?.classes ?? 0}
           icon={CalendarDays}
           tint="bg-purple-600/40"
+        />
+        <StatTile
+          label="All classes"
+          value={stats?.totalClasses ?? 0}
+          icon={GraduationCap}
+          tint="bg-blue-600/40"
         />
         <StatTile
           label="Total revenue"

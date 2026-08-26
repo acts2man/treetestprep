@@ -10,7 +10,7 @@ import {
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
-export type AppRole = "super_admin" | "admin" | "instructor" | "student";
+export type AppRole = "super_admin" | "admin" | "instructor";
 
 export type Profile = {
   id: string;
@@ -29,7 +29,6 @@ type AuthContextValue = {
   isAdmin: boolean;
   isSuperAdmin: boolean;
   isInstructor: boolean;
-  isMember: boolean;
   signOut: () => Promise<void>;
   refreshRoles: () => Promise<void>;
 };
@@ -62,25 +61,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!active) return;
       setSession(nextSession);
       if (nextSession?.user) {
+        setLoading(true);
         setTimeout(() => {
-          void loadDetails(nextSession.user.id);
+          void loadDetails(nextSession.user.id).finally(() => {
+            if (active) setLoading(false);
+          });
         }, 0);
       } else {
         setRoles([]);
         setProfile(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     void supabase.auth.getSession().then(({ data }) => {
       if (!active) return;
       setSession(data.session);
       if (data.session?.user) {
+        const userId = data.session.user.id;
+        setLoading(true);
         setTimeout(() => {
-          void loadDetails(data.session!.user.id);
+          void loadDetails(userId).finally(() => {
+            if (active) setLoading(false);
+          });
         }, 0);
+      } else {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => {
@@ -112,7 +119,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAdmin,
       isSuperAdmin,
       isInstructor: roles.includes("instructor"),
-      isMember: !!session?.user,
       signOut,
       refreshRoles,
     };

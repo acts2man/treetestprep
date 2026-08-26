@@ -57,7 +57,6 @@ function AdminResources() {
 
   const invalidate = () => {
     void queryClient.invalidateQueries({ queryKey: ["admin-resources"] });
-    void queryClient.invalidateQueries({ queryKey: ["portal-resources"] });
   };
 
   const create = useMutation({
