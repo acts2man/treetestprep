@@ -73,18 +73,80 @@ export function SiteHeader({ activePath }: { activePath: string }) {
           <button
             className="menu-button"
             type="button"
-            aria-label="Toggle menu"
             aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((value) => !value)}
+            onClick={() => setMenuOpen(true)}
           >
             <span />
             <span />
             <span />
+            <span className="sr-only-text">Open menu</span>
           </button>
-          <nav className={`nav-links ${menuOpen ? "open" : ""}`} aria-label="Main navigation">
-            <NavLinks activePath={activePath} onSelect={() => setMenuOpen(false)} />
-            <AccountLink onSelect={() => setMenuOpen(false)} />
+          <nav className="nav-links" aria-label="Main navigation">
+            <NavLinks activePath={activePath} />
+            <AccountLink />
           </nav>
+        </div>
+      </div>
+
+      <div
+        className={`mobile-overlay ${menuOpen ? "open" : ""}`}
+        onClick={() => setMenuOpen(false)}
+        aria-hidden="true"
+      />
+      <div
+        className={`mobile-panel ${menuOpen ? "open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site menu"
+      >
+        <div className="mobile-panel-head">
+          <img src={copy.text("header", "logo")} alt="Tree Test Prep" />
+          <button type="button" className="mobile-close" onClick={() => setMenuOpen(false)}>
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path
+                d="M18 6 6 18M6 6l12 12"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+            <span className="sr-only-text">Close menu</span>
+          </button>
+        </div>
+        <nav className="mobile-nav" aria-label="Mobile navigation">
+          <NavLinks activePath={activePath} onSelect={() => setMenuOpen(false)} />
+          <AccountLink onSelect={() => setMenuOpen(false)} />
+        </nav>
+        <div className="mobile-panel-foot">
+          <Link
+            className="button mobile-cta"
+            to="/class-registration-page/"
+            onClick={() => setMenuOpen(false)}
+          >
+            Register For The Course
+          </Link>
+          <div className="mobile-social">
+            <a href={`mailto:${email}`} aria-label={`Email ${email}`}>
+              <span aria-hidden="true">✉</span>
+            </a>
+            <a
+              href="https://www.isa-arbor.com/"
+              aria-label="International Society of Arboriculture"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path
+                  d="M12 3c3 2 5 4.6 5 7.5A5 5 0 0 1 12 15.5a5 5 0 0 1-5-5C7 7.6 9 5 12 3ZM12 15.5V21"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </header>

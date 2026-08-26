@@ -58,6 +58,12 @@ export default function Home() {
       <section className="course wrap" id="course">
         <div className="course-copy">
           <h2>{copy.text("course", "heading")}</h2>
+          <div className="mobile-inline-image">
+            <img
+              src={copy.text("course", "image")}
+              alt="Two mature trees at sunset with the sun flaring through a wooden fence"
+            />
+          </div>
           <ul className="week-list">
             {weeks.map((week) => (
               <li key={week.text}>{week.text}</li>
@@ -103,6 +109,12 @@ export default function Home() {
           />
           <div className="faq-content">
             <h2>{copy.text("faq", "heading")}</h2>
+            <div className="mobile-inline-image">
+              <img
+                src={copy.text("faq", "image")}
+                alt="Looking up at the trunk and spreading branches of a large oak tree"
+              />
+            </div>
             <p className="eyebrow">{copy.text("faq", "eyebrow")}</p>
             <div className="accordion">
               {faqs.map((faq, index) => {
