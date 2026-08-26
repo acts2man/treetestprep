@@ -80,20 +80,42 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Tree Test Prep" },
+      { title: "Tree Test Prep | ISA Certified Arborist Exam Prep Course" },
       {
         name: "description",
-        content: "Prepare for the ISA Certified Arborist exam with Tree Test Prep.",
+        content:
+          "Pass the ISA Certified Arborist exam with Tree Test Prep's 8-week instructor-led course, chapter-by-chapter study guide, and practice questions.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Tree Test Prep" },
+      { property: "og:locale", content: "en_US" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "robots", content: "index, follow" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: globalsCss,
       },
-      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "EducationalOrganization",
+          name: "Tree Test Prep",
+          url: "https://treetestprep.lovable.app/",
+          logo: "https://treetestprep.lovable.app/favicon.png",
+          description:
+            "Tree Test Prep runs an 8-week ISA Certified Arborist exam preparation course, offered in person in Sacramento, California and online.",
+          email: "treetestprep@gmail.com",
+          areaServed: "US",
+          sameAs: ["https://www.isa-arbor.com/"],
+        }),
+      },
     ],
   }),
 
