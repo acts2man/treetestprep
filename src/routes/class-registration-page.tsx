@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Registration from "../pages/Registration";
 
-const title = "Class Registration | Tree Test Prep";
+const title = "Register For The ISA Arborist Prep Course | Tree Test Prep";
 const description =
-  "Register for the ISA Certified Arborist prep course in person or online through secure Stripe checkout.";
+  "Reserve your seat in the 8-week ISA Certified Arborist prep course \u2014 in person in Sacramento or live online, with secure checkout.";
 
 export const Route = createFileRoute("/class-registration-page")({
   head: () => ({

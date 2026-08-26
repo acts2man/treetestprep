@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Contact from "../pages/Contact";
 
-const title = "Contact Us | Tree Test Prep";
+const title = "Contact Tree Test Prep | Arborist Course Questions";
 const description =
-  "Have a question about the ISA Certified Arborist prep course? Email Tree Test Prep and hear back within one business day.";
+  "Questions about the ISA Certified Arborist prep course, schedule, or tuition? Email Tree Test Prep and hear back within one business day.";
 
 export const Route = createFileRoute("/contact-us")({
   head: () => ({

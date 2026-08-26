@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Inspiration from "../pages/Inspiration";
 
-const title = "The Inspiration: Ken Menzer | Tree Test Prep";
+const title = "About Tree Test Prep | The Inspiration: Ken Menzer";
 const description =
-  "Tree Test Prep was created in honor of Ken Menzer, a Community Forester and City Arborist whose motto was educate and elevate.";
+  "Tree Test Prep was founded in honor of Ken Menzer, Community Forester and City Arborist, whose motto \u2014 educate and elevate \u2014 guides every class.";
 
 export const Route = createFileRoute("/about-us")({
   head: () => ({

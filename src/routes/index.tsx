@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Home from "../pages/Home";
 
-const title = "Become An ISA Certified Arborist | Tree Test Prep";
+const title = "ISA Certified Arborist Exam Prep Course | Tree Test Prep";
 const description =
-  "Prepare for the ISA Certified Arborist exam with Tree Test Prep's 8-week in-person and online course in Sacramento, CA.";
+  "Pass the ISA Certified Arborist exam with an 8-week instructor-led prep course in Sacramento, CA or live online \u2014 chapter-by-chapter study guide included.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
