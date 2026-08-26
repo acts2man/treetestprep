@@ -17,7 +17,7 @@ export const Route = createFileRoute("/dashboard")({
 });
 
 function DashboardRedirect() {
-  const { loading, user, isAdmin } = useAuth();
+  const { loading, user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,8 +26,8 @@ function DashboardRedirect() {
       void navigate({ to: "/auth/", replace: true });
       return;
     }
-    void navigate({ to: isAdmin ? "/admin/" : "/portal/", replace: true });
-  }, [loading, user, isAdmin, navigate]);
+    void navigate({ to: "/admin/", replace: true });
+  }, [loading, user, navigate]);
 
   return (
     <div className="dashboard-shell flex min-h-screen items-center justify-center bg-[#0a0f1e] text-sm text-white/70">

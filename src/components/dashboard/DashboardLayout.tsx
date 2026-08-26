@@ -11,9 +11,7 @@ import {
   LogOut,
   Mail,
   Menu,
-  MessageSquare,
   Settings,
-  User,
   Users,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
@@ -40,15 +38,6 @@ const adminNav: NavItem[] = [
   { label: "Inquiries", to: "/admin/inquiries", icon: Mail },
   { label: "Website Pages", to: "/admin/pages", icon: FileText },
   { label: "Settings", to: "/admin/settings", icon: Settings },
-];
-
-const memberNav: NavItem[] = [
-  { label: "Dashboard", to: "/portal", icon: LayoutDashboard },
-  { label: "My Registrations", to: "/portal/registrations", icon: ClipboardList },
-  { label: "Classes", to: "/portal/classes", icon: CalendarDays },
-  { label: "Study Resources", to: "/portal/resources", icon: BookOpen },
-  { label: "Messages", to: "/portal/messages", icon: MessageSquare },
-  { label: "My Profile", to: "/portal/profile", icon: User },
 ];
 
 const normalize = (path: string) =>
@@ -106,12 +95,12 @@ function SidebarBody({
 
   return (
     <div className="flex h-full flex-col bg-[#05070d]">
-      <div className="flex h-16 items-center bg-[#1d3770] px-4">
+      <div className="flex h-24 items-center bg-[#1d3770] px-4">
         <Link to="/" className="block">
           <img
             src="/assets/tree-test-prep-logo.webp"
             alt="Tree Test Prep"
-            className="h-10 w-auto object-contain"
+            className="h-20 w-auto max-w-full object-contain"
           />
         </Link>
       </div>
@@ -134,22 +123,17 @@ function SidebarBody({
 }
 
 export function DashboardLayout({
-  role,
   children,
 }: {
-  role: "admin" | "member";
   children: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   const { profile, user, signOut } = useAuth();
-  const items = role === "admin" ? adminNav : memberNav;
-  const rootPath = role === "admin" ? "/admin" : "/portal";
+  const items = adminNav;
+  const rootPath = "/admin";
   const name = profile?.display_name || user?.email?.split("@")[0] || "there";
   const initials = (profile?.display_name || user?.email || "T").slice(0, 2).toUpperCase();
-  const subtitle =
-    role === "admin"
-      ? "Here's what's happening across your arborist certification courses today."
-      : "Keep working toward your ISA Certified Arborist credential.";
+  const subtitle = "Here's what's happening across your arborist certification courses today.";
 
   return (
     <div className="dashboard-shell min-h-screen bg-[#0a0f1e] text-white">
@@ -188,7 +172,7 @@ export function DashboardLayout({
                     Welcome back, {name}
                   </span>
                   <span className="block truncate text-xs text-white/50">
-                    {role === "admin" ? "Admin Console" : "Student Portal"}
+                     Admin Console
                   </span>
                 </span>
               </DropdownMenuTrigger>
@@ -201,10 +185,10 @@ export function DashboardLayout({
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link to="/portal/profile/">Change profile photo</Link>
+                  <Link to="/admin/settings/">Edit profile</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to={role === "admin" ? "/admin/settings/" : "/portal/profile/"}>
+                  <Link to="/admin/settings/">
                     Account settings
                   </Link>
                 </DropdownMenuItem>
@@ -227,7 +211,7 @@ export function DashboardLayout({
               <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-[#349e49]" />
             </button>
             <Link
-              to={role === "admin" ? "/admin/settings/" : "/portal/profile/"}
+              to="/admin/settings/"
               aria-label="Settings"
               className="rounded-md p-2 text-white/80 transition hover:bg-white/10"
             >

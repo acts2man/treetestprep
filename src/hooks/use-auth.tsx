@@ -10,7 +10,7 @@ import {
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
-export type AppRole = "super_admin" | "admin" | "instructor" | "student";
+export type AppRole = "super_admin" | "admin" | "instructor";
 
 export type Profile = {
   id: string;
@@ -29,7 +29,6 @@ type AuthContextValue = {
   isAdmin: boolean;
   isSuperAdmin: boolean;
   isInstructor: boolean;
-  isMember: boolean;
   signOut: () => Promise<void>;
   refreshRoles: () => Promise<void>;
 };
@@ -112,7 +111,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAdmin,
       isSuperAdmin,
       isInstructor: roles.includes("instructor"),
-      isMember: !!session?.user,
       signOut,
       refreshRoles,
     };

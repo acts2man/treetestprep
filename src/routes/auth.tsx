@@ -8,7 +8,7 @@ import dashboardCss from "../styles/dashboard.css?url";
 
 const title = "Sign In | Tree Test Prep";
 const description =
-  "Sign in to the Tree Test Prep student portal to see your classes, registrations and study resources.";
+  "Sign in to the Tree Test Prep admin dashboard to manage classes, registrations and website content.";
 
 const treeBg = "/assets/instructors-tree.webp";
 
@@ -41,7 +41,7 @@ function AuthPage() {
   const search = Route.useSearch();
   const redirect = search["redirect"];
   const navigate = useNavigate();
-  const { user, loading, isAdmin } = useAuth();
+  const { user, loading } = useAuth();
   const [mode, setMode] = useState<Mode>(() => {
     const hash = typeof window !== "undefined" ? window.location.hash || "" : "";
     return hash.includes("type=recovery") ? "recovery" : "signin";
@@ -68,8 +68,8 @@ function AuthPage() {
       window.location.assign(target);
       return;
     }
-    void navigate({ to: isAdmin ? "/admin/" : "/portal/", replace: true });
-  }, [loading, user, isAdmin, redirect, navigate, mode]);
+    void navigate({ to: "/admin/", replace: true });
+  }, [loading, user, redirect, navigate, mode]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -145,7 +145,7 @@ function AuthPage() {
         <h1 className="text-center text-xl font-semibold text-white">{heading}</h1>
         <p className="mt-1 text-center text-sm text-white/60">
           {mode === "signin"
-            ? "Track your classes, registrations and study resources."
+            ? "Manage classes, registrations and website content."
             : mode === "forgot"
               ? "We'll email you a secure link to choose a new password."
               : "Choose a new password for your account."}
@@ -255,11 +255,6 @@ function AuthPage() {
             </button>
           )}
         </p>
-        {mode === "signin" && (
-          <p className="mt-3 text-center text-xs text-white/40">
-            Accounts are created by Tree Test Prep when you register for a class.
-          </p>
-        )}
       </div>
     </div>
   );

@@ -34,7 +34,7 @@ function NavLinks({ activePath, onSelect }: { activePath: string; onSelect?: () 
 }
 
 function AccountLink({ onSelect }: { onSelect?: () => void }) {
-  const { user, isAdmin, loading } = useAuth();
+  const { user, loading } = useAuth();
   if (loading) return null;
   if (!user) {
     return (
@@ -44,8 +44,8 @@ function AccountLink({ onSelect }: { onSelect?: () => void }) {
     );
   }
   return (
-    <Link to={isAdmin ? "/admin/" : "/portal/"} onClick={onSelect}>
-      My Account
+    <Link to="/admin/" onClick={onSelect}>
+      Admin Dashboard
     </Link>
   );
 }

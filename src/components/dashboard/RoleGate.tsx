@@ -3,10 +3,9 @@ import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/use-auth";
 
 export function RoleGate({
-  require = "auth",
   children,
 }: {
-  require?: "auth" | "member" | "admin";
+  require?: "auth" | "admin";
   children: ReactNode;
 }) {
   const { loading, user, isAdmin } = useAuth();
@@ -20,7 +19,7 @@ export function RoleGate({
       return;
     }
     if (require === "admin" && !isAdmin) {
-      void navigate({ to: "/portal/", replace: true });
+      void navigate({ to: "/auth/", replace: true });
     }
   }, [loading, user, isAdmin, require, navigate, href]);
 

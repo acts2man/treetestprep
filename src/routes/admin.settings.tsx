@@ -23,7 +23,7 @@ type RoleRow = {
   profiles: { display_name: string | null; email: string | null } | null;
 };
 
-const ROLES = ["super_admin", "admin", "instructor", "student"] as const;
+const ROLES = ["super_admin", "admin", "instructor"] as const;
 
 function AdminSettings() {
   const queryClient = useQueryClient();
@@ -69,7 +69,7 @@ function AdminSettings() {
         .eq("email", email.trim())
         .maybeSingle();
       if (lookupError) throw lookupError;
-      if (!match) throw new Error("No account found with that email. Ask them to sign up first.");
+      if (!match) throw new Error("No account found with that email.");
       const { error } = await supabase
         .from("user_roles")
         .insert({ user_id: (match as { id: string }).id, role });
