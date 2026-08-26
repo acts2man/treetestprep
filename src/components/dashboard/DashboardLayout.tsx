@@ -181,8 +181,12 @@ export function DashboardLayout({
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
+                  <Link to="/admin/settings/">Change profile photo</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link to="/admin/settings/">Edit profile</Link>
                 </DropdownMenuItem>
+
                 <DropdownMenuItem asChild>
                   <Link to="/admin/settings/">
                     Account settings
