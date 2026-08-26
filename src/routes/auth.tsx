@@ -76,9 +76,12 @@ function AuthPage() {
     event.preventDefault();
     setBusy(true);
     try {
-      const loginEmail = identifier.includes("@")
-        ? identifier.trim()
-        : ((await resolveLoginEmail({ data: { identifier } })).email ?? "");
+      const loginEmail =
+        mode === "recovery"
+          ? ""
+          : identifier.includes("@")
+            ? identifier.trim()
+            : ((await resolveLoginEmail({ data: { identifier } })).email ?? "");
       if (mode === "signin") {
         if (!loginEmail) throw new Error("No account found for that username");
         const { error } = await supabase.auth.signInWithPassword({
