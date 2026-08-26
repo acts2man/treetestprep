@@ -83,7 +83,6 @@ export function SiteHeader({ activePath }: { activePath: string }) {
           </button>
           <nav className="nav-links" aria-label="Main navigation">
             <NavLinks activePath={activePath} />
-            <AccountLink />
           </nav>
         </div>
       </div>
@@ -116,7 +115,6 @@ export function SiteHeader({ activePath }: { activePath: string }) {
         </div>
         <nav className="mobile-nav" aria-label="Mobile navigation">
           <NavLinks activePath={activePath} onSelect={() => setMenuOpen(false)} />
-          <AccountLink onSelect={() => setMenuOpen(false)} />
         </nav>
         <div className="mobile-panel-foot">
           <Link
