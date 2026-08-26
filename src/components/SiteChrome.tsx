@@ -173,6 +173,7 @@ export function SiteFooter() {
             <h2>{copy.text("footer", "links_heading")}</h2>
             <nav aria-label="Footer navigation">
               <NavLinks activePath="" />
+              <AccountLink />
             </nav>
           </div>
           <img
