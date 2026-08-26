@@ -5,7 +5,6 @@ import { useAuth } from "@/hooks/use-auth";
 export function RoleGate({
   children,
 }: {
-  require?: "auth" | "admin";
   children: ReactNode;
 }) {
   const { loading, user, isAdmin } = useAuth();
@@ -18,12 +17,12 @@ export function RoleGate({
       void navigate({ to: "/auth/", replace: true });
       return;
     }
-    if (require === "admin" && !isAdmin) {
+    if (!isAdmin) {
       void navigate({ to: "/auth/", replace: true });
     }
-  }, [loading, user, isAdmin, require, navigate, href]);
+  }, [loading, user, isAdmin, navigate, href]);
 
-  if (loading || !user || (require === "admin" && !isAdmin)) {
+  if (loading || !user || !isAdmin) {
     return (
       <div className="dashboard-shell flex min-h-screen items-center justify-center bg-[#0a0f1e] text-sm text-white/70">
         Loading...

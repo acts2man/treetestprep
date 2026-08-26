@@ -17,7 +17,7 @@ export const Route = createFileRoute("/admin")({
 
 function AdminLayoutRoute() {
   return (
-    <RoleGate require="admin">
+    <RoleGate>
       <DashboardLayout>
         <Outlet />
       </DashboardLayout>
