@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/use-auth";
-import { resolveLoginEmail } from "@/lib/auth-login.functions";
 import dashboardCss from "../styles/dashboard.css?url";
 
 const title = "Sign In | Tree Test Prep";
@@ -50,6 +51,8 @@ function AuthPage() {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -76,12 +79,14 @@ function AuthPage() {
     event.preventDefault();
     setBusy(true);
     try {
-      const loginEmail =
-        mode === "recovery"
-          ? ""
-          : identifier.includes("@")
-            ? identifier.trim()
-            : ((await resolveLoginEmail({ data: { identifier } })).email ?? "");
+      let loginEmail = mode === "recovery" ? "" : identifier.trim();
+      if (mode !== "recovery" && !loginEmail.includes("@")) {
+        const { data, error } = await supabase.rpc("resolve_login_email", {
+          _username: loginEmail,
+        });
+        if (error) throw new Error("We couldn't look up that username. Please try again.");
+        loginEmail = data ?? "";
+      }
       if (mode === "signin") {
         if (!loginEmail) throw new Error("No account found for that username");
         const { error } = await supabase.auth.signInWithPassword({
@@ -208,27 +213,55 @@ function AuthPage() {
                 <span className="mb-1 block text-white/70">
                   {mode === "recovery" ? "New password" : "Password"}
                 </span>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  required
-                  minLength={8}
-                  className={inputClass}
-                />
+                <span className="relative block">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    autoComplete={mode === "recovery" ? "new-password" : "current-password"}
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    required
+                    minLength={8}
+                    className={`${inputClass} pr-11`}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    title={showPassword ? "Hide password" : "Show password"}
+                    onClick={() => setShowPassword((visible) => !visible)}
+                    className="absolute right-1 top-1/2 -translate-y-1/2 text-white/60 hover:bg-white/10 hover:text-white"
+                  >
+                    {showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
+                  </Button>
+                </span>
               </label>
             )}
             {mode === "recovery" && (
               <label className="block text-sm">
                 <span className="mb-1 block text-white/70">Confirm new password</span>
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(event) => setConfirmPassword(event.target.value)}
-                  required
-                  minLength={8}
-                  className={inputClass}
-                />
+                <span className="relative block">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    value={confirmPassword}
+                    onChange={(event) => setConfirmPassword(event.target.value)}
+                    required
+                    minLength={8}
+                    className={`${inputClass} pr-11`}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    aria-label={showConfirmPassword ? "Hide password confirmation" : "Show password confirmation"}
+                    title={showConfirmPassword ? "Hide password confirmation" : "Show password confirmation"}
+                    onClick={() => setShowConfirmPassword((visible) => !visible)}
+                    className="absolute right-1 top-1/2 -translate-y-1/2 text-white/60 hover:bg-white/10 hover:text-white"
+                  >
+                    {showConfirmPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
+                  </Button>
+                </span>
               </label>
             )}
             <button
