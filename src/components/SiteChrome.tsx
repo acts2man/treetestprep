@@ -136,7 +136,15 @@ export function SiteHeader({ activePath }: { activePath: string }) {
               target="_blank"
               rel="noreferrer"
             >
-              <span aria-hidden="true">🌳</span>
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path
+                  d="M12 3c3 2 5 4.6 5 7.5A5 5 0 0 1 12 15.5a5 5 0 0 1-5-5C7 7.6 9 5 12 3ZM12 15.5V21"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                />
+              </svg>
             </a>
           </div>
         </div>
