@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/use-auth";
+import { resolveLoginEmail } from "@/lib/auth-login.functions";
 import dashboardCss from "../styles/dashboard.css?url";
 
 const title = "Sign In | Tree Test Prep";
@@ -46,7 +47,7 @@ function AuthPage() {
     const hash = typeof window !== "undefined" ? window.location.hash || "" : "";
     return hash.includes("type=recovery") ? "recovery" : "signin";
   });
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -75,12 +76,23 @@ function AuthPage() {
     event.preventDefault();
     setBusy(true);
     try {
+      const loginEmail =
+        mode === "recovery"
+          ? ""
+          : identifier.includes("@")
+            ? identifier.trim()
+            : ((await resolveLoginEmail({ data: { identifier } })).email ?? "");
       if (mode === "signin") {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (!loginEmail) throw new Error("No account found for that username");
+        const { error } = await supabase.auth.signInWithPassword({
+          email: loginEmail,
+          password,
+        });
         if (error) throw error;
         toast.success("Welcome back!");
       } else if (mode === "forgot") {
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        if (!loginEmail) throw new Error("No account found for that username");
+        const { error } = await supabase.auth.resetPasswordForEmail(loginEmail, {
           redirectTo: `${window.location.origin}/auth/`,
         });
         if (error) throw error;
@@ -171,18 +183,21 @@ function AuthPage() {
 
         {mode === "forgot" && sent ? (
           <p className="mt-6 rounded-lg border border-white/10 bg-white/5 p-4 text-center text-sm text-white/75">
-            If an account exists for {email}, a reset link is on its way. The link opens this page
+            If an account exists for {identifier}, a reset link is on its way. The link opens this page
             so you can choose a new password.
           </p>
         ) : (
           <form onSubmit={handleSubmit} className={mode === "signin" ? "space-y-4" : "mt-6 space-y-4"}>
             {mode !== "recovery" && (
               <label className="block text-sm">
-                <span className="mb-1 block text-white/70">Email</span>
+                <span className="mb-1 block text-white/70">Email or username</span>
                 <input
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  type="text"
+                  autoComplete="username"
+                  autoCapitalize="none"
+                  spellCheck={false}
+                  value={identifier}
+                  onChange={(event) => setIdentifier(event.target.value)}
                   required
                   className={inputClass}
                 />
