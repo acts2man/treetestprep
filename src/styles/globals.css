@@ -331,9 +331,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 @media (max-width: 470px) {
   .brand-inner { justify-content: center; }
-  .hero-grid { grid-template-columns: 1fr; }
-  .credential { width: 145px; }
-  .video-column { grid-column: auto; }
+  .hero-grid { grid-template-columns: 104px 1fr; }
+  .credential { width: 104px; }
   .hero-copy { font-size: 15px; }
   .course-image, .faq-image, .footer-image { height: 310px; }
 }
