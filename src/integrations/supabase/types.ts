@@ -344,7 +344,6 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
-      resolve_login_email: { Args: { _username: string }; Returns: string }
     }
     Enums: {
       app_role: "super_admin" | "admin" | "instructor" | "student"
