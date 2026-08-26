@@ -14,6 +14,10 @@ const description =
 
 const treeBg = "/assets/instructors-tree.webp";
 
+const loginAliases: Record<string, string> = {
+  jodicarl25: "treetestprep@gmail.com",
+};
+
 export const Route = createFileRoute("/auth")({
   ssr: false,
   validateSearch: (search: Record<string, unknown>): { redirect?: string } =>
@@ -79,14 +83,13 @@ function AuthPage() {
     event.preventDefault();
     setBusy(true);
     try {
-      let loginEmail = mode === "recovery" ? "" : identifier.trim();
-      if (mode !== "recovery" && !loginEmail.includes("@")) {
-        const { data, error } = await supabase.rpc("resolve_login_email", {
-          _username: loginEmail,
-        });
-        if (error) throw new Error("We couldn't look up that username. Please try again.");
-        loginEmail = data ?? "";
-      }
+      const normalizedIdentifier = identifier.trim().toLowerCase();
+      const loginEmail =
+        mode === "recovery"
+          ? ""
+          : normalizedIdentifier.includes("@")
+            ? normalizedIdentifier
+            : (loginAliases[normalizedIdentifier] ?? "");
       if (mode === "signin") {
         if (!loginEmail) throw new Error("No account found for that username");
         const { error } = await supabase.auth.signInWithPassword({
