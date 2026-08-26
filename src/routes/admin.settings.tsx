@@ -4,6 +4,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import { AvatarUploader } from "@/components/dashboard/AvatarUploader";
+
 import {
   DataTable,
   PageHeader,
@@ -124,7 +126,11 @@ function AdminSettings() {
 
       <section className="rounded-xl border border-white/10 bg-gradient-to-br from-[#0a1228] to-[#05070d] p-4">
         <h2 className="text-sm font-semibold text-white">Your profile</h2>
+        <div className="mt-4">
+          <AvatarUploader />
+        </div>
         <form
+
           className="mt-4 flex flex-wrap items-end gap-3"
           onSubmit={(event) => {
             event.preventDefault();
