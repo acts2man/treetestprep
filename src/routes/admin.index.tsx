@@ -123,20 +123,20 @@ function AdminDashboard() {
           </p>
           <div className="mt-4 grid gap-2">
             <Link
-              to="/admin/pages"
+              to="/admin/pages/"
               className="flex items-center gap-3 rounded-lg border border-white/10 px-3 py-2.5 text-sm text-white/80 transition hover:bg-white/5 hover:text-white"
             >
               <FileText className="h-4 w-4" /> Edit website pages ({stats?.pageEdits ?? 0} saved
               fields)
             </Link>
             <Link
-              to="/admin/classes"
+              to="/admin/classes/"
               className="flex items-center gap-3 rounded-lg border border-white/10 px-3 py-2.5 text-sm text-white/80 transition hover:bg-white/5 hover:text-white"
             >
               <CalendarDays className="h-4 w-4" /> Manage classes
             </Link>
             <Link
-              to="/admin/resources"
+              to="/admin/resources/"
               className="flex items-center gap-3 rounded-lg border border-white/10 px-3 py-2.5 text-sm text-white/80 transition hover:bg-white/5 hover:text-white"
             >
               <BookOpen className="h-4 w-4" /> Manage resources
