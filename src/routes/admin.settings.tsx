@@ -4,6 +4,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import { AvatarUploader } from "@/components/dashboard/AvatarUploader";
+
 import {
   DataTable,
   PageHeader,
