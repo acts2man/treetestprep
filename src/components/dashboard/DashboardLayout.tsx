@@ -106,7 +106,7 @@ function SidebarBody({
 
   return (
     <div className="flex h-full flex-col bg-[#05070d]">
-      <div className="flex h-16 items-center bg-white px-4">
+      <div className="flex h-16 items-center bg-[#1d3770] px-4">
         <Link to="/" className="block">
           <img
             src="/assets/tree-test-prep-logo.webp"
@@ -165,8 +165,8 @@ export function DashboardLayout({
       </Sheet>
 
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 bg-[#1d3770] px-4 lg:px-8">
-          <div className="flex items-center gap-3">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 bg-[#05070d] px-4 lg:px-8">
+          <div className="flex min-w-0 items-center gap-3">
             <button
               type="button"
               aria-label="Open menu"
@@ -175,36 +175,24 @@ export function DashboardLayout({
             >
               <Menu className="h-5 w-5" />
             </button>
-            <span className="text-sm font-semibold tracking-wide text-white/90">
-              {role === "admin" ? "Admin Console" : "Student Portal"}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              aria-label="Notifications"
-              className="relative rounded-md p-2 text-white/80 transition hover:bg-white/10"
-            >
-              <Bell className="h-5 w-5" />
-              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-[#349e49]" />
-            </button>
-            <Link
-              to={role === "admin" ? "/admin/settings/" : "/portal/profile/"}
-              aria-label="Settings"
-              className="rounded-md p-2 text-white/80 transition hover:bg-white/10"
-            >
-              <Settings className="h-5 w-5" />
-            </Link>
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-2 rounded-full p-1 outline-none transition hover:bg-white/10">
+              <DropdownMenuTrigger className="flex min-w-0 items-center gap-3 rounded-full py-1 pl-1 pr-3 outline-none transition hover:bg-white/10">
                 <Avatar className="h-9 w-9 border border-white/20">
-                  <AvatarFallback className="bg-[#162b5c] text-xs text-white">
+                  {profile?.avatar_url ? <AvatarImage src={profile.avatar_url} alt="" /> : null}
+                  <AvatarFallback className="bg-[#1d3770] text-xs text-white">
                     {initials}
                   </AvatarFallback>
                 </Avatar>
+                <span className="min-w-0 text-left">
+                  <span className="block truncate text-sm font-semibold text-white">
+                    Welcome back, {name}
+                  </span>
+                  <span className="block truncate text-xs text-white/50">
+                    {role === "admin" ? "Admin Console" : "Student Portal"}
+                  </span>
+                </span>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-72">
+              <DropdownMenuContent align="start" className="w-72">
                 <DropdownMenuLabel>
                   <span className="block font-semibold">Welcome back, {name}!</span>
                   <span className="mt-1 block text-xs font-normal text-muted-foreground">
