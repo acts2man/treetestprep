@@ -12,7 +12,6 @@ import {
   Mail,
   Menu,
   Settings,
-  Users,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import {
@@ -30,7 +29,6 @@ type NavItem = { label: string; to: string; icon: ComponentType<{ className?: st
 
 const adminNav: NavItem[] = [
   { label: "Dashboard", to: "/admin", icon: LayoutDashboard },
-  { label: "Students", to: "/admin/students", icon: Users },
   { label: "Classes", to: "/admin/classes", icon: CalendarDays },
   { label: "Registrations", to: "/admin/registrations", icon: ClipboardList },
   { label: "Instructors", to: "/admin/instructors", icon: GraduationCap },
