@@ -201,6 +201,9 @@ export function DashboardLayout({
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
+                  <Link to="/portal/profile/">Change profile photo</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link to={role === "admin" ? "/admin/settings/" : "/portal/profile/"}>
                     Account settings
                   </Link>
@@ -212,6 +215,24 @@ export function DashboardLayout({
                 <DropdownMenuItem onClick={() => void signOut()}>Sign out</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              aria-label="Notifications"
+              className="relative rounded-md p-2 text-white/80 transition hover:bg-white/10"
+            >
+              <Bell className="h-5 w-5" />
+              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-[#349e49]" />
+            </button>
+            <Link
+              to={role === "admin" ? "/admin/settings/" : "/portal/profile/"}
+              aria-label="Settings"
+              className="rounded-md p-2 text-white/80 transition hover:bg-white/10"
+            >
+              <Settings className="h-5 w-5" />
+            </Link>
           </div>
         </header>
 
