@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/use-auth";
 import dashboardCss from "../styles/dashboard.css?url";
+import treeBgAsset from "@/assets/instructors-tree.webp.asset.json";
 
 const title = "Sign In | Tree Test Prep";
 const description =
