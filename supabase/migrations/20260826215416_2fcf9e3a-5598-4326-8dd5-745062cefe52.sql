@@ -1,0 +1,1 @@
+DROP FUNCTION IF EXISTS public.resolve_login_email(text);
