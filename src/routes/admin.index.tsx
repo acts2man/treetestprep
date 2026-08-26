@@ -45,6 +45,7 @@ function AdminDashboard() {
     queryFn: async () => {
       const [
         classes,
+        totalClasses,
         registrations,
         confirmed,
         instructors,
@@ -53,6 +54,7 @@ function AdminDashboard() {
         paidRows,
       ] = await Promise.all([
         count("classes", (q) => q.eq("status", "published")),
+        count("classes"),
         count("registrations"),
         count("registrations", (q) => q.eq("status", "confirmed")),
         count("instructors", (q) => q.eq("is_visible", true)),
@@ -75,6 +77,7 @@ function AdminDashboard() {
 
       return {
         classes,
+        totalClasses,
         registrations,
         confirmed,
         instructors,
@@ -168,6 +171,12 @@ function AdminDashboard() {
           value={stats?.classes ?? 0}
           icon={CalendarDays}
           tint="bg-purple-600/40"
+        />
+        <StatTile
+          label="All classes"
+          value={stats?.totalClasses ?? 0}
+          icon={GraduationCap}
+          tint="bg-blue-600/40"
         />
         <StatTile
           label="Total revenue"

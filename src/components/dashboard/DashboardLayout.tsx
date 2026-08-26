@@ -169,9 +169,7 @@ export function DashboardLayout({
                   <span className="block truncate text-sm font-semibold text-white">
                     Welcome back, {name}
                   </span>
-                  <span className="block truncate text-xs text-white/50">
-                     Admin Console
-                  </span>
+                   <span className="block truncate text-xs text-white/50">Admin Console</span>
                 </span>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-72">

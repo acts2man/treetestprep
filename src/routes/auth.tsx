@@ -41,7 +41,7 @@ function AuthPage() {
   const search = Route.useSearch();
   const redirect = search["redirect"];
   const navigate = useNavigate();
-  const { user, loading } = useAuth();
+  const { user, loading, isAdmin } = useAuth();
   const [mode, setMode] = useState<Mode>(() => {
     const hash = typeof window !== "undefined" ? window.location.hash || "" : "";
     return hash.includes("type=recovery") ? "recovery" : "signin";
@@ -62,14 +62,14 @@ function AuthPage() {
   }, []);
 
   useEffect(() => {
-    if (loading || !user || mode === "recovery") return;
+    if (loading || !user || !isAdmin || mode === "recovery") return;
     const target = safePath(redirect);
     if (target) {
       window.location.assign(target);
       return;
     }
     void navigate({ to: "/admin/", replace: true });
-  }, [loading, user, redirect, navigate, mode]);
+  }, [loading, user, isAdmin, redirect, navigate, mode]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
