@@ -1,3 +1,16 @@
+            {examNote.includes(examLink.label) ? (
+              <>
+                {examNote.split(examLink.label)[0]}
+                <a href={examLink.href}>{examLink.label}</a>
+                {examNote.split(examLink.label)[1]?.split(isaLink.label)[0]}
+                {examNote.includes(isaLink.label) && (
+                  <a href={isaLink.href}>{isaLink.label}</a>
+                )}
+                {examNote.split(isaLink.label)[1]}
+              </>
+            ) : (
+              examNote
+            )}
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { SiteFooter, SiteHeader } from "../components/SiteChrome";
@@ -12,6 +25,10 @@ export default function Home() {
   const heroCta = copy.link("hero", "cta");
   const courseCta = copy.link("course", "cta");
   const examNote = copy.text("course", "exam_note");
+  const examLink = copy.link("course", "exam_link");
+  const isaLink = copy.link("course", "isa_link");
+  const courseImageAlt = copy.text("course", "image_alt");
+  const faqImageAlt = copy.text("faq", "image_alt");
 
   return (
     <main id="top">
@@ -25,7 +42,7 @@ export default function Home() {
             <img
               className="credential"
               src={copy.text("hero", "badge")}
-              alt="ISA Certified Arborist credential badge"
+              alt={copy.text("hero", "badge_alt")}
             />
             <div className="hero-copy">
               <p>{copy.text("hero", "body")}</p>
@@ -42,7 +59,7 @@ export default function Home() {
               <div className="video-frame">
                 <iframe
                   src={copy.text("hero", "video")}
-                  title="Tree Test Prep course video"
+                  title={copy.text("hero", "video_title")}
                   allow="autoplay; fullscreen"
                   allowFullScreen
                 />
@@ -61,7 +78,7 @@ export default function Home() {
           <div className="mobile-inline-image">
             <img
               src={copy.text("course", "image")}
-              alt="Two mature trees at sunset with the sun flaring through a wooden fence"
+              alt={courseImageAlt}
             />
           </div>
           <ul className="week-list">
@@ -96,7 +113,7 @@ export default function Home() {
         <img
           className="course-image"
           src={copy.text("course", "image")}
-          alt="Two mature trees at sunset with the sun flaring through a wooden fence"
+          alt={courseImageAlt}
         />
       </section>
 
@@ -105,14 +122,14 @@ export default function Home() {
           <img
             className="faq-image"
             src={copy.text("faq", "image")}
-            alt="Looking up at the trunk and spreading branches of a large oak tree"
+            alt={faqImageAlt}
           />
           <div className="faq-content">
             <h2>{copy.text("faq", "heading")}</h2>
             <div className="mobile-inline-image">
               <img
                 src={copy.text("faq", "image")}
-                alt="Looking up at the trunk and spreading branches of a large oak tree"
+                alt={faqImageAlt}
               />
             </div>
             <p className="eyebrow">{copy.text("faq", "eyebrow")}</p>
