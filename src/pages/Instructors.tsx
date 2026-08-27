@@ -13,6 +13,7 @@ type InstructorRow = {
 
 export default function Instructors() {
   const copy = usePageCopy("instructors");
+  const roleLabel = copy.text("intro", "role_label");
 
   const { data } = useQuery({
     queryKey: ["public-instructors"],
@@ -51,8 +52,8 @@ export default function Instructors() {
               <img src={instructor.image_url ?? ""} alt={instructor.name} />
               <div>
                 <h2>{instructor.name}</h2>
-                <p className="instructor-role">ISA Certified Arborist</p>
-                {instructor.role && instructor.role !== "ISA Certified Arborist" && (
+                <p className="instructor-role">{roleLabel}</p>
+                {instructor.role && instructor.role !== roleLabel && (
                   <h3>{instructor.role}</h3>
                 )}
                 {(instructor.bio ?? "")
