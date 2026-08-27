@@ -3,32 +3,40 @@ import { Link } from "@tanstack/react-router";
 import { usePageCopy } from "@/hooks/usePageContent";
 import { useAuth } from "@/hooks/use-auth";
 
-export const navItems = [
-  ["Home", "/"],
-  ["Course Overview", "/events/location/"],
-  ["Exam Information", "/exam-information/"],
-  ["The Inspiration", "/about-us/"],
-  ["Meet The Instructors", "/meet-your-instructors/"],
-  ["Contact Us", "/contact-us/"],
-  ["Register", "/class-registration-page/"],
-] as const;
+export type NavItem = { label: string; href: string };
 
 const normalize = (path: string) =>
   path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
 
-function NavLinks({ activePath, onSelect }: { activePath: string; onSelect?: () => void }) {
+const isInternal = (href: string) => href.startsWith("/");
+
+function NavLinks({
+  items,
+  activePath,
+  onSelect,
+}: {
+  items: NavItem[];
+  activePath: string;
+  onSelect?: () => void;
+}) {
   return (
     <>
-      {navItems.map(([label, href]) => (
-        <Link
-          className={normalize(activePath) === normalize(href) ? "active" : ""}
-          to={href}
-          key={label}
-          onClick={onSelect}
-        >
-          {label}
-        </Link>
-      ))}
+      {items.map((item) =>
+        isInternal(item.href) ? (
+          <Link
+            className={normalize(activePath) === normalize(item.href) ? "active" : ""}
+            to={item.href}
+            key={`${item.label}-${item.href}`}
+            onClick={onSelect}
+          >
+            {item.label}
+          </Link>
+        ) : (
+          <a href={item.href} key={`${item.label}-${item.href}`} onClick={onSelect}>
+            {item.label}
+          </a>
+        ),
+      )}
     </>
   );
 }
@@ -54,13 +62,18 @@ export function SiteHeader({ activePath }: { activePath: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const copy = usePageCopy("shared");
   const email = copy.text("header", "email");
+  const logo = copy.text("header", "logo");
+  const logoAlt = copy.text("header", "logo_alt");
+  const navItems = copy.list<NavItem>("header", "nav");
+  const mobileCta = copy.link("header", "mobile_cta");
+  const isaUrl = copy.text("header", "isa_url");
 
   return (
     <header>
       <div className="brand-bar">
         <div className="brand-inner">
-          <Link className="brand" to="/" aria-label="Tree Test Prep home">
-            <img src={copy.text("header", "logo")} alt="Tree Test Prep" />
+          <Link className="brand" to="/" aria-label={`${logoAlt} home`}>
+            <img src={logo} alt={logoAlt} />
           </Link>
           <a className="email" href={`mailto:${email}`}>
             <span aria-hidden="true">✉</span> {email}
@@ -82,7 +95,7 @@ export function SiteHeader({ activePath }: { activePath: string }) {
             <span className="sr-only-text">Open menu</span>
           </button>
           <nav className="nav-links" aria-label="Main navigation">
-            <NavLinks activePath={activePath} />
+            <NavLinks items={navItems} activePath={activePath} />
           </nav>
         </div>
       </div>
@@ -99,7 +112,7 @@ export function SiteHeader({ activePath }: { activePath: string }) {
         aria-label="Site menu"
       >
         <div className="mobile-panel-head">
-          <img src={copy.text("header", "logo")} alt="Tree Test Prep" />
+          <img src={logo} alt={logoAlt} />
           <button type="button" className="mobile-close" onClick={() => setMenuOpen(false)}>
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
               <path
@@ -114,22 +127,36 @@ export function SiteHeader({ activePath }: { activePath: string }) {
           </button>
         </div>
         <nav className="mobile-nav" aria-label="Mobile navigation">
-          <NavLinks activePath={activePath} onSelect={() => setMenuOpen(false)} />
+          <NavLinks
+            items={navItems}
+            activePath={activePath}
+            onSelect={() => setMenuOpen(false)}
+          />
         </nav>
         <div className="mobile-panel-foot">
-          <Link
-            className="button mobile-cta"
-            to="/class-registration-page/"
-            onClick={() => setMenuOpen(false)}
-          >
-            Register For The Course
-          </Link>
+          {isInternal(mobileCta.href) ? (
+            <Link
+              className="button mobile-cta"
+              to={mobileCta.href}
+              onClick={() => setMenuOpen(false)}
+            >
+              {mobileCta.label}
+            </Link>
+          ) : (
+            <a
+              className="button mobile-cta"
+              href={mobileCta.href}
+              onClick={() => setMenuOpen(false)}
+            >
+              {mobileCta.label}
+            </a>
+          )}
           <div className="mobile-social">
             <a href={`mailto:${email}`} aria-label={`Email ${email}`}>
               <span aria-hidden="true">✉</span>
             </a>
             <a
-              href="https://www.isa-arbor.com/"
+              href={isaUrl}
               aria-label="International Society of Arboriculture"
               target="_blank"
               rel="noreferrer"
@@ -154,13 +181,17 @@ export function SiteHeader({ activePath }: { activePath: string }) {
 export function SiteFooter() {
   const copy = usePageCopy("shared");
   const cta = copy.link("footer", "cta");
+  const privacy = copy.link("footer", "privacy");
+  const terms = copy.link("footer", "terms");
+  const credit = copy.link("footer", "credit");
+  const navItems = copy.list<NavItem>("header", "nav");
 
   return (
     <footer>
       <div className="footer-main">
         <div className="wrap footer-grid">
           <div className="footer-about">
-            <img src={copy.text("footer", "logo")} alt="Tree Test Prep" />
+            <img src={copy.text("footer", "logo")} alt={copy.text("header", "logo_alt")} />
             <p>{copy.text("footer", "blurb_one")}</p>
             <p>{copy.text("footer", "blurb_two")}</p>
             <a className="button footer-button" href={cta.href}>
@@ -170,14 +201,14 @@ export function SiteFooter() {
           <div className="footer-links">
             <h2>{copy.text("footer", "links_heading")}</h2>
             <nav aria-label="Footer navigation">
-              <NavLinks activePath="" />
+              <NavLinks items={navItems} activePath="" />
               <AccountLink />
             </nav>
           </div>
           <img
             className="footer-image"
             src={copy.text("footer", "image")}
-            alt="Flowering tree in bloom beside a marsh with hills behind it"
+            alt={copy.text("footer", "image_alt")}
           />
         </div>
       </div>
@@ -185,13 +216,12 @@ export function SiteFooter() {
         <div className="wrap footer-bottom-grid">
           <p>{copy.text("footer", "copyright")}</p>
           <p>
-            <a href="https://treetestprep.com/privacy-policy">Privacy Policy</a> |{" "}
-            <a href="https://treetestprep.com/terms-of-service">Terms of Service</a>
+            <a href={privacy.href}>{privacy.label}</a> | <a href={terms.href}>{terms.label}</a>
           </p>
           <p>
-            Site designed by{" "}
-            <a href="https://reputationguardians.net/">
-              <strong>Reputation Guardians</strong>
+            {copy.text("footer", "credit_prefix")}{" "}
+            <a href={credit.href}>
+              <strong>{credit.label}</strong>
             </a>
           </p>
         </div>
