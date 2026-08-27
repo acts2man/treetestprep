@@ -281,7 +281,7 @@ function AuthPage() {
           </form>
         )}
 
-        <p className="mt-5 text-center text-sm text-white/60">
+        <p className="mt-5 text-center text-sm text-white/60" />
           {mode === "signin" ? (
             <button
               type="button"
