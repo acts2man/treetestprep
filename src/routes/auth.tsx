@@ -306,6 +306,16 @@ function AuthPage() {
             </button>
           )}
         </p>
+
+        <p className="mt-4 border-t border-white/10 pt-4 text-center text-sm">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 font-medium text-white/60 transition hover:text-white"
+          >
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            Back to home
+          </Link>
+        </p>
       </div>
     </div>
   );
