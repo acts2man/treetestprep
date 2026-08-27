@@ -10,7 +10,19 @@ export const PAGE_DEFAULTS: Record<string, Record<string, Record<string, Default
   shared: {
     header: {
       logo: "/assets/tree-test-prep-logo.webp",
+      logo_alt: "Tree Test Prep",
       email: "Treetestprep@gmail.com",
+      nav: [
+        { label: "Home", href: "/" },
+        { label: "Course Overview", href: "/events/location/" },
+        { label: "Exam Information", href: "/exam-information/" },
+        { label: "The Inspiration", href: "/about-us/" },
+        { label: "Meet The Instructors", href: "/meet-your-instructors/" },
+        { label: "Contact Us", href: "/contact-us/" },
+        { label: "Register", href: "/class-registration-page/" },
+      ],
+      mobile_cta: { label: "Register For The Course", href: "/class-registration-page/" },
+      isa_url: "https://www.isa-arbor.com/",
     },
     footer: {
       logo: "/assets/tree-test-prep-logo.webp",
@@ -20,8 +32,13 @@ export const PAGE_DEFAULTS: Record<string, Record<string, Record<string, Default
         "Let your customers know that you possess the high degree of knowledge that it takes to become certified by the International Society of Arboriculture.",
       cta: { label: "Register For The Course", href: "/class-registration-page/" },
       image: "/assets/flowering-tree-in-bloom-beside-a-marsh-with-hills-behind-it.webp",
+      image_alt: "Flowering tree in bloom beside a marsh with hills behind it",
       links_heading: "Navigation Links",
       copyright: "© 2026 Tree Test Prep. All Rights Reserved.",
+      privacy: { label: "Privacy Policy", href: "https://treetestprep.com/privacy-policy" },
+      terms: { label: "Terms of Service", href: "https://treetestprep.com/terms-of-service" },
+      credit_prefix: "Site designed by",
+      credit: { label: "Reputation Guardians", href: "https://reputationguardians.net/" },
     },
   },
   home: {
@@ -31,6 +48,8 @@ export const PAGE_DEFAULTS: Record<string, Record<string, Record<string, Default
       schedule: "Tuesdays · 6:00 – 8:30 PM",
       dates: "Dates: Sep 15, 22, 29 · Oct 6, 13, 20, 27 · Nov 3, 2026",
       badge: "/assets/isa-certified-arborist-credential-badge.webp",
+      badge_alt: "ISA Certified Arborist credential badge",
+      video_title: "Tree Test Prep course video",
       video: "https://fast.wistia.net/embed/iframe/mjst5n61w1?seo=true&videoFoam=true",
       cta: { label: "Register for the course", href: "/class-registration-page/" },
     },
@@ -50,14 +69,21 @@ export const PAGE_DEFAULTS: Record<string, Record<string, Record<string, Default
       week_nine: "Week 9: Take the Arborist Certification Exam",
       exam_note:
         "You must apply and register separately with the ISA to take the exam. See our Exam Information page for details, or read the ISA’s common questions about certification.",
+      exam_link: { label: "Exam Information page", href: "https://treetestprep.com/exam-information/" },
+      isa_link: {
+        label: "ISA\u2019s common questions about certification",
+        href: "https://www.isa-arbor.com/Credentials/Common-Questions",
+      },
       cta: { label: "Course Overview", href: "/events/location/" },
       image:
         "/assets/two-mature-trees-at-sunset-with-the-sun-flaring-through-a-wooden-fence.webp",
+      image_alt: "Two mature trees at sunset with the sun flaring through a wooden fence",
     },
     faq: {
       heading: "Frequently Asked Question",
       eyebrow: "General Questions",
       image: "/assets/looking-up-at-the-trunk-and-spreading-branches-of-a-large-oak-tree.webp",
+      image_alt: "Looking up at the trunk and spreading branches of a large oak tree",
       items: [
         {
           question: "How hard is the Certified Arborist exam?",
@@ -84,6 +110,7 @@ export const PAGE_DEFAULTS: Record<string, Record<string, Record<string, Default
   "course-overview": {
     main: {
       image: "/assets/course-classroom.webp",
+      image_alt: "Students attending an arborist preparation course",
       title: "8-Week In-Person and Online Course",
       meta_dates: "Tuesdays, Sep 15 – Nov 3, 2026",
       meta_time: "6:00 – 8:30 PM",
@@ -92,8 +119,11 @@ export const PAGE_DEFAULTS: Record<string, Record<string, Record<string, Default
     },
     card: {
       heading: "ISA Certified Arborist Prep Course",
+      price_label: "Course Price",
       price: "$395",
+      email_label: "Email",
       email: "Treetestprep@gmail.com",
+      location_label: "Location",
       location: "Sierra 2 Center Curtis Hall 2791 24th St Sacramento, CA 95818",
       cta: { label: "Register for the course", href: "/class-registration-page/" },
     },
@@ -143,6 +173,7 @@ export const PAGE_DEFAULTS: Record<string, Record<string, Record<string, Default
       title: "Ken Menzer",
       subtitle: "The Inspiration Behind Our Mission",
       image: "/assets/ken-menzer-fishing.webp",
+      image_alt: "Ken Menzer fishing on the ocean",
       paragraphs: [
         {
           text: "Tree Test Prep was created in honor of Ken Menzer to help aspiring and seasoned tree care professionals become Certified Arborists.",
@@ -167,6 +198,7 @@ export const PAGE_DEFAULTS: Record<string, Record<string, Record<string, Default
     intro: {
       heading: "Meet the Instructors",
       body: "All of our instructors are ISA Certified Arborists with decades of experience.",
+      role_label: "ISA Certified Arborist",
     },
   },
   contact: {
@@ -188,6 +220,7 @@ export const PAGE_DEFAULTS: Record<string, Record<string, Record<string, Default
     in_person: {
       heading: "In Person Registration",
       image: "/assets/registration-in-person.webp",
+      image_alt: "Students attending an in-person arborist course",
       cta: {
         label: "In-Person Registration Link",
         href: "https://buy.stripe.com/8wM8wMbsjfuL5YkfYY",
@@ -199,6 +232,7 @@ export const PAGE_DEFAULTS: Record<string, Record<string, Record<string, Default
     online: {
       heading: "Online Class Registration",
       image: "/assets/registration-online.webp",
+      image_alt: "Students participating in an online class",
       cta: {
         label: "Online Class Registration Link",
         href: "https://buy.stripe.com/cN2aEU53V6Yf2M85kl",
