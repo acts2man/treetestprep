@@ -282,7 +282,6 @@ function AuthPage() {
         )}
 
         <p className="mt-5 text-center text-sm text-white/60">
-          {mode === "signin" ? (
             <button
               type="button"
               className="font-semibold text-[#d9c58c] underline"
