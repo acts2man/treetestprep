@@ -1,18 +1,24 @@
 import { InnerHero, SiteFooter, SiteHeader } from "../components/SiteChrome";
+import { usePageCopy } from "@/hooks/usePageContent";
 
 export default function Contact() {
+  const copy = usePageCopy("contact");
+  const cta = copy.link("message", "cta");
+
   return (
     <main>
       <SiteHeader activePath="/contact-us/" />
       <InnerHero
-        title="Get in Touch"
-        subtitle="Treetestprep@gmail.com"
-        image="/assets/contact-tree.webp"
+        title={copy.text("hero", "title")}
+        subtitle={copy.text("hero", "subtitle")}
+        image={copy.text("hero", "image")}
         className="contact-hero"
       />
       <section className="wrap contact-message">
-        <h1>Have A Question? We&apos;re Here To Help. Send Us An Email And A Member Of Our Team Will Get Back To You Within One Business Day.</h1>
-        <a className="button hero-button" href="mailto:Treetestprep@gmail.com">Email Tree Test Prep</a>
+        <h1>{copy.text("message", "heading")}</h1>
+        <a className="button hero-button" href={cta.href}>
+          {cta.label}
+        </a>
       </section>
       <SiteFooter />
     </main>

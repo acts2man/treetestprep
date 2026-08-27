@@ -1,28 +1,45 @@
 import { SiteFooter, SiteHeader } from "../components/SiteChrome";
+import { usePageCopy } from "@/hooks/usePageContent";
 
 export default function Registration() {
+  const copy = usePageCopy("registration");
+  const inPersonCta = copy.link("in_person", "cta");
+  const onlineCta = copy.link("online", "cta");
+  const bookCta = copy.link("book", "cta");
+
   return (
     <main>
       <SiteHeader activePath="/class-registration-page/" />
-      <h1 className="registration-title">Registration For In Person &amp; Online Classes</h1>
+      <h1 className="registration-title">{copy.text("intro", "title")}</h1>
       <section className="wrap registration-grid">
         <article className="registration-option">
-          <h2>In Person Registration</h2>
-          <img src="/assets/registration-in-person.webp" alt="Students attending an in-person arborist course" />
-          <a className="registration-link" href="https://buy.stripe.com/8wM8wMbsjfuL5YkfYY">In-Person Registration Link <span>➜</span></a>
-          <p><strong>Class size is limited to 30 participants.</strong></p>
-          <p>Once the 30 in-person spots are filled, registration for the in-person option will close. You will still be able to register for the online option.</p>
+          <h2>{copy.text("in_person", "heading")}</h2>
+          <img
+            src={copy.text("in_person", "image")}
+            alt={copy.text("in_person", "image_alt")}
+          />
+          <a className="registration-link" href={inPersonCta.href}>
+            {inPersonCta.label} <span>➜</span>
+          </a>
+          <p>
+            <strong>{copy.text("in_person", "body_one")}</strong>
+          </p>
+          <p>{copy.text("in_person", "body_two")}</p>
         </article>
         <article className="registration-option">
-          <h2>Online Class Registration</h2>
-          <img src="/assets/registration-online.webp" alt="Students participating in an online class" />
-          <a className="registration-link" href="https://buy.stripe.com/cN2aEU53V6Yf2M85kl">Online Class Registration Link <span>➜</span></a>
-          <p className="centered">Limited to 100 students</p>
+          <h2>{copy.text("online", "heading")}</h2>
+          <img src={copy.text("online", "image")} alt={copy.text("online", "image_alt")} />
+          <a className="registration-link" href={onlineCta.href}>
+            {onlineCta.label} <span>➜</span>
+          </a>
+          <p className="centered">{copy.text("online", "body")}</p>
         </article>
       </section>
       <section className="wrap book-note">
-        <h2>This course uses the Arborist Certification Study Guide, Fourth Edition By Sharon J. Lilly, Corinne G. Bassett, James Komen, and Lindsey Purcell.</h2>
-        <a className="button outline-button" href="https://wwv.isa-arbor.com/store/product/7/">Purchase Book Here</a>
+        <h2>{copy.text("book", "heading")}</h2>
+        <a className="button outline-button" href={bookCta.href}>
+          {bookCta.label}
+        </a>
       </section>
       <SiteFooter />
     </main>
