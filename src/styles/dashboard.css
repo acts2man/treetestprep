@@ -57,3 +57,15 @@
 .dashboard-shell * {
   font-family: "Poppins", "Segoe UI", Arial, sans-serif;
 }
+
+/* Browsers paint autofilled inputs with a light surface; keep the visibility
+   control contrasting in that native state instead of relying on blend mode. */
+.auth-password-field:has(input:-webkit-autofill) .auth-password-toggle,
+.auth-password-field:has(input:autofill) .auth-password-toggle {
+  color: #0a0f1e;
+}
+
+.auth-password-field:has(input:-webkit-autofill) .auth-password-toggle:hover,
+.auth-password-field:has(input:autofill) .auth-password-toggle:hover {
+  color: #0a0f1e;
+}
