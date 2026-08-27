@@ -233,7 +233,7 @@ function AuthPage() {
                     aria-label={showPassword ? "Hide password" : "Show password"}
                     title={showPassword ? "Hide password" : "Show password"}
                     onClick={() => setShowPassword((visible) => !visible)}
-                    className="absolute right-1 top-1/2 -translate-y-1/2 text-white/60 hover:bg-white/10 hover:text-white"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 text-white hover:bg-white/10 hover:text-white [&_svg]:mix-blend-difference"
                   >
                     {showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
                   </Button>
@@ -260,7 +260,7 @@ function AuthPage() {
                     aria-label={showConfirmPassword ? "Hide password confirmation" : "Show password confirmation"}
                     title={showConfirmPassword ? "Hide password confirmation" : "Show password confirmation"}
                     onClick={() => setShowConfirmPassword((visible) => !visible)}
-                    className="absolute right-1 top-1/2 -translate-y-1/2 text-white/60 hover:bg-white/10 hover:text-white"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 text-white hover:bg-white/10 hover:text-white [&_svg]:mix-blend-difference"
                   >
                     {showConfirmPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
                   </Button>
