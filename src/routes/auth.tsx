@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Eye, EyeOff } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -305,6 +305,16 @@ function AuthPage() {
               Back to sign in
             </button>
           )}
+        </p>
+
+        <p className="mt-4 border-t border-white/10 pt-4 text-center text-sm">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 font-medium text-white/60 transition hover:text-white"
+          >
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            Back to home
+          </Link>
         </p>
       </div>
     </div>
