@@ -222,7 +222,7 @@ export const PAGE_DEFAULTS: Record<string, Record<string, Record<string, Default
       },
     },
     eligibility: {
-      heading: "Eligibility Course Eligibility",
+      heading: "Course Eligibility",
       intro:
         "To qualify for the ISA Certified Arborist Exam, you must be able to document one of the following:",
       note_label: "Important:",
