@@ -1,16 +1,3 @@
-            {examNote.includes(examLink.label) ? (
-              <>
-                {examNote.split(examLink.label)[0]}
-                <a href={examLink.href}>{examLink.label}</a>
-                {examNote.split(examLink.label)[1]?.split(isaLink.label)[0]}
-                {examNote.includes(isaLink.label) && (
-                  <a href={isaLink.href}>{isaLink.label}</a>
-                )}
-                {examNote.split(isaLink.label)[1]}
-              </>
-            ) : (
-              examNote
-            )}
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { SiteFooter, SiteHeader } from "../components/SiteChrome";
@@ -90,17 +77,13 @@ export default function Home() {
             <span>{copy.text("course", "week_nine")}</span>
           </div>
           <p className="exam-note" id="exam">
-            {examNote.split("Exam Information page").length > 1 ? (
+            {examNote.includes(examLink.label) ? (
               <>
-                {examNote.split("Exam Information page")[0]}
-                <a href="https://treetestprep.com/exam-information/">Exam Information page</a>
-                {examNote
-                  .split("Exam Information page")[1]
-                  ?.split("ISA’s common questions about certification")[0]}
-                <a href="https://www.isa-arbor.com/Credentials/Common-Questions">
-                  ISA’s common questions about certification
-                </a>
-                {examNote.split("ISA’s common questions about certification")[1]}
+                {examNote.split(examLink.label)[0]}
+                <a href={examLink.href}>{examLink.label}</a>
+                {examNote.split(examLink.label)[1]?.split(isaLink.label)[0]}
+                {examNote.includes(isaLink.label) && <a href={isaLink.href}>{isaLink.label}</a>}
+                {examNote.split(isaLink.label)[1]}
               </>
             ) : (
               examNote
