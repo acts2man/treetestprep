@@ -5,7 +5,10 @@ import { usePageCopy } from "@/hooks/usePageContent";
 export default function ExamInformation() {
   const copy = usePageCopy("exam-information");
   const applyCta = copy.link("process", "cta");
+  const registerCta = copy.link("apply", "cta");
   const items = copy.list<{ text: string }>("eligibility", "items");
+  const steps = copy.list<{ text: string }>("process", "steps");
+  const internalRegister = registerCta.href.startsWith("/");
 
   return (
     <main>
@@ -18,8 +21,9 @@ export default function ExamInformation() {
       <article className="wrap prose-page exam-content">
         <h2>{copy.text("process", "heading")}</h2>
         <ol>
-          <li>Apply to sit for the exam.</li>
-          <li>Once your application is approved, you may register for the exam.</li>
+          {steps.map((step) => (
+            <li key={step.text}>{step.text}</li>
+          ))}
         </ol>
         <p>{copy.text("process", "body")}</p>
 
@@ -31,19 +35,24 @@ export default function ExamInformation() {
           ))}
         </ul>
         <p>
-          <strong>Important:</strong> Exam registration is separate from course registration. The
-          cost of this course does not include the ISA’s exam fee. Students must register and pay for
-          the exam directly through the ISA.
+          <strong>{copy.text("eligibility", "note_label")}</strong>{" "}
+          {copy.text("eligibility", "note")}
         </p>
 
-        <h2>How to Apply</h2>
+        <h2>{copy.text("apply", "heading")}</h2>
         <p>
-          Submit your application to the ISA here: <a href={applyCta.href}>{applyCta.label}</a>.
+          {copy.text("apply", "intro")} <a href={applyCta.href}>{applyCta.label}</a>.
         </p>
-        <p>Once your application is approved, you will be able to register for the exam.</p>
-        <Link className="button hero-button page-button" to="/class-registration-page/">
-          Register for the course
-        </Link>
+        <p>{copy.text("apply", "body")}</p>
+        {internalRegister ? (
+          <Link className="button hero-button page-button" to={registerCta.href}>
+            {registerCta.label}
+          </Link>
+        ) : (
+          <a className="button hero-button page-button" href={registerCta.href}>
+            {registerCta.label}
+          </a>
+        )}
       </article>
       <SiteFooter />
     </main>
