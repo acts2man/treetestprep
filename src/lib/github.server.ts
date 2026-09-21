@@ -301,4 +301,102 @@ export function createGithubContentRepo(
   };
 }
 
+// ---------------------------------------------------------------------------
+// Diagnostics: probes that report instead of throwing
+// ---------------------------------------------------------------------------
+
+/** One GitHub probe result. Never contains the token. */
+export type ProbeResult = {
+  /** HTTP status, or 0 if the request never completed. */
+  status: number;
+  ok: boolean;
+  /** GitHub's own message, or the transport error, with the token redacted. */
+  message: string;
+  /** Whether the token carries push (write) access, from `permissions.push`. */
+  canPush?: boolean;
+  /** Short commit sha, for the branch probe. */
+  sha?: string;
+};
+
+/**
+ * Read-only checks used by the "Check connection" button. Unlike `ContentRepo`, these
+ * report a status instead of throwing, so one failure does not hide the others and the
+ * dashboard can show a full checklist.
+ */
+export interface GithubProbe {
+  repository(): Promise<ProbeResult>;
+  branch(): Promise<ProbeResult>;
+  contentFile(ref: string): Promise<ProbeResult>;
+}
+
+export function createGithubProbe(
+  config: PublishConfig,
+  fetchImpl: typeof fetch = fetch,
+): GithubProbe {
+  const { token, repo, branch } = config;
+
+  async function probe(
+    path: string,
+    read?: (body: unknown) => Partial<ProbeResult>,
+  ): Promise<ProbeResult> {
+    let response: Response;
+    try {
+      response = await fetchImpl(`${API}${path}`, {
+        headers: {
+          Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${token}`,
+          "X-GitHub-Api-Version": GITHUB_API_VERSION,
+          "User-Agent": "treetestprep-armature-publish",
+        },
+      });
+    } catch (error) {
+      const detail = error instanceof Error ? error.message : String(error);
+      return { status: 0, ok: false, message: redact(detail, token) };
+    }
+
+    const raw = await response.text().catch(() => "");
+    let body: unknown;
+    try {
+      body = JSON.parse(raw);
+    } catch {
+      body = undefined;
+    }
+
+    let message = response.statusText;
+    if (body && typeof body === "object" && "message" in body) {
+      message = String((body as { message: unknown }).message);
+    }
+
+    const base: ProbeResult = {
+      status: response.status,
+      ok: response.ok,
+      message: redact(message || `HTTP ${response.status}`, token),
+    };
+    return response.ok && read ? { ...base, ...read(body) } : base;
+  }
+
+  return {
+    repository: () =>
+      probe(`/repos/${repo}`, (body) => {
+        const permissions =
+          body && typeof body === "object" && "permissions" in body
+            ? (body as { permissions?: { push?: unknown } }).permissions
+            : undefined;
+        return { canPush: permissions?.push === true };
+      }),
+
+    branch: () =>
+      probe(`/repos/${repo}/git/ref/heads/${branch}`, (body) => {
+        const sha =
+          body && typeof body === "object" && "object" in body
+            ? (body as { object?: { sha?: unknown } }).object?.sha
+            : undefined;
+        return typeof sha === "string" ? { sha: sha.slice(0, 7) } : {};
+      }),
+
+    contentFile: (ref: string) =>
+      probe(`/repos/${repo}/contents/${CONTENT_PATH}?ref=${encodeURIComponent(ref)}`),
+  };
+}
+
 export { CONTENT_PATH };
