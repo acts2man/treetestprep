@@ -1,18 +1,16 @@
 import { PAGE_DEFAULTS } from "@/lib/pageDefaults";
-import type { SeoOverrides } from "@/lib/pageSeo.functions";
+import { SITE } from "@/lib/siteConfig";
 
-const SITE = "https://treetestprep.lovable.app";
-
-const fallback = (slug: string, field: string) => {
+const seoField = (slug: string, field: string) => {
   const value = PAGE_DEFAULTS[slug]?.["seo"]?.[field];
   return typeof value === "string" ? value : "";
 };
 
-/** Build route head metadata from the editable SEO fields, with baked-in defaults. */
-export function buildHead(slug: string, path: string, overrides?: SeoOverrides) {
-  const title = overrides?.["title"] || fallback(slug, "title");
-  const description = overrides?.["description"] || fallback(slug, "description");
-  const image = overrides?.["image"] || fallback(slug, "image");
+/** Build route head metadata from the SEO fields in the committed content file. */
+export function buildHead(slug: string, path: string) {
+  const title = seoField(slug, "title");
+  const description = seoField(slug, "description");
+  const image = seoField(slug, "image");
   const url = `${SITE}${path}`;
 
   const meta: Record<string, string>[] = [
