@@ -57,7 +57,7 @@ difference in the raw HTML is one vendor chunk's filename (`Match-….js` became
 because `useBlocker` pulled a different router module into the shared chunk) — 4 bytes per
 page, no content.
 
-**What it still needs from the owner.** Three environment variables and a GitHub token,
+**What it still needs from the owner.** Five environment variables and a GitHub token,
 which cannot be created from here. **Until those are set, the Publish button is disabled and
 the dashboard says exactly which variable is missing.** The setup steps are below.
 
@@ -67,15 +67,18 @@ the dashboard says exactly which variable is missing.** The setup steps are belo
 
 ### New files
 
-| File                              | What it does                                                                                                                                                                                                        |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/lib/contentFile.ts`          | The content file's shape and its canonical on-disk format. Pure, no secrets. The serializer lives here so the export script and the Publish button write byte-identical files.                                      |
-| `src/lib/contentValidation.ts`    | Two layers of validation: the whole-file shape check (what `check:content` runs) and the stricter per-field check for values arriving from the editor. Pure.                                                        |
-| `src/lib/github.server.ts`        | **Server only.** Reads the three environment variables; talks to GitHub's Contents and Git Data APIs; makes one commit (blobs → tree → commit → non-forced ref update). Redacts the token from every error message. |
-| `src/lib/publish.server.ts`       | **Server only.** The publish logic — validate, read, detect conflicts, merge, re-validate, commit — plus the `assertStaff` check. Takes its dependencies as arguments, so it is fully unit-tested.                  |
-| `src/lib/content.functions.ts`    | The two server functions, `getPublishedContent` and `publishContent`. Thin: authenticate, load config, delegate.                                                                                                    |
-| `tests/contentValidation.test.ts` | 26 tests over the validation rules.                                                                                                                                                                                 |
-| `tests/publish.test.ts`           | 32 tests over the publish flow, with GitHub and Supabase auth mocked.                                                                                                                                               |
+| File                              | What it does                                                                                                                                                                                                               |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/lib/contentFile.ts`          | The content file's shape and its canonical on-disk format. Pure, no secrets. The serializer lives here so the export script and the Publish button write byte-identical files.                                             |
+| `src/lib/contentValidation.ts`    | Two layers of validation: the whole-file shape check (what `check:content` runs) and the stricter per-field check for values arriving from the editor. Pure.                                                               |
+| `src/lib/github.server.ts`        | **Server only.** Reads the three GitHub environment variables; talks to GitHub's Contents and Git Data APIs; makes one commit (blobs → tree → commit → non-forced ref update). Redacts the token from every error message. |
+| `src/lib/publish.server.ts`       | **Server only.** The publish logic — validate, read, detect conflicts, merge, re-validate, commit — plus the `assertStaff` check. Takes its dependencies as arguments, so it is fully unit-tested.                         |
+| `src/lib/content.functions.ts`    | The two server functions, `getPublishedContent` and `publishContent`. Thin: authenticate, load config, delegate.                                                                                                           |
+| `src/lib/auth.server.ts`          | **Server only.** Verifies the caller inside the handler and returns a Supabase client scoped to them. Added by the silent-dashboard fix; see the appendix.                                                                 |
+| `src/lib/diagnostics.server.ts`   | **Server only.** Builds the "Check connection" checklist. Reports rather than throws, so one failure never hides the rest.                                                                                                 |
+| `tests/contentValidation.test.ts` | 26 tests over the validation rules.                                                                                                                                                                                        |
+| `tests/publish.test.ts`           | 32 tests over the publish flow, with GitHub and Supabase auth mocked.                                                                                                                                                      |
+| `tests/diagnostics.test.ts`       | 27 tests over the connection checklist and the Supabase environment reader.                                                                                                                                                |
 
 ### Changed files
 
@@ -107,7 +110,7 @@ the dashboard says exactly which variable is missing.** The setup steps are belo
 
 ### Test coverage
 
-`bun run test` — **58 tests, 0 failures**, no network and no real token. Every case the brief
+`bun run test` — **85 tests, 0 failures**, no network and no real token. Every case the brief
 asked for, plus the edges:
 
 | Requirement                                                 | Covered by                                                                                                                                                                                              |
@@ -131,11 +134,11 @@ new per-field rules — so the limits cannot reject the site's own copy.
 
 | Check                                                                    | Result                                            |
 | ------------------------------------------------------------------------ | ------------------------------------------------- |
-| `bun run test`                                                           | **58 pass, 0 fail**                               |
+| `bun run test`                                                           | **85 pass, 0 fail**                               |
 | `bun run check:content`                                                  | **PASS** — 126/126 fields                         |
 | `bunx tsc --noEmit`                                                      | **PASS** — clean                                  |
 | `NETLIFY=true bun run build`                                             | **PASS** — `✓ built in 912ms`                     |
-| `dist/client` secret/server-code grep                                    | **12 of 12 strings absent**                       |
+| `dist/client` secret/server-code grep                                    | **18 of 18 strings absent**                       |
 | 7 public routes' raw HTML vs Step 2                                      | visible text and head tags **identical**          |
 | `/admin/`, `/admin/pages/`, `/admin/pages/home/`, `/admin/pages/shared/` | all **200**, expected SSR shell, no server errors |
 | `bun run lint`                                                           | **fails, as it does on `main`** — see below       |
@@ -184,24 +187,38 @@ possible.
 > to approve the token before it works. GitHub will say "pending approval" if so, and an
 > organisation owner approves it under Settings → Personal access tokens.
 
-### (b) Add the three environment variables in Netlify
+### (b) Add the five environment variables in Netlify
+
+> **Corrected.** An earlier version of these instructions listed only the three GitHub
+> variables. That was wrong, and it is what made the Publish button stay gray with no
+> message: the dashboard also needs the two **non-prefixed** Supabase variables in order
+> to verify your sign-in on the server. Add all five.
 
 1. Sign in to Netlify and open the **treetestprep** site.
 2. **Site configuration** → **Environment variables**.
-3. Click **Add a variable** → **Add a single variable**, three times, once per row:
+3. Click **Add a variable** → **Add a single variable**, once per row:
 
-   | Key                    | Value                                    |
-   | ---------------------- | ---------------------------------------- |
-   | `GITHUB_CONTENT_TOKEN` | the `github_pat_…` token you just copied |
-   | `GITHUB_REPO`          | `acts2man/treetestprep`                  |
-   | `CONTENT_BRANCH`       | `armature/git-content`                   |
+   | Key                        | Value                                             | What it is for              |
+   | -------------------------- | ------------------------------------------------- | --------------------------- |
+   | `GITHUB_CONTENT_TOKEN`     | the `github_pat_…` token you just copied          | writing your changes to git |
+   | `GITHUB_REPO`              | `acts2man/treetestprep`                           | which repository to write   |
+   | `CONTENT_BRANCH`           | `armature/git-content`                            | which branch to write       |
+   | `SUPABASE_URL`             | the same value as `VITE_SUPABASE_URL`             | checking you are signed in  |
+   | `SUPABASE_PUBLISHABLE_KEY` | the same value as `VITE_SUPABASE_PUBLISHABLE_KEY` | checking you are signed in  |
 
-4. For each one, leave **Scopes** as **All scopes** and set **Deploy contexts** to **All
-   deploy contexts**. (The branch deploy in step (c) needs them, so "Production only" will
-   not work for this test.)
+   The last two almost certainly already exist in your Netlify variables with a `VITE_`
+   prefix. Open each `VITE_…` one, copy its value, and save it again under the name above
+   **without** the prefix. You need both spellings: the prefixed pair is for the browser,
+   the unprefixed pair is for the server.
+
+4. For each one, leave **Scopes** as **All scopes** — this matters, the server functions
+   need the **Functions** scope — and set **Deploy contexts** to **All deploy contexts**.
+   (The branch deploy in step (c) needs them, so "Production only" will not work.)
 5. For `GITHUB_CONTENT_TOKEN`, if Netlify offers a **Contains secret values** / secret
    checkbox, tick it. That stops the value being shown back to you or printed in build logs.
 6. Double-check there are no stray spaces and no quote marks around any value.
+7. **Redeploy the branch afterwards.** A variable only reaches a deploy that was built
+   after it was saved. Deploys → **Trigger deploy** → **Deploy site**.
 
 > **Important:** these names have **no** `VITE_` prefix, and they must not get one. A
 > `VITE_`-prefixed variable is compiled into the JavaScript the browser downloads, which
@@ -274,6 +291,163 @@ the first open issue.
 
 ---
 
+## If the Publish button is gray
+
+Written for a non-developer. Work down the list; stop when the button wakes up.
+
+**First, look at the top of the editor.** There is always a line there telling you what is
+going on. It says exactly one of three things:
+
+| What you see                                                 | What it means                              |
+| ------------------------------------------------------------ | ------------------------------------------ |
+| **Connecting to GitHub...** (with a spinner)                 | Still loading. Give it a few seconds.      |
+| **editing armature/git-content @ a1b2c3d** (grey)            | Connected. Publish works.                  |
+| **Not connected to GitHub** (amber), with an amber box below | Something is wrong, and the box says what. |
+
+If Publish is gray while you have unpublished changes, there is also a short amber line
+directly under the button telling you why.
+
+**Then press "Check connection".** It is next to the Publish button and it is the fastest
+way to find the problem. It runs ten checks and shows a green tick or a red cross on each,
+with the fix written out. The first red cross is the one to act on. It never shows any
+secret value — only whether a setting arrived, and how many characters long it was.
+
+Common results and what to do:
+
+1. **"Supabase keys reached this deploy" is red.** This is the usual one, and it was the
+   cause of the first failure. The site needs `SUPABASE_URL` and
+   `SUPABASE_PUBLISHABLE_KEY` **without** the `VITE_` prefix. Add them per step (b) above,
+   then redeploy.
+2. **"GITHUB_CONTENT_TOKEN reached this deploy" is red.** Netlify is not passing the token
+   to this deploy. Open the variable in Netlify and check it has a value for **Branch
+   deploys** (not just Production) and that **Scopes** includes **Functions**. Then
+   redeploy the branch.
+3. **"GitHub accepted the token" is red with HTTP 401.** The token has expired, or it was
+   created without access to this repository. Make a new fine-grained token (step (a)),
+   update the Netlify variable, redeploy.
+4. **"The token can write to the repository" is red.** The token is read-only. Edit it on
+   GitHub and set **Contents** to **Read and write**.
+5. **"The content branch exists" is red.** `CONTENT_BRANCH` has a typo. Branch names are
+   case-sensitive and include the slash: `armature/git-content`.
+6. **Everything is green but Publish is still gray.** Then you have no unpublished changes
+   — the button is meant to be gray. Change a field and it will light up.
+
+**If pressing "Check connection" itself fails**, the deploy is not running its server code
+at all. Check in Netlify that the last deploy of this branch finished successfully (green
+"Published"), and redeploy if not.
+
+**The one thing to remember:** environment variables in Netlify only reach a deploy that
+was built _after_ you saved them. Whenever you change a variable, trigger a redeploy.
+
+---
+
+## Appendix: why the dashboard went silent, and every path that was checked
+
+The reported symptom was that the editor loaded and registered edits, but Publish stayed
+gray with **neither** the connected line **nor** an error box. That combination was
+supposed to be impossible, and tracing it found one structural cause plus a set of related
+gaps.
+
+### The root cause
+
+`getPublishedContent` and `publishContent` authenticated through
+`.middleware([requireSupabaseAuth])`. That generated middleware runs **outside** the
+handler and reports every problem by **throwing**, so its errors never reached the
+handler's `try/catch` that turns failures into `{ ok: false, message }`. The call came back
+to the browser as a rejected promise with no body.
+
+On the client, the status line was derived from `published.data` alone. A rejected request
+leaves `data` as `undefined` and `isLoading` as `false`, so the "connected" branch and the
+"error" branch were both skipped while the unrelated change counter kept working — exactly
+the reported state.
+
+What it was throwing about: `requireSupabaseAuth` needs `SUPABASE_URL` and
+`SUPABASE_PUBLISHABLE_KEY` in the **server** environment. The setup instructions in this
+document listed only the three GitHub variables, and the committed `.env` only feeds the
+build, not Netlify's function runtime — so the very first thing the middleware did was
+throw _"Missing Supabase environment variable(s)"_. Adding the GitHub variables could never
+have helped, because execution never got as far as reading them. This also explains why the
+amber box never appeared: that box only renders a structured failure, and a structured
+failure was never produced.
+
+### Every failure path found
+
+**A — bypassed the handler's error handling entirely (the silent class).** All of these
+threw from middleware:
+
+| #   | Path                                                                                                             | Now                                          |
+| --- | ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| A1  | `SUPABASE_URL` missing from the server environment                                                               | Named in the amber box and in the checklist  |
+| A2  | `SUPABASE_PUBLISHABLE_KEY` missing                                                                               | Same                                         |
+| A3  | No `Authorization` header (session not yet restored, or signed out in another tab)                               | "Your browser did not send a sign-in token…" |
+| A4  | Header not in `Bearer …` form                                                                                    | Plain-English message                        |
+| A5  | Token not a three-part JWT                                                                                       | "Sign out and sign in again"                 |
+| A6  | Token expired or rejected by `getClaims`                                                                         | Reports what Supabase said                   |
+| A7  | `getRequest()` itself throwing outside a request scope — a bare `Error`, found by a test written during this fix | Now a `PublishError` with a readable message |
+
+**B — transport-level, still outside any handler.** These cannot be converted to a
+structured result, so the client now renders the thrown message instead of nothing:
+
+| #   | Path                                                                                                                   | Now                                               |
+| --- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| B1  | CSRF request middleware answering `403 Forbidden` (it filters on `handlerType === "serverFn"`, so it sees these calls) | Amber box with the error, plus Retry              |
+| B2  | The server function endpoint 404/500 at the platform level (failed deploy, function crash)                             | Amber box; "Check connection" names it explicitly |
+| B3  | Network offline or request aborted                                                                                     | Amber box with Retry                              |
+
+**C — never settled, or settled with unusable data.**
+
+| #   | Path                                                                                                                             | Now                                                                       |
+| --- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| C1  | Request hangs; `isPending` stays true forever                                                                                    | 15-second timeout flips to the amber box; self-heals if the reply arrives |
+| C2  | `retry: false` made one transient failure permanent with no way back                                                             | Explicit **Retry** button                                                 |
+| C3  | `getPublishedContent` was a **GET** server function, so a browser or CDN could cache the commit sha and cause a phantom conflict | Both reads are now **POST**                                               |
+| C4  | A success carrying an empty `commitSha` would disable Publish silently                                                           | Treated as an error state with a message                                  |
+
+**D — the client-side gaps that turned all of the above into silence.**
+
+| #   | Path                                                                                | Now                                                                                                                                                       |
+| --- | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| D1  | `published.isError` was never rendered anywhere                                     | Part of the three-state machine                                                                                                                           |
+| D2  | Status derived only from `published.data`, so `undefined` rendered no branch        | `connection` is a `useMemo` returning exactly one of `connecting` / `connected` / `error`, with `connecting` as the fallback — there is no fourth outcome |
+| D3  | Publish disabled with no explanation                                                | One amber line under the button whenever it is disabled while changes are waiting                                                                         |
+| D4  | SSR renders before the query runs, so the first HTML always showed the loading text | Unchanged and harmless, but the state machine no longer strands there                                                                                     |
+
+**E — paths that already worked, and that the symptom therefore ruled out.** Missing
+GitHub variables, a non-staff caller, GitHub 401/403/404, and unparseable JSON all
+happened _inside_ the handler and already came back as `{ ok: false }`. Because the owner
+saw no amber box at all, the failure had to be in A or B — which is what pointed at the
+middleware.
+
+### The fixes
+
+- **Authentication moved inside the handlers** (`src/lib/auth.server.ts`, `resolveCaller`).
+  Same work as the generated middleware — read the bearer token, verify it, build a
+  user-scoped client that respects RLS — but it raises `PublishError` values that the
+  handler catches and returns as a rendered message. `requireSupabaseAuth` is no longer
+  used. `attachSupabaseAuth` in `src/start.ts`, the client half that attaches the token, is
+  untouched, and `csrfMiddleware` stays.
+- **A three-state connection machine in the editor**, so silence is unrepresentable.
+- **"Check connection"** (`checkPublishConnection` → `src/lib/diagnostics.server.ts`): ten
+  checks, each with a tick or a cross and a plain-English fix, reporting secrets by presence
+  and length only, and gating the GitHub lines behind the staff check so a non-staff caller
+  learns nothing about the repository.
+- **Both reads are POST**, removing the cached-sha risk.
+- **The setup instructions above were corrected** from three variables to five.
+
+### Verification
+
+| Check                                                   | Result                                                                                                                                                       |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `bun run test`                                          | **85 pass, 0 fail** (26 validation + 32 publish + 27 diagnostics)                                                                                            |
+| `bun run check:content`                                 | **PASS** — 126/126 fields                                                                                                                                    |
+| `bunx tsc --noEmit`                                     | **PASS**                                                                                                                                                     |
+| `NETLIFY=true bun run build`                            | **PASS**                                                                                                                                                     |
+| `dist/client` audit                                     | **18 of 18** token/server-code strings **absent**; `auth.server`, `diagnostics.server`, `github.server`, `publish.server` exist only as `dist/server` chunks |
+| 7 public routes                                         | visible text and head tags **byte-identical** to Step 3                                                                                                      |
+| `/admin/`, `/admin/pages/home/`, `/admin/pages/shared/` | all **200**, no server errors                                                                                                                                |
+
+---
+
 ## Open issues
 
 Ordered by how much they matter.
@@ -336,4 +510,3 @@ Ordered by how much they matter.
 13. **`.env` is still committed to the repository** (flagged in Step 2, unchanged here). It
     holds publishable/anon Supabase keys only — no service-role key, and none of the three
     new publish variables — but it should be untracked and the keys rotated.
-
