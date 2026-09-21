@@ -9,6 +9,7 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
+    "test": "bun test",
     "check:content": "bun run scripts/check-content.ts",
     "export:defaults": "bun run scripts/export-defaults.ts",
     "format": "prettier --write ."
