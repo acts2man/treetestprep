@@ -6,20 +6,27 @@ import {
   ArrowLeft,
   ArrowDown,
   ArrowUp,
+  CheckCircle2,
+  CircleDashed,
   ExternalLink,
   Loader2,
   Plus,
   RotateCcw,
+  Stethoscope,
   Trash2,
   TriangleAlert,
+  XCircle,
 } from "lucide-react";
 import { getPageDefinition, type PageField, type PageSection } from "@/lib/pageSchema";
 import { PAGE_DEFAULTS, type LinkDefault } from "@/lib/pageDefaults";
 import {
+  checkPublishConnection,
   getPublishedContent,
   publishContent,
   type ContentFailure,
   type FieldUpdateInput,
+  type ConnectionCheck,
+  type ConnectionReport,
   type ImageUploadInput,
 } from "@/lib/content.functions";
 import {
@@ -37,6 +44,23 @@ type FieldState = { text: string; href: string; list: Record<string, string>[] }
 type PendingImage = { file: File; previewUrl: string };
 
 const EMPTY: FieldState = { text: "", href: "", list: [] };
+
+/** The editor is always in exactly one of these three connection states. */
+type ConnectionState =
+  | { kind: "connecting" }
+  | { kind: "connected"; branch: string; repo: string; commitSha: string }
+  | { kind: "error"; message: string };
+
+/**
+ * Turn a rejected server-function call into something worth reading. These are the
+ * failures that never reach the handler — a request middleware refusing the call, the
+ * function crashing, the network dropping — so there is no structured body to show.
+ */
+function describeQueryError(error: unknown): string {
+  const raw = (error instanceof Error ? error.message : String(error ?? "")).trim();
+  const base = raw.length > 0 ? raw : "The dashboard could not get a reply from the server.";
+  return `${base} \u2014 the server did not return a readable answer, so this is usually a sign-in or configuration problem rather than something you did. Use \u201cCheck connection\u201d for the details.`;
+}
 
 const mediaField = (type: PageField["type"]) => type === "image" || type === "video";
 
@@ -82,6 +106,38 @@ function fileToBase64(file: File): Promise<string> {
   });
 }
 
+/** One line of the connection checklist: tick, cross or dash, plus how to fix it. */
+function CheckRow({ check }: { check: ConnectionCheck }) {
+  const icon =
+    check.status === "ok" ? (
+      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" aria-hidden="true" />
+    ) : check.status === "fail" ? (
+      <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-rose-400" aria-hidden="true" />
+    ) : (
+      <CircleDashed className="mt-0.5 h-4 w-4 shrink-0 text-white/30" aria-hidden="true" />
+    );
+
+  return (
+    <li className="flex gap-2">
+      {icon}
+      <div className="min-w-0">
+        <p className="font-medium text-white">
+          {check.label}
+          <span className="sr-only">
+            {check.status === "ok"
+              ? " — passed"
+              : check.status === "fail"
+                ? " — failed"
+                : " — not checked"}
+          </span>
+        </p>
+        <p className="break-words text-white/60">{check.detail}</p>
+        {check.fix && <p className="mt-1 break-words text-amber-300">{check.fix}</p>}
+      </div>
+    </li>
+  );
+}
+
 function AdminPageEditor() {
   const { slug } = Route.useParams();
   const page = getPageDefinition(slug);
@@ -96,6 +152,9 @@ function AdminPageEditor() {
     null,
   );
 
+  const [report, setReport] = useState<ConnectionReport | null>(null);
+  const [waitedTooLong, setWaitedTooLong] = useState(false);
+
   const published = useQuery({
     queryKey: ["published-content", slug],
     staleTime: 0,
@@ -105,6 +164,46 @@ function AdminPageEditor() {
 
   const loaded = published.data?.ok === true ? published.data : undefined;
   const loadFailure = published.data && published.data.ok === false ? published.data : undefined;
+
+  // A request that never settles used to leave the bar on "Loading..." forever.
+  useEffect(() => {
+    if (!published.isFetching) return;
+    setWaitedTooLong(false);
+    const timer = setTimeout(() => setWaitedTooLong(true), 15_000);
+    return () => clearTimeout(timer);
+  }, [published.isFetching]);
+
+  /**
+   * Exactly one of three states, always. The old code derived the status from
+   * `published.data` alone, so a rejected request — which is what a thrown middleware
+   * error looks like — left every branch unrendered and the bar silent.
+   */
+  const connection: ConnectionState = useMemo(() => {
+    if (loaded && loaded.commitSha) {
+      return {
+        kind: "connected",
+        branch: loaded.branch,
+        repo: loaded.repo,
+        commitSha: loaded.commitSha,
+      };
+    }
+    if (loaded) {
+      return {
+        kind: "error",
+        message: `GitHub did not report a current commit for ${loaded.branch}, so there is nothing safe to publish against.`,
+      };
+    }
+    if (loadFailure) return { kind: "error", message: loadFailure.message };
+    if (published.isError) return { kind: "error", message: describeQueryError(published.error) };
+    if (waitedTooLong) {
+      return {
+        kind: "error",
+        message:
+          "The dashboard has been waiting more than 15 seconds for the server to reply. It may still arrive, but something is probably wrong. Try Check connection, or Retry.",
+      };
+    }
+    return { kind: "connecting" };
+  }, [loaded, loadFailure, published.isError, published.error, waitedTooLong]);
 
   /**
    * What the branch currently has. If the published content cannot be loaded (for
@@ -141,7 +240,7 @@ function AdminPageEditor() {
   }, [overlay, baseline, pendingImages]);
 
   const isDirty = changed.size > 0;
-  const canPublish = Boolean(loaded) && isDirty;
+  const canPublish = connection.kind === "connected" && isDirty;
 
   // Warn before leaving — in-app navigation and browser close/reload alike.
   const blocker = useBlocker({
@@ -204,6 +303,43 @@ function AdminPageEditor() {
       return { ...current, [key]: { file, previewUrl } };
     });
   }
+
+  const diagnose = useMutation({
+    mutationFn: () => checkPublishConnection(),
+    onSuccess: (result) => {
+      if (result.ok) {
+        setReport({ allPassed: result.allPassed, checks: result.checks });
+        return;
+      }
+      // Even the diagnostic failed: show what it said rather than nothing.
+      setReport({
+        allPassed: false,
+        checks: [
+          {
+            id: "diagnostic",
+            label: "The connection check could not run",
+            status: "fail",
+            detail: result.message,
+            fix: "Reload the page and try again. If it keeps failing, the deploy itself is not serving its server functions — redeploy the branch in Netlify.",
+          },
+        ],
+      });
+    },
+    onError: (error: Error) => {
+      setReport({
+        allPassed: false,
+        checks: [
+          {
+            id: "diagnostic",
+            label: "The connection check could not reach the server",
+            status: "fail",
+            detail: error.message,
+            fix: "The deploy is not answering its server functions at all. Check the Netlify deploy finished successfully, then redeploy the branch.",
+          },
+        ],
+      });
+    },
+  });
 
   const publish = useMutation({
     mutationFn: async () => {
@@ -274,6 +410,14 @@ function AdminPageEditor() {
     },
   });
 
+  /** Why Publish is off, when there are changes waiting. Null means it is enabled. */
+  const publishBlockedReason =
+    !isDirty || publish.isPending || canPublish
+      ? null
+      : connection.kind === "connecting"
+        ? "Publish is off until the dashboard finishes connecting to GitHub."
+        : "Publish is off because the dashboard is not connected to GitHub. Use \u201cCheck connection\u201d below to see which step is failing.";
+
   if (!page) {
     return (
       <div className="space-y-4">
@@ -312,22 +456,45 @@ function AdminPageEditor() {
       <div className="sticky top-0 z-10 rounded-xl border border-white/10 bg-gradient-to-br from-[#0a1228] to-[#05070d] p-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="text-sm">
-            {published.isLoading ? (
-              <span className="text-white/50">Loading the published content...</span>
-            ) : isDirty ? (
-              <span className="font-medium text-[#d9c58c]">
-                {changed.size} unpublished {changed.size === 1 ? "change" : "changes"}
+            <span className={isDirty ? "font-medium text-[#d9c58c]" : "text-white/50"}>
+              {isDirty
+                ? `${changed.size} unpublished ${changed.size === 1 ? "change" : "changes"}`
+                : "No unpublished changes"}
+            </span>
+            {/* Exactly one of these three always renders. */}
+            {connection.kind === "connecting" && (
+              <span className="ml-2 inline-flex items-center gap-1.5 text-white/50">
+                <Loader2 className="h-3.5 w-3.5 animate-spin" /> Connecting to GitHub...
               </span>
-            ) : (
-              <span className="text-white/50">No unpublished changes</span>
             )}
-            {loaded && (
+            {connection.kind === "connected" && (
               <span className="ml-2 text-white/30">
-                editing {loaded.branch} @ {loaded.commitSha.slice(0, 7)}
+                editing {connection.branch} @ {connection.commitSha.slice(0, 7)}
+              </span>
+            )}
+            {connection.kind === "error" && (
+              <span className="ml-2 inline-flex items-center gap-1.5 text-amber-300">
+                <TriangleAlert className="h-3.5 w-3.5" /> Not connected to GitHub
               </span>
             )}
           </div>
           <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              className={ghostButtonClass}
+              disabled={diagnose.isPending}
+              onClick={() => diagnose.mutate()}
+            >
+              {diagnose.isPending ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" /> Checking...
+                </>
+              ) : (
+                <>
+                  <Stethoscope className="h-4 w-4" /> Check connection
+                </>
+              )}
+            </button>
             <button
               type="button"
               className={ghostButtonClass}
@@ -353,6 +520,10 @@ function AdminPageEditor() {
           </div>
         </div>
 
+        {publishBlockedReason && (
+          <p className="mt-3 text-xs text-amber-300">{publishBlockedReason}</p>
+        )}
+
         {publish.isPending && (
           <p className="mt-3 text-xs text-white/50">
             Committing your changes to the site repository. This triggers a rebuild — keep this tab
@@ -360,23 +531,71 @@ function AdminPageEditor() {
           </p>
         )}
 
-        {isDirty && !publish.isPending && (
+        {isDirty && !publish.isPending && !publishBlockedReason && (
           <p className="mt-3 text-xs text-white/40">
             Nothing is live until you press Publish. Your changes are only in this browser.
           </p>
         )}
       </div>
 
-      {/* Publishing not available */}
-      {loadFailure && (
+      {/* Publishing not available — shown for EVERY way the connection can fail */}
+      {connection.kind === "error" && (
         <div className="rounded-xl border border-amber-400/30 bg-amber-400/5 p-4 text-sm">
           <p className="flex items-center gap-2 font-semibold text-amber-200">
             <TriangleAlert className="h-4 w-4" /> Publishing is unavailable
           </p>
-          <p className="mt-2 text-white/70">{loadFailure.message}</p>
+          <pre className="mt-2 whitespace-pre-wrap font-sans text-white/70">
+            {connection.message}
+          </pre>
           <p className="mt-2 text-white/50">
             The fields below show the content from the current build so you can read it, but they
-            cannot be published until this is fixed. See ARMATURE_STEP3.md for the setup steps.
+            cannot be published until this is fixed.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              className={buttonClass}
+              disabled={diagnose.isPending}
+              onClick={() => diagnose.mutate()}
+            >
+              <Stethoscope className="h-4 w-4" /> Check connection
+            </button>
+            <button
+              type="button"
+              className={ghostButtonClass}
+              disabled={published.isFetching}
+              onClick={() => {
+                setWaitedTooLong(false);
+                void published.refetch();
+              }}
+            >
+              <RotateCcw className="h-4 w-4" /> Retry
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Connection checklist */}
+      {report && (
+        <div className="rounded-xl border border-white/10 bg-gradient-to-br from-[#0a1228] to-[#05070d] p-4 text-sm">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="font-semibold text-white">
+              {report.allPassed
+                ? "Connection check: everything passed"
+                : "Connection check: something needs fixing"}
+            </p>
+            <button type="button" className={ghostButtonClass} onClick={() => setReport(null)}>
+              Hide
+            </button>
+          </div>
+          <ul className="mt-3 space-y-3">
+            {report.checks.map((check) => (
+              <CheckRow key={check.id} check={check} />
+            ))}
+          </ul>
+          <p className="mt-3 text-xs text-white/40">
+            Secret values are never shown here — only whether a setting arrived and how many
+            characters long it is.
           </p>
         </div>
       )}
