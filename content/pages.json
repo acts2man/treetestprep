@@ -1,0 +1,412 @@
+{
+  "contact": {
+    "hero": {
+      "image": "/assets/contact-tree.webp",
+      "subtitle": "Treetestprep@gmail.com",
+      "title": "Get in Touch"
+    },
+    "message": {
+      "cta": {
+        "href": "mailto:Treetestprep@gmail.com",
+        "label": "Email Tree Test Prep"
+      },
+      "heading": "Have A Question? We're Here To Help. Send Us An Email And A Member Of Our Team Will Get Back To You Within One Business Day."
+    },
+    "seo": {
+      "description": "Questions about the ISA Certified Arborist prep course? Email Tree Test Prep and a member of our team will reply within one business day.",
+      "image": "",
+      "title": "Contact Tree Test Prep | Arborist Exam Prep Questions"
+    }
+  },
+  "course-overview": {
+    "card": {
+      "cta": {
+        "href": "/class-registration-page/",
+        "label": "Register for the course"
+      },
+      "email": "Treetestprep@gmail.com",
+      "email_label": "Email",
+      "heading": "ISA Certified Arborist Prep Course",
+      "location": "Sierra 2 Center Curtis Hall 2791 24th St Sacramento, CA 95818",
+      "location_label": "Location",
+      "price": "$395",
+      "price_label": "Course Price"
+    },
+    "main": {
+      "description_heading": "Course Description",
+      "image": "/assets/course-classroom.webp",
+      "image_alt": "Students attending an arborist preparation course",
+      "meta_dates": "Tuesdays, Sep 15 – Nov 3, 2026",
+      "meta_location": "Sierra 2 Center Curtis Hall 2791 24th St Sacramento, CA 95818",
+      "meta_time": "6:00 – 8:30 PM",
+      "title": "8-Week In-Person and Online Course",
+      "weeks": [
+        {
+          "body_one": "This session covers tree biology, anatomy and physiology. The presentation addresses tree structure, anatomy and function. Class discussions cover the process of photosynthesis, respiration, transpiration, the vascular system and defense systems.",
+          "body_two": "This chapter will give you the basic skills and knowledge to recognize the differences in flowers, fruit, form, bark buds, twigs and leaves.",
+          "title_one": "Chapter 1 – Biology",
+          "title_two": "Chapter 2 – Tree Identification",
+          "week": "Week 1"
+        },
+        {
+          "body_one": "Learn the fundamentals of the physical, chemical and biological properties of soil and understand how they affect soil moisture and plant growth, urban soils and improving soil.",
+          "body_two": "Understand how trees absorb water from the soil and return it to the atmosphere and how different conditions affect the process.",
+          "title_one": "Chapter 3 – Soil Science",
+          "title_two": "Chapter 4 – Water Management",
+          "week": "Week 2"
+        },
+        {
+          "body_one": "Learn about the essential elements needed for trees to function and grow in urban landscapes and in a forest setting.",
+          "body_two": "This chapter covers the process for determining the appropriate and inappropriate tree species for a location.",
+          "title_one": "Chapter 5 – Tree Nutrition and Fertilization",
+          "title_two": "Chapter 6 – Tree Selection",
+          "week": "Week 3"
+        },
+        {
+          "body_one": "In this lesson you will learn the best practices for transport, planting and care of newly planted trees. Successful establishment of new trees depends on proper planting techniques and the right early care for each stock type.",
+          "body_two": "Learn about the seven different pruning systems and the importance of the landscape needs and the client’s goals in deciding which system is best for each tree.",
+          "title_one": "Chapter 7 – Installation and Establishment",
+          "title_two": "Chapter 8 – Pruning",
+          "week": "Week 4"
+        },
+        {
+          "body_one": "Cabling, bracing, guying, and propping provide reinforcement for heavy loads and need routine inspection and maintenance. This chapter discusses each method and which is right for the job.",
+          "body_two": "The differences between signs and symptoms, biotic and abiotic, the importance of species, invasive pests and getting help from a lab are all taught in this chapter.",
+          "title_one": "Chapter 9 – Tree Support and Lightning Protection",
+          "title_two": "Chapter 10 – Diagnosis and Plant Disorders",
+          "week": "Week 5"
+        },
+        {
+          "body_one": "Health, structure and appearance are managed with a comprehensive program that includes strategy options of biological, chemical and/or cultural control. Learn which is best for your tree.",
+          "body_two": "This chapter will explain the systematic process of identifying and evaluating tree risk and the tools used in different assessment levels. It will also get you thinking about your next credential, TRAQ.",
+          "title_one": "Chapter 11 – Plant Healthcare",
+          "title_two": "Chapter 12 – Tree Risk Assessment and Management",
+          "week": "Week 6"
+        },
+        {
+          "body_one": "Learn how trees are damaged by construction and how to protect and preserve them, as well as remediation when the damage has already been done.",
+          "body_two": "Urban foresters differ from arborists in that they work with individuals in related and unrelated fields to manage the planting, removal, health, risk and sustainability of the trees while working within the context of the city’s tree protection ordinance. Maybe another introduction to your next credential, Certified Urban Forester.",
+          "title_one": "Chapter 13 – Trees and Construction",
+          "title_two": "Chapter 14 – Urban Forestry",
+          "week": "Week 7"
+        },
+        {
+          "body_one": "Every year OSHA ranks Tree Worker in the top five most dangerous jobs. This chapter explains why and gives the basics of safety standards, personal protective equipment, good communication, electrical hazards, chainsaw and chipper safety, and others.",
+          "body_two": "Learn about a climber’s PPE and fall protection and their limitations, common knots used in climbing and rigging, and aerial rescue.",
+          "title_one": "Chapter 15 – Tree Worker Safety",
+          "title_two": "Chapter 16 – Climbing and Working in Trees",
+          "week": "Week 8"
+        }
+      ]
+    },
+    "seo": {
+      "description": "Week-by-week breakdown of the ISA Certified Arborist prep course: dates, times, Sacramento location, price and every chapter covered.",
+      "image": "",
+      "title": "8-Week Arborist Prep Course Overview | Tree Test Prep"
+    }
+  },
+  "exam-information": {
+    "apply": {
+      "body": "Once your application is approved, you will be able to register for the exam.",
+      "cta": {
+        "href": "/class-registration-page/",
+        "label": "Register for the course"
+      },
+      "heading": "How to Apply",
+      "intro": "Submit your application to the ISA here:"
+    },
+    "eligibility": {
+      "heading": "Course Eligibility",
+      "intro": "To qualify for the ISA Certified Arborist Exam, you must be able to document one of the following:",
+      "items": [
+        {
+          "text": "Three years of full-time experience in arboriculture"
+        },
+        {
+          "text": "Two years of full-time experience plus a two-year degree in a related field, including at least two courses directly related to arboriculture"
+        },
+        {
+          "text": "One year of full-time experience plus a four-year degree in a related field, including at least four courses directly related to arboriculture"
+        },
+        {
+          "text": "900 hours in an assessment-based certificate program with a minimum of 90 hours directly related to arboriculture, plus two years of full-time practical experience"
+        },
+        {
+          "text": "1,800 hours in an assessment-based certificate program with a minimum of 180 hours directly related to arboriculture, plus one year of full-time practical experience"
+        }
+      ],
+      "note": "Exam registration is separate from course registration. The cost of this course does not include the ISA’s exam fee. Students must register and pay for the exam directly through the ISA.",
+      "note_label": "Important:"
+    },
+    "hero": {
+      "image": "/assets/exam-tree.webp",
+      "title": "Exam Information"
+    },
+    "process": {
+      "body": "This process must be completed directly through the ISA. Please note: this course does not qualify you to take the exam. It is designed only to help you prepare and increase your chances of passing.",
+      "cta": {
+        "href": "https://www.isa-arbor.com/Credentials/Apply-Now/Apply-for-Eligibility",
+        "label": "Apply for Eligibility"
+      },
+      "heading": "The ISA Certification Process",
+      "steps": [
+        {
+          "text": "Apply to sit for the exam."
+        },
+        {
+          "text": "Once your application is approved, you may register for the exam."
+        }
+      ]
+    },
+    "seo": {
+      "description": "How the ISA Certified Arborist exam works, eligibility requirements, and how to apply and register directly with the ISA.",
+      "image": "",
+      "title": "ISA Certified Arborist Exam Information & Eligibility | Tree Test Prep"
+    }
+  },
+  "home": {
+    "course": {
+      "cta": {
+        "href": "/events/location/",
+        "label": "Course Overview"
+      },
+      "exam_link": {
+        "href": "https://treetestprep.com/exam-information/",
+        "label": "Exam Information page"
+      },
+      "exam_note": "You must apply and register separately with the ISA to take the exam. See our Exam Information page for details, or read the ISA’s common questions about certification.",
+      "heading": "Arborist Certification Study Guide, Fourth Edition is the program material covered in this course",
+      "image": "/assets/two-mature-trees-at-sunset-with-the-sun-flaring-through-a-wooden-fence.webp",
+      "image_alt": "Two mature trees at sunset with the sun flaring through a wooden fence",
+      "isa_link": {
+        "href": "https://www.isa-arbor.com/Credentials/Common-Questions",
+        "label": "ISA’s common questions about certification"
+      },
+      "week_nine": "Week 9: Take the Arborist Certification Exam",
+      "weeks": [
+        {
+          "text": "Week 1: Tree Biology, Tree Identification"
+        },
+        {
+          "text": "Week 2: Soil Science, Pruning"
+        },
+        {
+          "text": "Week 3: Water Management, Tree Selection"
+        },
+        {
+          "text": "Week 4: Installation and Establishment, Tree Nutrition and Fertilizer"
+        },
+        {
+          "text": "Week 5: Tree Support and Lightning Protection, Urban Forestry"
+        },
+        {
+          "text": "Week 6: Diagnosis of Plant Disorders, Plant Healthcare"
+        },
+        {
+          "text": "Week 7: Tree Assessment and Risk Management, Trees and Construction"
+        },
+        {
+          "text": "Week 8: Tree Worker Safety, Climbing and Working in Trees"
+        }
+      ]
+    },
+    "faq": {
+      "eyebrow": "General Questions",
+      "heading": "Frequently Asked Question",
+      "image": "/assets/looking-up-at-the-trunk-and-spreading-branches-of-a-large-oak-tree.webp",
+      "image_alt": "Looking up at the trunk and spreading branches of a large oak tree",
+      "items": [
+        {
+          "answer": "The exam can be difficult, but not impossible. By attending this course, you will be more than prepared to pass the exam.",
+          "question": "How hard is the Certified Arborist exam?"
+        },
+        {
+          "answer": "The computer-based exam contains 200 multiple-choice questions. Candidates should review the current ISA candidate guide for complete testing details.",
+          "question": "How many questions are on the Certified Arborist exam?"
+        },
+        {
+          "answer": "Candidates are given 3.5 hours to complete the Certified Arborist examination.",
+          "question": "How long is the Certified Arborist exam?"
+        },
+        {
+          "answer": "A scaled score of 76 percent is required to pass the Certified Arborist examination.",
+          "question": "What is a passing score for the Certified Arborist exam?"
+        }
+      ]
+    },
+    "hero": {
+      "badge": "/assets/isa-certified-arborist-credential-badge.webp",
+      "badge_alt": "ISA Certified Arborist credential badge",
+      "body": "Take your tree care career to the next level by becoming an ISA Certified Arborist. Let your customers know that you possess the high degree of knowledge that it takes to become certified by the International Society of Arboriculture.",
+      "cta": {
+        "href": "/class-registration-page/",
+        "label": "Register for the course"
+      },
+      "dates": "Dates: Sep 15, 22, 29 · Oct 6, 13, 20, 27 · Nov 3, 2026",
+      "schedule": "Tuesdays · 6:00 – 8:30 PM",
+      "title": "Become An ISA Certified Arborist",
+      "video": "https://fast.wistia.net/embed/iframe/mjst5n61w1?seo=true&videoFoam=true",
+      "video_title": "Tree Test Prep course video"
+    },
+    "seo": {
+      "description": "Pass the ISA Certified Arborist exam with an 8-week instructor-led prep course in Sacramento, CA or live online — chapter-by-chapter study guide included.",
+      "image": "",
+      "title": "ISA Certified Arborist Exam Prep Course | Tree Test Prep"
+    }
+  },
+  "inspiration": {
+    "hero": {
+      "image": "/assets/ken-menzer-hero.webp",
+      "subtitle": "In honor of Ken Menzer, Tree Test Prep was created to help tree care professionals by providing ISA certification training that will help them reach the upper echelons of arboriculture.",
+      "title": "The Inspiration"
+    },
+    "seo": {
+      "description": "Tree Test Prep was created in honor of Ken Menzer, City Arborist and Community Forester, to help tree care professionals become Certified Arborists.",
+      "image": "",
+      "title": "The Inspiration Behind Tree Test Prep | Ken Menzer"
+    },
+    "story": {
+      "image": "/assets/ken-menzer-fishing.webp",
+      "image_alt": "Ken Menzer fishing on the ocean",
+      "paragraphs": [
+        {
+          "text": "Tree Test Prep was created in honor of Ken Menzer to help aspiring and seasoned tree care professionals become Certified Arborists."
+        },
+        {
+          "text": "Ken was a Community Forester for the Sacramento Tree Foundation, where he grew shade trees for the Community Shade program. He also served the City of Folsom for 11 years as their City Arborist. In that role, he assisted residents with tree care, organized numerous volunteer plantings, and hosted the annual Arborists Breakfast, which brought professionals from across the metropolitan area together for a day of continuing education."
+        },
+        {
+          "text": "As the City Arborist in Folsom, Ken continually encouraged tree care professionals to expand their skills and pursue certification. He was always willing to share his expertise, meeting with professionals to support their growth. His motto was simple: Educate and elevate."
+        },
+        {
+          "text": "For the last five years of his life, Ken bravely battled non-Hodgkin's lymphoma."
+        }
+      ],
+      "subtitle": "The Inspiration Behind Our Mission",
+      "title": "Ken Menzer"
+    }
+  },
+  "instructors": {
+    "hero": {
+      "image": "/assets/instructors-tree.webp",
+      "subtitle": "We are a group of enthusiastic arborists and urban foresters who are raising the bar in the tree care industry.",
+      "title": "Meet The Instructors"
+    },
+    "intro": {
+      "body": "All of our instructors are ISA Certified Arborists with decades of experience.",
+      "heading": "Meet the Instructors",
+      "role_label": "ISA Certified Arborist"
+    },
+    "seo": {
+      "description": "Learn from ISA Certified Arborists and urban forestry professionals with decades of field, municipal, and teaching experience.",
+      "image": "",
+      "title": "Meet Your Arborist Instructors | Tree Test Prep"
+    }
+  },
+  "registration": {
+    "book": {
+      "cta": {
+        "href": "https://wwv.isa-arbor.com/store/product/7/",
+        "label": "Purchase Book Here"
+      },
+      "heading": "This course uses the Arborist Certification Study Guide, Fourth Edition By Sharon J. Lilly, Corinne G. Bassett, James Komen, and Lindsey Purcell."
+    },
+    "in_person": {
+      "body_one": "Class size is limited to 30 participants.",
+      "body_two": "Once the 30 in-person spots are filled, registration for the in-person option will close. You will still be able to register for the online option.",
+      "cta": {
+        "href": "https://buy.stripe.com/8wM8wMbsjfuL5YkfYY",
+        "label": "In-Person Registration Link"
+      },
+      "heading": "In Person Registration",
+      "image": "/assets/registration-in-person.webp",
+      "image_alt": "Students attending an in-person arborist course"
+    },
+    "intro": {
+      "title": "Registration For In Person & Online Classes"
+    },
+    "online": {
+      "body": "Limited to 100 students",
+      "cta": {
+        "href": "https://buy.stripe.com/cN2aEU53V6Yf2M85kl",
+        "label": "Online Class Registration Link"
+      },
+      "heading": "Online Class Registration",
+      "image": "/assets/registration-online.webp",
+      "image_alt": "Students participating in an online class"
+    },
+    "seo": {
+      "description": "Register for the ISA Certified Arborist prep course in Sacramento or online. In-person seats are limited to 30 participants.",
+      "image": "",
+      "title": "Register For The Arborist Prep Course | In Person & Online"
+    }
+  },
+  "shared": {
+    "footer": {
+      "blurb_one": "Take your tree care career to the next level by becoming an ISA Certified Arborist.",
+      "blurb_two": "Let your customers know that you possess the high degree of knowledge that it takes to become certified by the International Society of Arboriculture.",
+      "copyright": "© 2026 Tree Test Prep. All Rights Reserved.",
+      "credit": {
+        "href": "https://reputationguardians.net/",
+        "label": "Reputation Guardians"
+      },
+      "credit_prefix": "Site designed by",
+      "cta": {
+        "href": "/class-registration-page/",
+        "label": "Register For The Course"
+      },
+      "image": "/assets/flowering-tree-in-bloom-beside-a-marsh-with-hills-behind-it.webp",
+      "image_alt": "Flowering tree in bloom beside a marsh with hills behind it",
+      "links_heading": "Navigation Links",
+      "logo": "/assets/tree-test-prep-logo.webp",
+      "privacy": {
+        "href": "https://treetestprep.com/privacy-policy",
+        "label": "Privacy Policy"
+      },
+      "terms": {
+        "href": "https://treetestprep.com/terms-of-service",
+        "label": "Terms of Service"
+      }
+    },
+    "header": {
+      "email": "Treetestprep@gmail.com",
+      "isa_url": "https://www.isa-arbor.com/",
+      "logo": "/assets/tree-test-prep-logo.webp",
+      "logo_alt": "Tree Test Prep",
+      "mobile_cta": {
+        "href": "/class-registration-page/",
+        "label": "Register For The Course"
+      },
+      "nav": [
+        {
+          "href": "/",
+          "label": "Home"
+        },
+        {
+          "href": "/events/location/",
+          "label": "Course Overview"
+        },
+        {
+          "href": "/exam-information/",
+          "label": "Exam Information"
+        },
+        {
+          "href": "/about-us/",
+          "label": "The Inspiration"
+        },
+        {
+          "href": "/meet-your-instructors/",
+          "label": "Meet The Instructors"
+        },
+        {
+          "href": "/contact-us/",
+          "label": "Contact Us"
+        },
+        {
+          "href": "/class-registration-page/",
+          "label": "Register"
+        }
+      ]
+    }
+  }
+}
