@@ -1,76 +1,30 @@
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { PAGE_DEFAULTS, type LinkDefault } from "@/lib/pageDefaults";
-
-export type OverrideRow = {
-  id: string;
-  page_slug: string;
-  section_key: string;
-  field_key: string;
-  value_text: string | null;
-  value_json: unknown;
-  image_url: string | null;
-  video_url: string | null;
-  link_url: string | null;
-};
 
 export type LinkValue = LinkDefault;
 
-const keyOf = (slug: string, section: string, field: string) => `${slug}.${section}.${field}`;
-
-export function usePageContent(pageSlug: string | string[]) {
-  const slugs = Array.isArray(pageSlug) ? pageSlug : [pageSlug];
-
-  const query = useQuery({
-    queryKey: ["page-content", slugs.join(",")],
-    staleTime: 0,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("page_content_overrides")
-        .select("*")
-        .in("page_slug", slugs);
-      if (error) throw error;
-      return (data ?? []) as OverrideRow[];
-    },
-  });
-
-  const rows = query.data ?? [];
-  const map = new Map<string, OverrideRow>();
-  for (const row of rows) map.set(keyOf(row.page_slug, row.section_key, row.field_key), row);
-
-  const rowFor = (slug: string, section: string, field: string) =>
-    map.get(keyOf(slug, section, field));
-
-  return { rows, map, rowFor, isLoading: query.isLoading, slugs };
-}
-
 /**
- * Page copy bound to a single page slug, with the baked-in defaults from
- * pageDefaults.ts as fallbacks. Shared header/footer fields are always available
- * through the "shared" slug.
+ * Page copy bound to a single page slug, read straight out of the committed
+ * content file (content/pages.json, via pageDefaults.ts). Shared header/footer
+ * fields are always available through the "shared" slug.
+ *
+ * This is a synchronous lookup with no network access, so the values are present
+ * during SSR and land in the server-rendered HTML. The reader API — text, link,
+ * list, sharedText, sharedLink — and the coercion rules are unchanged from the
+ * database-backed version it replaces.
  */
 export function usePageCopy(pageSlug: string) {
-  const { rowFor } = usePageContent([pageSlug, "shared"]);
-
   const readText = (slug: string, section: string, field: string) => {
-    const row = rowFor(slug, section, field);
-    const value = row?.value_text ?? row?.image_url ?? row?.video_url ?? row?.link_url;
-    if (value && value.trim().length > 0) return value;
     const fallback = PAGE_DEFAULTS[slug]?.[section]?.[field];
     return typeof fallback === "string" ? fallback : "";
   };
 
   const readLink = (slug: string, section: string, field: string): LinkValue => {
-    const row = rowFor(slug, section, field);
     const fallback = PAGE_DEFAULTS[slug]?.[section]?.[field];
     const base: LinkValue =
       fallback && typeof fallback === "object" && !Array.isArray(fallback)
         ? (fallback as LinkValue)
         : { label: "", href: "/" };
-    return {
-      label: row?.value_text?.trim() ? row.value_text : base.label,
-      href: row?.link_url?.trim() ? row.link_url : base.href,
-    };
+    return { label: base.label, href: base.href };
   };
 
   function readList<T extends Record<string, string>>(
@@ -78,10 +32,6 @@ export function usePageCopy(pageSlug: string) {
     section: string,
     field: string,
   ): T[] {
-    const row = rowFor(slug, section, field);
-    if (Array.isArray(row?.value_json) && (row!.value_json as unknown[]).length > 0) {
-      return row!.value_json as T[];
-    }
     const fallback = PAGE_DEFAULTS[slug]?.[section]?.[field];
     return Array.isArray(fallback) ? (fallback as T[]) : [];
   }
