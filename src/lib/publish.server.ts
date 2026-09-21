@@ -324,7 +324,7 @@ type RpcResult = { data: unknown; error: unknown };
 
 /**
  * The slice of a Supabase client the staff check uses. The caller passes the
- * user-scoped client from `requireSupabaseAuth`, so every query runs as that user
+ * user-scoped client from `resolveCaller()`, so every query runs as that user
  * under RLS — the service-role key is never involved.
  */
 export type StaffCheckClient = {
