@@ -4,56 +4,27 @@
  *
  * Run with: bun run export:defaults
  *
- * Object keys are written in alphabetical order at every depth so the output is
- * byte-stable no matter who or what produced the input; array order is left
- * alone, because lists (navigation, FAQ items, course weeks) are ordered content.
- * After writing, the file is read back and deep-compared against PAGE_DEFAULTS so
- * the commit is provably a faithful serialisation and not a lossy one.
+ * The serialisation itself lives in src/lib/contentFile.ts, which the publish server
+ * function also uses, so a file written by the admin Publish button and a file written
+ * here are byte-identical in formatting: object keys alphabetical at every depth (so
+ * the output is stable whoever produced it), array order preserved (navigation, FAQ
+ * items and course weeks are ordered content), 2-space indent, trailing newline.
  *
- * Note: src/lib/pageDefaults.ts is now a typed adapter over this same JSON file,
- * so re-running this script normalises the file rather than regenerating it from
+ * After writing, the file is read back and deep-compared against PAGE_DEFAULTS so the
+ * commit is a provably faithful serialisation and not a lossy one.
+ *
+ * Note: src/lib/pageDefaults.ts is now a typed adapter over this same JSON file, so
+ * re-running this script normalises the file rather than regenerating it from
  * TypeScript. The original hand-written object lives in git history at f0e9c54.
  */
 import { writeFileSync, readFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { PAGE_DEFAULTS } from "../src/lib/pageDefaults";
-
-type Json = string | number | boolean | null | Json[] | { [key: string]: Json };
+import { deepEqual, serializeContent } from "../src/lib/contentFile";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const OUT = join(here, "..", "content", "pages.json");
-
-/** Recursively rewrite objects with alphabetically ordered keys. Arrays keep their order. */
-function sortDeep(value: unknown): Json {
-  if (Array.isArray(value)) return value.map(sortDeep);
-  if (value && typeof value === "object") {
-    const source = value as Record<string, unknown>;
-    const out: { [key: string]: Json } = {};
-    for (const key of Object.keys(source).sort()) out[key] = sortDeep(source[key]);
-    return out;
-  }
-  return value as Json;
-}
-
-/** Structural equality that ignores key order. */
-function deepEqual(a: unknown, b: unknown): boolean {
-  if (a === b) return true;
-  if (Array.isArray(a) || Array.isArray(b)) {
-    if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) return false;
-    return a.every((item, i) => deepEqual(item, b[i]));
-  }
-  if (a && b && typeof a === "object" && typeof b === "object") {
-    const left = a as Record<string, unknown>;
-    const right = b as Record<string, unknown>;
-    const leftKeys = Object.keys(left).sort();
-    const rightKeys = Object.keys(right).sort();
-    if (leftKeys.length !== rightKeys.length) return false;
-    if (!leftKeys.every((key, i) => key === rightKeys[i])) return false;
-    return leftKeys.every((key) => deepEqual(left[key], right[key]));
-  }
-  return false;
-}
 
 function countFields(content: Record<string, Record<string, Record<string, unknown>>>): number {
   let total = 0;
@@ -64,7 +35,7 @@ function countFields(content: Record<string, Record<string, Record<string, unkno
 }
 
 mkdirSync(dirname(OUT), { recursive: true });
-writeFileSync(OUT, `${JSON.stringify(sortDeep(PAGE_DEFAULTS), null, 2)}\n`, "utf8");
+writeFileSync(OUT, serializeContent(PAGE_DEFAULTS), "utf8");
 
 const roundTripped: unknown = JSON.parse(readFileSync(OUT, "utf8"));
 if (!deepEqual(roundTripped, PAGE_DEFAULTS)) {

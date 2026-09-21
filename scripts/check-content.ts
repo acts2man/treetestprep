@@ -14,133 +14,31 @@
  * Content present in the JSON but not declared in the schema is reported as a
  * warning, not a failure: it renders fine but the admin editor cannot reach it.
  *
- * This replaces the compile-time safety that was lost when the content moved out
- * of TypeScript and into JSON. It is deliberately NOT wired into the build yet.
+ * This is a thin CLI over validateContentTree() in src/lib/contentValidation.ts —
+ * the same function the publish server function runs on the merged result before it
+ * commits, so the two can never drift apart.
+ *
+ * Deliberately NOT wired into the build.
  */
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { ALL_PAGES, type PageField } from "../src/lib/pageSchema";
+import { validateContentTree } from "../src/lib/contentValidation";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const CONTENT = join(here, "..", "content", "pages.json");
 
-const errors: string[] = [];
-const warnings: string[] = [];
-
-const isPlainObject = (value: unknown): value is Record<string, unknown> =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
-
-const describe = (value: unknown): string => {
-  if (value === null) return "null";
-  if (Array.isArray(value)) return `array(${value.length})`;
-  return typeof value;
-};
-
-/** Check one field's value against its declared type. Pushes onto `errors`. */
-function checkField(where: string, field: PageField, value: unknown): void {
-  switch (field.type) {
-    case "text":
-    case "textarea":
-    case "image":
-    case "video":
-    case "url": {
-      if (typeof value !== "string") {
-        errors.push(`${where}: expected a string for type "${field.type}", got ${describe(value)}`);
-      }
-      return;
-    }
-    case "link": {
-      if (!isPlainObject(value)) {
-        errors.push(`${where}: expected { label, href } for type "link", got ${describe(value)}`);
-        return;
-      }
-      for (const key of ["label", "href"]) {
-        if (!(key in value)) errors.push(`${where}: link is missing "${key}"`);
-        else if (typeof value[key] !== "string") {
-          errors.push(`${where}: link "${key}" must be a string, got ${describe(value[key])}`);
-        }
-      }
-      return;
-    }
-    case "list": {
-      if (!Array.isArray(value)) {
-        errors.push(`${where}: expected an array for type "list", got ${describe(value)}`);
-        return;
-      }
-      const itemFields = field.itemFields ?? [];
-      value.forEach((item, index) => {
-        const at = `${where}[${index}]`;
-        if (!isPlainObject(item)) {
-          errors.push(`${at}: list items must be objects, got ${describe(item)}`);
-          return;
-        }
-        for (const itemField of itemFields) {
-          if (!(itemField.key in item)) {
-            errors.push(`${at}: missing "${itemField.key}"`);
-          } else if (typeof item[itemField.key] !== "string") {
-            errors.push(
-              `${at}."${itemField.key}": must be a string, got ${describe(item[itemField.key])}`,
-            );
-          }
-        }
-        const declared = new Set(itemFields.map((f) => f.key));
-        for (const key of Object.keys(item)) {
-          if (!declared.has(key)) warnings.push(`${at}: "${key}" is not declared in the schema`);
-        }
-      });
-      return;
-    }
-  }
-}
-
-const raw: unknown = JSON.parse(readFileSync(CONTENT, "utf8"));
-if (!isPlainObject(raw)) {
-  console.error("FAIL: content/pages.json must be a JSON object.");
+let parsed: unknown;
+try {
+  parsed = JSON.parse(readFileSync(CONTENT, "utf8"));
+} catch (error) {
+  console.error(
+    `FAIL: could not read content/pages.json — ${error instanceof Error ? error.message : error}`,
+  );
   process.exit(1);
 }
 
-let checked = 0;
-const seen = new Set<string>();
-
-for (const page of ALL_PAGES) {
-  const pageContent = raw[page.slug];
-  if (!isPlainObject(pageContent)) {
-    errors.push(`${page.slug}: missing from content/pages.json (or not an object)`);
-    continue;
-  }
-  for (const section of page.sections) {
-    const sectionContent = pageContent[section.key];
-    if (!isPlainObject(sectionContent)) {
-      errors.push(`${page.slug}.${section.key}: missing section (or not an object)`);
-      continue;
-    }
-    for (const field of section.fields) {
-      const where = `${page.slug}.${section.key}.${field.key}`;
-      seen.add(where);
-      checked += 1;
-      if (!(field.key in sectionContent)) {
-        errors.push(`${where}: missing from content/pages.json`);
-        continue;
-      }
-      checkField(where, field, sectionContent[field.key]);
-    }
-  }
-}
-
-// Reverse direction: content the schema does not declare (warning only).
-for (const [slug, sections] of Object.entries(raw)) {
-  if (!isPlainObject(sections)) continue;
-  for (const [sectionKey, fields] of Object.entries(sections)) {
-    if (!isPlainObject(fields)) continue;
-    for (const fieldKey of Object.keys(fields)) {
-      const where = `${slug}.${sectionKey}.${fieldKey}`;
-      if (!seen.has(where)) {
-        warnings.push(`${where}: present in content/pages.json but not declared in pageSchema.ts`);
-      }
-    }
-  }
-}
+const { errors, warnings, checked } = validateContentTree(parsed);
 
 for (const warning of warnings) console.warn(`warning  ${warning}`);
 
