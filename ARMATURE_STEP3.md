@@ -336,3 +336,4 @@ Ordered by how much they matter.
 13. **`.env` is still committed to the repository** (flagged in Step 2, unchanged here). It
     holds publishable/anon Supabase keys only — no service-role key, and none of the three
     new publish variables — but it should be untracked and the keys rotated.
+
