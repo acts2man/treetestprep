@@ -1,19 +1,37 @@
 /**
- * The Armature visual-editing bridge (site contract v1.1), created once for the whole app.
+ * The Armature site kit (site contract v2: page builder), created once for the whole app.
  *
- * `armature-bridge.ts` next to this file is a verbatim copy of `bridge/armature-bridge.ts`
- * from acts2man/armature. Do not edit it; to upgrade, copy the upstream file over it.
+ * The `armature-kit/` folder next to this file is a verbatim copy of `kit/` from
+ * acts2man/armature. Do not edit it; to upgrade, copy the upstream folder over it.
  *
- * On a normal visit (and during SSR, where there is no `document`) the bridge is inert:
+ * On a normal visit (and during SSR, where there is no `document`) the kit is inert:
  * it adds no listeners, no markers and no messages, and every helper simply reads
  * content/pages.json. It wakes up only when all three hold: the page is inside an
  * iframe, the URL carries `?armature=edit`, and the embedding window's origin is in
  * ARMATURE_EDITOR_ORIGINS. That allowlist names the dashboard's exact origin and must
  * never contain `*`.
+ *
+ * The kit keeps the whole v1.1 content API (`text`, `plain`, `link`, `image`, `list`,
+ * `subscribe`, `getSnapshot`, `active`), so `usePageCopy` in src/hooks/usePageContent.ts
+ * keeps working unchanged.
  */
-import { createArmatureBridge, type ContentTree, type SiteSchemaLike } from "./armature-bridge";
+import { createArmatureKit } from "./armature-kit";
+import type { ContentTree, LayoutDoc, SiteKit } from "./armature-kit";
+import type { SiteSchemaLike } from "./armature-kit/bridge";
 import schema from "../../content/schema.json";
 import content from "../../content/pages.json";
+import siteKit from "../../content/site-kit.json";
+
+// Every committed layout (coded pages here, plus any page the builder publishes later),
+// baked in at build time by Vite so it lands in the server-rendered HTML with no extra
+// request. `import.meta.glob` is a Vite macro; under `bun test` (no Vite transform) it is
+// undefined, so the guard falls back to no layouts — the tests read the files from disk.
+let layoutModules: Record<string, unknown> | LayoutDoc[] = [];
+try {
+  layoutModules = import.meta.glob("../../content/layouts/*.json", { eager: true });
+} catch {
+  layoutModules = [];
+}
 
 /** The only origin allowed to embed this site for editing. */
 export const ARMATURE_EDITOR_ORIGINS = ["https://armature-sites.netlify.app"];
@@ -25,16 +43,20 @@ let routerNavigate: ((path: string) => void) | null = null;
 /**
  * The app root registers the router here so the editor's page switcher moves between
  * pages client-side. Until it does, a full load that keeps the edit flag is used, which
- * is the bridge's own default.
+ * is the kit's own default.
  */
 export function registerArmatureNavigate(navigate: (path: string) => void): void {
   routerNavigate = navigate;
 }
 
-export const armature = createArmatureBridge({
+export const armature = createArmatureKit({
   allowedOrigins: ARMATURE_EDITOR_ORIGINS,
   schema: schema as SiteSchemaLike,
   content: content as ContentTree,
+  siteKit: siteKit as SiteKit,
+  // Coded pages render their site sections through <ArmatureSlot>; a layout here decides
+  // the order and anything the builder puts between them.
+  layouts: layoutModules,
   navigate: (path) => {
     if (routerNavigate) {
       routerNavigate(path);
@@ -43,6 +65,10 @@ export const armature = createArmatureBridge({
     window.location.assign(`${path}${path.includes("?") ? "&" : "?"}${EDIT_FLAG}`);
   },
 });
+
+// Re-exported from the kit so nothing else in the site imports the kit folder directly.
+export { stegaClean, hasStega, PROTOCOL_VERSION } from "./armature-kit/bridge";
+export { KIT_VERSION } from "./armature-kit";
 
 export type ArmatureFieldType =
   SiteSchemaLike["pages"][number]["sections"][number]["fields"][number]["type"];

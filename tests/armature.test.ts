@@ -1,23 +1,29 @@
 /**
- * The Armature visual-editing wiring (site contract v1.1). The bridge itself is tested
+ * The Armature site-kit wiring (site contract v2: page builder). The kit itself is tested
  * upstream in acts2man/armature; these tests pin how this site uses it.
  */
 import { describe, expect, test } from "bun:test";
-import { existsSync, readFileSync } from "node:fs";
-import { hasStega, PROTOCOL_VERSION, BRIDGE_VERSION } from "../src/lib/armature-bridge";
-import { ARMATURE_EDITOR_ORIGINS, armature, armatureFieldType } from "../src/lib/armature";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
+import {
+  ARMATURE_EDITOR_ORIGINS,
+  armature,
+  armatureFieldType,
+  hasStega,
+  KIT_VERSION,
+  PROTOCOL_VERSION,
+} from "../src/lib/armature";
 import { ALL_PAGES } from "../src/lib/pageSchema";
 import content from "../content/pages.json";
 
-describe("bridge configuration", () => {
+describe("kit configuration", () => {
   test("the allowlist is exactly the dashboard origin", () => {
     expect(ARMATURE_EDITOR_ORIGINS).toEqual(["https://armature-sites.netlify.app"]);
     expect(ARMATURE_EDITOR_ORIGINS.some((origin) => origin.includes("*"))).toBe(false);
   });
 
-  test("speaks protocol 1", () => {
-    expect(PROTOCOL_VERSION).toBe(1);
-    expect(BRIDGE_VERSION).toMatch(/^\d+\.\d+\.\d+$/);
+  test("speaks protocol 2 (page builder)", () => {
+    expect(PROTOCOL_VERSION).toBe(2);
+    expect(KIT_VERSION).toMatch(/^\d+\.\d+\.\d+$/);
   });
 
   test("is inert outside a browser and returns the committed values unmarked", () => {
@@ -79,6 +85,45 @@ describe("hand-mapped fields", () => {
       const [slug, section, field] = path.split(".");
       expect(armatureFieldType(slug ?? "", section ?? "", field ?? "")).toBeDefined();
     }
+  });
+});
+
+describe("page-builder layouts (site contract v2)", () => {
+  const codedSlugs = new Set(ALL_PAGES.map((page) => page.slug));
+
+  test("every coded page (except the shared header/footer) has a layout of registered site sections", () => {
+    for (const page of ALL_PAGES) {
+      if (page.slug === "shared") continue;
+      const file = `content/layouts/${page.slug}.json`;
+      expect(existsSync(file)).toBe(true);
+      const layout = JSON.parse(readFileSync(file, "utf8")) as {
+        version: number;
+        pageSlug: string;
+        path: string;
+        root: { type: string; id: string; props: { key?: string } }[];
+      };
+      expect(layout.version).toBe(1);
+      expect(layout.pageSlug).toBe(page.slug);
+      expect(layout.path.replace(/\/+$/, "") || "/").toBe(page.path.replace(/\/+$/, "") || "/");
+      expect(layout.root.length).toBeGreaterThan(0);
+      for (const element of layout.root) {
+        expect(element.type).toBe("site-section");
+        expect(element.id).toMatch(/^[a-z0-9]{8}$/);
+        expect(typeof element.props.key).toBe("string");
+      }
+    }
+  });
+
+  test("layout files only exist for coded pages (no orphan builder pages committed)", () => {
+    for (const file of readdirSync("content/layouts").filter((f) => f.endsWith(".json"))) {
+      const slug = file.replace(/\.json$/, "");
+      expect(codedSlugs.has(slug)).toBe(true);
+    }
+  });
+
+  test("content/site-kit.json is present and declares version 1", () => {
+    const kit = JSON.parse(readFileSync("content/site-kit.json", "utf8")) as { version: number };
+    expect(kit.version).toBe(1);
   });
 });
 

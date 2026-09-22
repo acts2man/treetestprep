@@ -38,24 +38,43 @@ value in `content/pages.json`, or `check:content` fails.
 Run `bun run test` after touching anything under `src/lib/content*`, `src/lib/github.server.ts`
 or `src/lib/publish.server.ts`.
 
-### Armature visual editing (site contract v1.1)
+### Armature site kit (site contract v2: page builder)
 
-`src/lib/armature-bridge.ts` is a **verbatim copy** of `bridge/armature-bridge.ts` from
-[acts2man/armature](https://github.com/acts2man/armature). **Do not edit, reformat, lint-fix
-or remove it.** It is what lets the Armature dashboard open this site in a frame and edit it
-in place. To upgrade it, copy the upstream file over it unchanged. (Two tsconfig flags,
+`src/lib/armature-kit/` is a **verbatim copy** of the `kit/` folder from
+[acts2man/armature](https://github.com/acts2man/armature) (only its upstream unit test,
+`kit.test.ts`, is left out — it imports monorepo-only paths). **AI builders must not edit,
+reformat, lint-fix, remove or restructure it.** It is what lets the Armature dashboard open
+this site in a frame and build it in place (drag widgets, reorder sections, publish
+layouts). To upgrade it, copy the upstream folder over it unchanged. (Two tsconfig flags,
 `noPropertyAccessFromIndexSignature` and `exactOptionalPropertyTypes`, are off for that
-reason; do not turn them back on without re-checking the bridge compiles.)
+reason; do not turn them back on without re-checking the kit compiles.)
+
+`content/layouts/` and `content/site-kit.json` are **written by the Armature page builder**
+(committed through the dashboard, like `content/pages.json`). **AI builders must not edit,
+remove, restructure or hand-format them.** `content/layouts/<slug>.json` is one layout per
+page (element order and anything the builder places between the site sections);
+`content/site-kit.json` holds the global colours, fonts, typography, button presets and
+container defaults new builder elements inherit. Treat both as live data, not source.
 
 Around it:
 
-- `src/lib/armature.ts` creates the bridge once, with the allowlist
-  `["https://armature-sites.netlify.app"]`. Never widen it and never put `*` in it.
-- `usePageCopy` reads everything through the bridge. `text()`, link labels and the text
-  items of `list()` carry an invisible marker **only** inside the editor; on a normal visit
-  (and in the server-rendered HTML) they are the committed values, unchanged. Use `plain()`
-  for anything that goes into an attribute or `<head>` (alt, title, aria-label, mailto:
-  hrefs); never put a `text()` value there.
+- `src/lib/armature.ts` creates the kit once with `createArmatureKit({...})`, with the
+  allowlist `["https://armature-sites.netlify.app"]`. Never widen it and never put `*` in
+  it. It re-exports the v1.1 content API and `stegaClean`/`hasStega`.
+- `usePageCopy` reads everything through the kit (unchanged API: `text`, `plain`, `link`,
+  `list`, `sharedText`, `sharedLink`). `text()`, link labels and the text items of `list()`
+  carry an invisible marker **only** inside the editor; on a normal visit (and in the
+  server-rendered HTML) they are the committed values, unchanged. Use `plain()` for anything
+  that goes into an attribute or `<head>` (alt, title, aria-label, mailto: hrefs); never put
+  a `text()` value there.
+- **Every hand-coded section must be registered with `armature.registerSiteSection(key,
+  { label, component, repeatable? })`** (unique key across the site) and rendered through
+  `<ArmatureSlot slug=... defaults={[...]} />`, so the builder can place, move, hide or wrap
+  it. Mark a section `repeatable` only if it can safely render twice (no fixed element ids,
+  no page-singleton content). Mark the header and footer with `data-armature-chrome` and a
+  page's visible title with `data-armature-page-title`.
+- `<ArmatureRoute fallback={<NotFound />} />` in `src/routes/$.tsx` serves builder-only
+  pages by path before the 404; keep it after every hand-coded route.
 - `data-armature-field="slug.section.field"` maps an element by hand where the marker
   cannot reach (a CSS background image, text assembled from several fields). Keep the ones
   that exist (`InnerHero`'s `imageField`, the exam note on the home page).

@@ -1,0 +1,34 @@
+{
+  "pageSlug": "instructors",
+  "path": "/meet-your-instructors/",
+  "root": [
+    {
+      "advanced": {},
+      "id": "secinsh2",
+      "meta": {
+        "createdBy": "armature-kit-upgrade",
+        "updatedAt": "2026-09-22T00:00:00.000Z"
+      },
+      "props": {
+        "key": "instructors-hero"
+      },
+      "style": {},
+      "type": "site-section"
+    },
+    {
+      "advanced": {},
+      "id": "secinst1",
+      "meta": {
+        "createdBy": "armature-kit-upgrade",
+        "updatedAt": "2026-09-22T00:00:00.000Z"
+      },
+      "props": {
+        "key": "instructors"
+      },
+      "style": {},
+      "type": "site-section"
+    }
+  ],
+  "seo": {},
+  "version": 1
+}

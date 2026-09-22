@@ -1,0 +1,21 @@
+{
+  "pageSlug": "course-overview",
+  "path": "/events/location/",
+  "root": [
+    {
+      "advanced": {},
+      "id": "seccov01",
+      "meta": {
+        "createdBy": "armature-kit-upgrade",
+        "updatedAt": "2026-09-22T00:00:00.000Z"
+      },
+      "props": {
+        "key": "course-detail"
+      },
+      "style": {},
+      "type": "site-section"
+    }
+  ],
+  "seo": {},
+  "version": 1
+}

@@ -1,0 +1,47 @@
+{
+  "pageSlug": "registration",
+  "path": "/class-registration-page/",
+  "root": [
+    {
+      "advanced": {},
+      "id": "secregt1",
+      "meta": {
+        "createdBy": "armature-kit-upgrade",
+        "updatedAt": "2026-09-22T00:00:00.000Z"
+      },
+      "props": {
+        "key": "registration-title"
+      },
+      "style": {},
+      "type": "site-section"
+    },
+    {
+      "advanced": {},
+      "id": "secrego1",
+      "meta": {
+        "createdBy": "armature-kit-upgrade",
+        "updatedAt": "2026-09-22T00:00:00.000Z"
+      },
+      "props": {
+        "key": "registration-options"
+      },
+      "style": {},
+      "type": "site-section"
+    },
+    {
+      "advanced": {},
+      "id": "secregb1",
+      "meta": {
+        "createdBy": "armature-kit-upgrade",
+        "updatedAt": "2026-09-22T00:00:00.000Z"
+      },
+      "props": {
+        "key": "registration-book"
+      },
+      "style": {},
+      "type": "site-section"
+    }
+  ],
+  "seo": {},
+  "version": 1
+}

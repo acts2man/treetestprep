@@ -20,8 +20,8 @@
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     // noPropertyAccessFromIndexSignature and exactOptionalPropertyTypes are off because
-    // src/lib/armature-bridge.ts is a verbatim copy of Armature's bridge and must not be
-    // edited; TypeScript has no per-file settings. Everything else keeps type-checking as before.
+    // src/lib/armature-kit/ is a verbatim copy of Armature's kit and must not be edited;
+    // TypeScript has no per-file settings. Everything else keeps type-checking as before.
     "noPropertyAccessFromIndexSignature": false,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": false,

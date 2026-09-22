@@ -1,0 +1,47 @@
+{
+  "pageSlug": "home",
+  "path": "/",
+  "root": [
+    {
+      "advanced": {},
+      "id": "sechero1",
+      "meta": {
+        "createdBy": "armature-kit-upgrade",
+        "updatedAt": "2026-09-22T00:00:00.000Z"
+      },
+      "props": {
+        "key": "hero"
+      },
+      "style": {},
+      "type": "site-section"
+    },
+    {
+      "advanced": {},
+      "id": "seccrs01",
+      "meta": {
+        "createdBy": "armature-kit-upgrade",
+        "updatedAt": "2026-09-22T00:00:00.000Z"
+      },
+      "props": {
+        "key": "course-outline"
+      },
+      "style": {},
+      "type": "site-section"
+    },
+    {
+      "advanced": {},
+      "id": "secfaq01",
+      "meta": {
+        "createdBy": "armature-kit-upgrade",
+        "updatedAt": "2026-09-22T00:00:00.000Z"
+      },
+      "props": {
+        "key": "faq"
+      },
+      "style": {},
+      "type": "site-section"
+    }
+  ],
+  "seo": {},
+  "version": 1
+}

@@ -70,7 +70,7 @@ export function SiteHeader({ activePath }: { activePath: string }) {
   const isaUrl = copy.text("header", "isa_url");
 
   return (
-    <header>
+    <header data-armature-chrome="">
       <div className="brand-bar">
         <div className="brand-inner">
           <Link className="brand" to="/" aria-label={`${logoAlt} home`}>
@@ -189,7 +189,7 @@ export function SiteFooter() {
   const navItems = copy.list<NavItem>("header", "nav");
 
   return (
-    <footer>
+    <footer data-armature-chrome="">
       <div className="footer-main">
         <div className="wrap footer-grid">
           <div className="footer-about">
@@ -258,7 +258,7 @@ export function InnerHero({
     >
       <div className="inner-hero-shade" />
       <div className="wrap inner-hero-copy">
-        <h1>{title}</h1>
+        <h1 data-armature-page-title="">{title}</h1>
         {subtitle && <p>{subtitle}</p>}
       </div>
     </section>
