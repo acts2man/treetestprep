@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { SiteFooter, SiteHeader } from "../components/SiteChrome";
 import { usePageCopy } from "@/hooks/usePageContent";
+import { stegaClean } from "@/lib/armature-bridge";
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState(0);
@@ -11,11 +12,15 @@ export default function Home() {
   const faqs = copy.list<{ question: string; answer: string }>("faq", "items");
   const heroCta = copy.link("hero", "cta");
   const courseCta = copy.link("course", "cta");
-  const examNote = copy.text("course", "exam_note");
+  // The exam note is assembled from three fields (the note with two link labels spliced
+  // in), so it is split on the unmarked values and the paragraph is mapped by hand below.
+  const examNote = copy.plain("course", "exam_note");
   const examLink = copy.link("course", "exam_link");
   const isaLink = copy.link("course", "isa_link");
-  const courseImageAlt = copy.text("course", "image_alt");
-  const faqImageAlt = copy.text("faq", "image_alt");
+  const examLabel = stegaClean(examLink.label);
+  const isaLabel = stegaClean(isaLink.label);
+  const courseImageAlt = copy.plain("course", "image_alt");
+  const faqImageAlt = copy.plain("faq", "image_alt");
 
   return (
     <main id="top">
@@ -29,7 +34,7 @@ export default function Home() {
             <img
               className="credential"
               src={copy.text("hero", "badge")}
-              alt={copy.text("hero", "badge_alt")}
+              alt={copy.plain("hero", "badge_alt")}
             />
             <div className="hero-copy">
               <p>{copy.text("hero", "body")}</p>
@@ -46,7 +51,7 @@ export default function Home() {
               <div className="video-frame">
                 <iframe
                   src={copy.text("hero", "video")}
-                  title={copy.text("hero", "video_title")}
+                  title={copy.plain("hero", "video_title")}
                   allow="autoplay; fullscreen"
                   allowFullScreen
                 />
@@ -76,14 +81,14 @@ export default function Home() {
           <div className="week-nine">
             <span>{copy.text("course", "week_nine")}</span>
           </div>
-          <p className="exam-note" id="exam">
-            {examNote.includes(examLink.label) ? (
+          <p className="exam-note" id="exam" data-armature-field="home.course.exam_note">
+            {examNote.includes(examLabel) ? (
               <>
-                {examNote.split(examLink.label)[0]}
+                {examNote.split(examLabel)[0]}
                 <a href={examLink.href}>{examLink.label}</a>
-                {examNote.split(examLink.label)[1]?.split(isaLink.label)[0]}
-                {examNote.includes(isaLink.label) && <a href={isaLink.href}>{isaLink.label}</a>}
-                {examNote.split(isaLink.label)[1]}
+                {examNote.split(examLabel)[1]?.split(isaLabel)[0]}
+                {examNote.includes(isaLabel) && <a href={isaLink.href}>{isaLink.label}</a>}
+                {examNote.split(isaLabel)[1]}
               </>
             ) : (
               examNote

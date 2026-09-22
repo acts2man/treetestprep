@@ -13,7 +13,7 @@ import { Toaster } from "sonner";
 import globalsCss from "../styles/globals.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "../hooks/use-auth";
-
+import { registerArmatureNavigate } from "../lib/armature";
 
 function NotFoundComponent() {
   return (
@@ -141,6 +141,16 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+
+  // Armature visual editing: the bridge is created once in src/lib/armature.ts (imported
+  // above) and is inert outside the editor. Give it the router so the editor's page
+  // switcher navigates client-side instead of reloading the frame.
+  useEffect(() => {
+    registerArmatureNavigate((path) => {
+      void router.navigate({ href: path });
+    });
+  }, [router]);
 
   return (
     <QueryClientProvider client={queryClient}>

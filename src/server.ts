@@ -44,12 +44,31 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
+/**
+ * Armature visual editing (site contract v1.1): the site may be framed by the Armature
+ * dashboard and by itself, and nowhere else. netlify.toml sets the same header for the
+ * static files; server-rendered responses come from a Netlify Function, so it is set
+ * here as well. Never send X-Frame-Options.
+ */
+const FRAME_ANCESTORS = "frame-ancestors 'self' https://armature-sites.netlify.app";
+
+function withFrameHeader(response: Response): Response {
+  if (response.headers.has("content-security-policy")) return response;
+  const headers = new Headers(response.headers);
+  headers.set("content-security-policy", FRAME_ANCESTORS);
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      return withFrameHeader(await normalizeCatastrophicSsrResponse(response));
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {

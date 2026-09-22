@@ -5,7 +5,7 @@ export default function Inspiration() {
   const copy = usePageCopy("inspiration");
   const paragraphs = copy.list<{ text: string }>("story", "paragraphs");
   const image = copy.text("story", "image");
-  const imageAlt = copy.text("story", "image_alt");
+  const imageAlt = copy.plain("story", "image_alt");
 
   return (
     <main>
@@ -14,6 +14,7 @@ export default function Inspiration() {
         title={copy.text("hero", "title")}
         subtitle={copy.text("hero", "subtitle")}
         image={copy.text("hero", "image")}
+        imageField="inspiration.hero.image"
         className="inspiration-hero"
       />
       <section className="wrap story-grid">

@@ -12,6 +12,7 @@ export default function Contact() {
         title={copy.text("hero", "title")}
         subtitle={copy.text("hero", "subtitle")}
         image={copy.text("hero", "image")}
+        imageField="contact.hero.image"
         className="contact-hero"
       />
       <section className="wrap contact-message">

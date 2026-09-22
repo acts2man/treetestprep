@@ -38,6 +38,7 @@ export default function Instructors() {
         title={copy.text("hero", "title")}
         subtitle={copy.text("hero", "subtitle")}
         image={copy.text("hero", "image")}
+        imageField="instructors.hero.image"
         className="instructors-hero"
       />
       <section className="wrap instructors-section">

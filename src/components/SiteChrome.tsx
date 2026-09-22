@@ -62,8 +62,9 @@ export function SiteHeader({ activePath }: { activePath: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const copy = usePageCopy("shared");
   const email = copy.text("header", "email");
+  const emailPlain = copy.plain("header", "email");
   const logo = copy.text("header", "logo");
-  const logoAlt = copy.text("header", "logo_alt");
+  const logoAlt = copy.plain("header", "logo_alt");
   const navItems = copy.list<NavItem>("header", "nav");
   const mobileCta = copy.link("header", "mobile_cta");
   const isaUrl = copy.text("header", "isa_url");
@@ -73,9 +74,10 @@ export function SiteHeader({ activePath }: { activePath: string }) {
       <div className="brand-bar">
         <div className="brand-inner">
           <Link className="brand" to="/" aria-label={`${logoAlt} home`}>
-            <img src={logo} alt={logoAlt} />
+            {/* The header and footer logos share one file, so the editor is told which field this is. */}
+            <img src={logo} alt={logoAlt} data-armature-field="shared.header.logo" />
           </Link>
-          <a className="email" href={`mailto:${email}`}>
+          <a className="email" href={`mailto:${emailPlain}`}>
             <span aria-hidden="true">✉</span> {email}
           </a>
         </div>
@@ -112,7 +114,7 @@ export function SiteHeader({ activePath }: { activePath: string }) {
         aria-label="Site menu"
       >
         <div className="mobile-panel-head">
-          <img src={logo} alt={logoAlt} />
+          <img src={logo} alt={logoAlt} data-armature-field="shared.header.logo" />
           <button type="button" className="mobile-close" onClick={() => setMenuOpen(false)}>
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
               <path
@@ -152,7 +154,7 @@ export function SiteHeader({ activePath }: { activePath: string }) {
             </a>
           )}
           <div className="mobile-social">
-            <a href={`mailto:${email}`} aria-label={`Email ${email}`}>
+            <a href={`mailto:${emailPlain}`} aria-label={`Email ${emailPlain}`}>
               <span aria-hidden="true">✉</span>
             </a>
             <a
@@ -191,7 +193,7 @@ export function SiteFooter() {
       <div className="footer-main">
         <div className="wrap footer-grid">
           <div className="footer-about">
-            <img src={copy.text("footer", "logo")} alt={copy.text("header", "logo_alt")} />
+            <img src={copy.text("footer", "logo")} alt={copy.plain("header", "logo_alt")} />
             <p>{copy.text("footer", "blurb_one")}</p>
             <p>{copy.text("footer", "blurb_two")}</p>
             <a className="button footer-button" href={cta.href}>
@@ -208,7 +210,7 @@ export function SiteFooter() {
           <img
             className="footer-image"
             src={copy.text("footer", "image")}
-            alt={copy.text("footer", "image_alt")}
+            alt={copy.plain("footer", "image_alt")}
           />
         </div>
       </div>
@@ -234,16 +236,26 @@ export function InnerHero({
   title,
   subtitle,
   image,
+  imageField,
   className = "",
 }: {
   title: string;
   subtitle?: string;
   image?: string;
+  /**
+   * Armature field path of `image` (e.g. "contact.hero.image"). The picture is a CSS
+   * background, which the editor cannot match by value, so the section is mapped by hand.
+   */
+  imageField?: string;
   className?: string;
 }) {
   const style = image ? { backgroundImage: `url(${image})` } : undefined;
   return (
-    <section className={`inner-hero ${className}`} style={style}>
+    <section
+      className={`inner-hero ${className}`}
+      style={style}
+      data-armature-field={image && imageField ? imageField : undefined}
+    >
       <div className="inner-hero-shade" />
       <div className="wrap inner-hero-copy">
         <h1>{title}</h1>

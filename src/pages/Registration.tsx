@@ -16,7 +16,7 @@ export default function Registration() {
           <h2>{copy.text("in_person", "heading")}</h2>
           <img
             src={copy.text("in_person", "image")}
-            alt={copy.text("in_person", "image_alt")}
+            alt={copy.plain("in_person", "image_alt")}
           />
           <a className="registration-link" href={inPersonCta.href}>
             {inPersonCta.label} <span>➜</span>
@@ -28,7 +28,7 @@ export default function Registration() {
         </article>
         <article className="registration-option">
           <h2>{copy.text("online", "heading")}</h2>
-          <img src={copy.text("online", "image")} alt={copy.text("online", "image_alt")} />
+          <img src={copy.text("online", "image")} alt={copy.plain("online", "image_alt")} />
           <a className="registration-link" href={onlineCta.href}>
             {onlineCta.label} <span>➜</span>
           </a>

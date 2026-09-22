@@ -20,7 +20,7 @@ export default function CourseOverview() {
       <SiteHeader activePath="/events/location/" />
       <section className="course-overview wrap">
         <div className="course-overview-main">
-          <img src={copy.text("main", "image")} alt={copy.text("main", "image_alt")} />
+          <img src={copy.text("main", "image")} alt={copy.plain("main", "image_alt")} />
           <h1>{copy.text("main", "title")}</h1>
           <div className="event-meta">
             <span>▣ {copy.text("main", "meta_dates")}</span>
@@ -52,7 +52,7 @@ export default function CourseOverview() {
           </div>
           <div>
             <strong>{copy.text("card", "email_label")}</strong>
-            <a href={`mailto:${copy.text("card", "email")}`}>{copy.text("card", "email")}</a>
+            <a href={`mailto:${copy.plain("card", "email")}`}>{copy.text("card", "email")}</a>
           </div>
           <div>
             <strong>{copy.text("card", "location_label")}</strong>

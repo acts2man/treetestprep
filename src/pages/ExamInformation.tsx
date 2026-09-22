@@ -16,6 +16,7 @@ export default function ExamInformation() {
       <InnerHero
         title={copy.text("hero", "title")}
         image={copy.text("hero", "image")}
+        imageField="exam-information.hero.image"
         className="exam-hero"
       />
       <article className="wrap prose-page exam-content">

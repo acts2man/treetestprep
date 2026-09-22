@@ -1,3 +1,10 @@
 [build]
   command = "bun run build"
   publish = "dist/client"
+
+# Armature visual editing (site contract v1.1): the site may be framed by the
+# Armature dashboard and by itself, and nowhere else. Never send X-Frame-Options.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "frame-ancestors 'self' https://armature-sites.netlify.app"

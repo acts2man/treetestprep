@@ -6,7 +6,9 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist", ".output", ".vinxi"] },
+  // src/lib/armature-bridge.ts is a verbatim copy of Armature's bridge and must never be
+  // reformatted or lint-fixed (see AGENTS.md, "Armature visual editing").
+  { ignores: ["dist", ".output", ".vinxi", "src/lib/armature-bridge.ts"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
