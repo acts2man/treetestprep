@@ -1,0 +1,946 @@
+{
+  "armatureContract": 1,
+  "pages": [
+    {
+      "slug": "shared",
+      "label": "Header & Footer",
+      "path": "/",
+      "description": "Logo, navigation, contact email and footer content used on every page.",
+      "sections": [
+        {
+          "key": "header",
+          "label": "Header",
+          "fields": [
+            {
+              "key": "logo",
+              "label": "Logo",
+              "type": "image"
+            },
+            {
+              "key": "logo_alt",
+              "label": "Logo alt text",
+              "type": "text"
+            },
+            {
+              "key": "email",
+              "label": "Contact email",
+              "type": "text"
+            },
+            {
+              "key": "nav",
+              "label": "Navigation links",
+              "type": "list",
+              "itemFields": [
+                {
+                  "key": "label",
+                  "label": "Label",
+                  "type": "text"
+                },
+                {
+                  "key": "href",
+                  "label": "Destination",
+                  "type": "url"
+                }
+              ]
+            },
+            {
+              "key": "mobile_cta",
+              "label": "Mobile menu button",
+              "type": "link"
+            },
+            {
+              "key": "isa_url",
+              "label": "Mobile menu ISA icon link",
+              "type": "url"
+            }
+          ]
+        },
+        {
+          "key": "footer",
+          "label": "Footer",
+          "fields": [
+            {
+              "key": "logo",
+              "label": "Footer logo",
+              "type": "image"
+            },
+            {
+              "key": "blurb_one",
+              "label": "First paragraph",
+              "type": "textarea"
+            },
+            {
+              "key": "blurb_two",
+              "label": "Second paragraph",
+              "type": "textarea"
+            },
+            {
+              "key": "cta",
+              "label": "Footer button",
+              "type": "link"
+            },
+            {
+              "key": "image",
+              "label": "Footer photo",
+              "type": "image"
+            },
+            {
+              "key": "image_alt",
+              "label": "Footer photo alt text",
+              "type": "text"
+            },
+            {
+              "key": "links_heading",
+              "label": "Navigation heading",
+              "type": "text"
+            },
+            {
+              "key": "copyright",
+              "label": "Copyright line",
+              "type": "text"
+            },
+            {
+              "key": "privacy",
+              "label": "Privacy policy link",
+              "type": "link"
+            },
+            {
+              "key": "terms",
+              "label": "Terms of service link",
+              "type": "link"
+            },
+            {
+              "key": "credit_prefix",
+              "label": "Credit line prefix",
+              "type": "text"
+            },
+            {
+              "key": "credit",
+              "label": "Credit link",
+              "type": "link"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "home",
+      "label": "Home",
+      "path": "/",
+      "description": "Hero, course outline and FAQ on the front page.",
+      "sections": [
+        {
+          "key": "hero",
+          "label": "Hero",
+          "fields": [
+            {
+              "key": "title",
+              "label": "Headline",
+              "type": "text"
+            },
+            {
+              "key": "body",
+              "label": "Intro paragraph",
+              "type": "textarea"
+            },
+            {
+              "key": "schedule",
+              "label": "Schedule line",
+              "type": "text"
+            },
+            {
+              "key": "dates",
+              "label": "Dates line",
+              "type": "text"
+            },
+            {
+              "key": "badge",
+              "label": "Credential badge",
+              "type": "image"
+            },
+            {
+              "key": "badge_alt",
+              "label": "Credential badge alt text",
+              "type": "text"
+            },
+            {
+              "key": "video",
+              "label": "Wistia video embed URL",
+              "type": "video"
+            },
+            {
+              "key": "video_title",
+              "label": "Video title (accessibility)",
+              "type": "text"
+            },
+            {
+              "key": "cta",
+              "label": "Hero button",
+              "type": "link"
+            }
+          ]
+        },
+        {
+          "key": "course",
+          "label": "Course outline",
+          "fields": [
+            {
+              "key": "heading",
+              "label": "Section heading",
+              "type": "textarea"
+            },
+            {
+              "key": "weeks",
+              "label": "Weekly topics",
+              "type": "list",
+              "itemFields": [
+                {
+                  "key": "text",
+                  "label": "Week",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "key": "week_nine",
+              "label": "Final week line",
+              "type": "text"
+            },
+            {
+              "key": "exam_note",
+              "label": "Exam note",
+              "type": "textarea"
+            },
+            {
+              "key": "exam_link",
+              "label": "Exam note link 1",
+              "type": "link"
+            },
+            {
+              "key": "isa_link",
+              "label": "Exam note link 2",
+              "type": "link"
+            },
+            {
+              "key": "cta",
+              "label": "Section button",
+              "type": "link"
+            },
+            {
+              "key": "image",
+              "label": "Section photo",
+              "type": "image"
+            },
+            {
+              "key": "image_alt",
+              "label": "Section photo alt text",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "key": "faq",
+          "label": "FAQ",
+          "fields": [
+            {
+              "key": "heading",
+              "label": "Heading",
+              "type": "text"
+            },
+            {
+              "key": "eyebrow",
+              "label": "Eyebrow label",
+              "type": "text"
+            },
+            {
+              "key": "image",
+              "label": "FAQ photo",
+              "type": "image"
+            },
+            {
+              "key": "image_alt",
+              "label": "FAQ photo alt text",
+              "type": "text"
+            },
+            {
+              "key": "items",
+              "label": "Questions",
+              "type": "list",
+              "itemFields": [
+                {
+                  "key": "question",
+                  "label": "Question",
+                  "type": "text"
+                },
+                {
+                  "key": "answer",
+                  "label": "Answer",
+                  "type": "textarea"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "seo",
+          "label": "SEO & sharing",
+          "fields": [
+            {
+              "key": "title",
+              "label": "Browser / search title",
+              "type": "text"
+            },
+            {
+              "key": "description",
+              "label": "Meta description",
+              "type": "textarea"
+            },
+            {
+              "key": "image",
+              "label": "Social share image URL (https)",
+              "type": "url"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "course-overview",
+      "label": "Course Overview",
+      "path": "/events/location/",
+      "description": "Location, dates and what the course covers.",
+      "sections": [
+        {
+          "key": "main",
+          "label": "Course header",
+          "fields": [
+            {
+              "key": "image",
+              "label": "Classroom photo",
+              "type": "image"
+            },
+            {
+              "key": "image_alt",
+              "label": "Classroom photo alt text",
+              "type": "text"
+            },
+            {
+              "key": "title",
+              "label": "Headline",
+              "type": "text"
+            },
+            {
+              "key": "meta_dates",
+              "label": "Dates line",
+              "type": "text"
+            },
+            {
+              "key": "meta_time",
+              "label": "Time line",
+              "type": "text"
+            },
+            {
+              "key": "meta_location",
+              "label": "Location line",
+              "type": "text"
+            },
+            {
+              "key": "description_heading",
+              "label": "Description heading",
+              "type": "text"
+            },
+            {
+              "key": "weeks",
+              "label": "Weekly chapter descriptions",
+              "type": "list",
+              "itemFields": [
+                {
+                  "key": "week",
+                  "label": "Week label",
+                  "type": "text"
+                },
+                {
+                  "key": "title_one",
+                  "label": "First chapter title",
+                  "type": "text"
+                },
+                {
+                  "key": "body_one",
+                  "label": "First chapter description",
+                  "type": "textarea"
+                },
+                {
+                  "key": "title_two",
+                  "label": "Second chapter title",
+                  "type": "text"
+                },
+                {
+                  "key": "body_two",
+                  "label": "Second chapter description",
+                  "type": "textarea"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "card",
+          "label": "Course card",
+          "fields": [
+            {
+              "key": "heading",
+              "label": "Card heading",
+              "type": "text"
+            },
+            {
+              "key": "price_label",
+              "label": "Price label",
+              "type": "text"
+            },
+            {
+              "key": "price",
+              "label": "Course price",
+              "type": "text"
+            },
+            {
+              "key": "email_label",
+              "label": "Email label",
+              "type": "text"
+            },
+            {
+              "key": "email",
+              "label": "Email",
+              "type": "text"
+            },
+            {
+              "key": "location_label",
+              "label": "Location label",
+              "type": "text"
+            },
+            {
+              "key": "location",
+              "label": "Location",
+              "type": "text"
+            },
+            {
+              "key": "cta",
+              "label": "Card button",
+              "type": "link"
+            }
+          ]
+        },
+        {
+          "key": "seo",
+          "label": "SEO & sharing",
+          "fields": [
+            {
+              "key": "title",
+              "label": "Browser / search title",
+              "type": "text"
+            },
+            {
+              "key": "description",
+              "label": "Meta description",
+              "type": "textarea"
+            },
+            {
+              "key": "image",
+              "label": "Social share image URL (https)",
+              "type": "url"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "exam-information",
+      "label": "Exam Information",
+      "path": "/exam-information/",
+      "description": "ISA certification process and eligibility copy.",
+      "sections": [
+        {
+          "key": "hero",
+          "label": "Hero",
+          "fields": [
+            {
+              "key": "title",
+              "label": "Headline",
+              "type": "text"
+            },
+            {
+              "key": "image",
+              "label": "Hero photo",
+              "type": "image"
+            }
+          ]
+        },
+        {
+          "key": "process",
+          "label": "Certification process",
+          "fields": [
+            {
+              "key": "heading",
+              "label": "Heading",
+              "type": "text"
+            },
+            {
+              "key": "steps",
+              "label": "Steps",
+              "type": "list",
+              "itemFields": [
+                {
+                  "key": "text",
+                  "label": "Step",
+                  "type": "textarea"
+                }
+              ]
+            },
+            {
+              "key": "body",
+              "label": "Body copy",
+              "type": "textarea"
+            },
+            {
+              "key": "cta",
+              "label": "ISA link",
+              "type": "link"
+            }
+          ]
+        },
+        {
+          "key": "eligibility",
+          "label": "Eligibility",
+          "fields": [
+            {
+              "key": "heading",
+              "label": "Heading",
+              "type": "text"
+            },
+            {
+              "key": "intro",
+              "label": "Intro copy",
+              "type": "textarea"
+            },
+            {
+              "key": "items",
+              "label": "Eligibility routes",
+              "type": "list",
+              "itemFields": [
+                {
+                  "key": "text",
+                  "label": "Requirement",
+                  "type": "textarea"
+                }
+              ]
+            },
+            {
+              "key": "note_label",
+              "label": "Important note label",
+              "type": "text"
+            },
+            {
+              "key": "note",
+              "label": "Important note",
+              "type": "textarea"
+            }
+          ]
+        },
+        {
+          "key": "apply",
+          "label": "How to apply",
+          "fields": [
+            {
+              "key": "heading",
+              "label": "Heading",
+              "type": "text"
+            },
+            {
+              "key": "intro",
+              "label": "Sentence before the ISA link",
+              "type": "text"
+            },
+            {
+              "key": "body",
+              "label": "Closing paragraph",
+              "type": "textarea"
+            },
+            {
+              "key": "cta",
+              "label": "Register button",
+              "type": "link"
+            }
+          ]
+        },
+        {
+          "key": "seo",
+          "label": "SEO & sharing",
+          "fields": [
+            {
+              "key": "title",
+              "label": "Browser / search title",
+              "type": "text"
+            },
+            {
+              "key": "description",
+              "label": "Meta description",
+              "type": "textarea"
+            },
+            {
+              "key": "image",
+              "label": "Social share image URL (https)",
+              "type": "url"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "inspiration",
+      "label": "The Inspiration",
+      "path": "/about-us/",
+      "description": "The Ken Menzer story.",
+      "sections": [
+        {
+          "key": "hero",
+          "label": "Hero",
+          "fields": [
+            {
+              "key": "title",
+              "label": "Headline",
+              "type": "text"
+            },
+            {
+              "key": "subtitle",
+              "label": "Sub headline",
+              "type": "textarea"
+            },
+            {
+              "key": "image",
+              "label": "Hero photo",
+              "type": "image"
+            }
+          ]
+        },
+        {
+          "key": "story",
+          "label": "Story",
+          "fields": [
+            {
+              "key": "title",
+              "label": "Name",
+              "type": "text"
+            },
+            {
+              "key": "subtitle",
+              "label": "Sub heading",
+              "type": "text"
+            },
+            {
+              "key": "image",
+              "label": "Photo",
+              "type": "image"
+            },
+            {
+              "key": "image_alt",
+              "label": "Photo alt text",
+              "type": "text"
+            },
+            {
+              "key": "paragraphs",
+              "label": "Paragraphs",
+              "type": "list",
+              "itemFields": [
+                {
+                  "key": "text",
+                  "label": "Paragraph",
+                  "type": "textarea"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "seo",
+          "label": "SEO & sharing",
+          "fields": [
+            {
+              "key": "title",
+              "label": "Browser / search title",
+              "type": "text"
+            },
+            {
+              "key": "description",
+              "label": "Meta description",
+              "type": "textarea"
+            },
+            {
+              "key": "image",
+              "label": "Social share image URL (https)",
+              "type": "url"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "instructors",
+      "label": "Meet The Instructors",
+      "path": "/meet-your-instructors/",
+      "description": "Instructor intro copy. Individual bios live under Instructors.",
+      "sections": [
+        {
+          "key": "hero",
+          "label": "Hero",
+          "fields": [
+            {
+              "key": "title",
+              "label": "Headline",
+              "type": "text"
+            },
+            {
+              "key": "subtitle",
+              "label": "Sub headline",
+              "type": "textarea"
+            },
+            {
+              "key": "image",
+              "label": "Hero photo",
+              "type": "image"
+            }
+          ]
+        },
+        {
+          "key": "intro",
+          "label": "Intro",
+          "fields": [
+            {
+              "key": "heading",
+              "label": "Heading",
+              "type": "text"
+            },
+            {
+              "key": "body",
+              "label": "Body copy",
+              "type": "textarea"
+            },
+            {
+              "key": "role_label",
+              "label": "Subtitle shown under each instructor name",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "key": "seo",
+          "label": "SEO & sharing",
+          "fields": [
+            {
+              "key": "title",
+              "label": "Browser / search title",
+              "type": "text"
+            },
+            {
+              "key": "description",
+              "label": "Meta description",
+              "type": "textarea"
+            },
+            {
+              "key": "image",
+              "label": "Social share image URL (https)",
+              "type": "url"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "contact",
+      "label": "Contact Us",
+      "path": "/contact-us/",
+      "description": "Contact hero and email call to action.",
+      "sections": [
+        {
+          "key": "hero",
+          "label": "Hero",
+          "fields": [
+            {
+              "key": "title",
+              "label": "Headline",
+              "type": "text"
+            },
+            {
+              "key": "subtitle",
+              "label": "Email shown in hero",
+              "type": "text"
+            },
+            {
+              "key": "image",
+              "label": "Hero photo",
+              "type": "image"
+            }
+          ]
+        },
+        {
+          "key": "message",
+          "label": "Message",
+          "fields": [
+            {
+              "key": "heading",
+              "label": "Heading",
+              "type": "textarea"
+            },
+            {
+              "key": "cta",
+              "label": "Email button",
+              "type": "link"
+            }
+          ]
+        },
+        {
+          "key": "seo",
+          "label": "SEO & sharing",
+          "fields": [
+            {
+              "key": "title",
+              "label": "Browser / search title",
+              "type": "text"
+            },
+            {
+              "key": "description",
+              "label": "Meta description",
+              "type": "textarea"
+            },
+            {
+              "key": "image",
+              "label": "Social share image URL (https)",
+              "type": "url"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "registration",
+      "label": "Registration",
+      "path": "/class-registration-page/",
+      "description": "In-person and online registration options.",
+      "sections": [
+        {
+          "key": "intro",
+          "label": "Page title",
+          "fields": [
+            {
+              "key": "title",
+              "label": "Headline",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "key": "in_person",
+          "label": "In person option",
+          "fields": [
+            {
+              "key": "heading",
+              "label": "Heading",
+              "type": "text"
+            },
+            {
+              "key": "image",
+              "label": "Photo",
+              "type": "image"
+            },
+            {
+              "key": "image_alt",
+              "label": "Photo alt text",
+              "type": "text"
+            },
+            {
+              "key": "cta",
+              "label": "Registration link",
+              "type": "link"
+            },
+            {
+              "key": "body_one",
+              "label": "First paragraph",
+              "type": "textarea"
+            },
+            {
+              "key": "body_two",
+              "label": "Second paragraph",
+              "type": "textarea"
+            }
+          ]
+        },
+        {
+          "key": "online",
+          "label": "Online option",
+          "fields": [
+            {
+              "key": "heading",
+              "label": "Heading",
+              "type": "text"
+            },
+            {
+              "key": "image",
+              "label": "Photo",
+              "type": "image"
+            },
+            {
+              "key": "image_alt",
+              "label": "Photo alt text",
+              "type": "text"
+            },
+            {
+              "key": "cta",
+              "label": "Registration link",
+              "type": "link"
+            },
+            {
+              "key": "body",
+              "label": "Note",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "key": "book",
+          "label": "Course book",
+          "fields": [
+            {
+              "key": "heading",
+              "label": "Heading",
+              "type": "textarea"
+            },
+            {
+              "key": "cta",
+              "label": "Purchase link",
+              "type": "link"
+            }
+          ]
+        },
+        {
+          "key": "seo",
+          "label": "SEO & sharing",
+          "fields": [
+            {
+              "key": "title",
+              "label": "Browser / search title",
+              "type": "text"
+            },
+            {
+              "key": "description",
+              "label": "Meta description",
+              "type": "textarea"
+            },
+            {
+              "key": "image",
+              "label": "Social share image URL (https)",
+              "type": "url"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

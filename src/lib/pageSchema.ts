@@ -6,6 +6,8 @@ export type PageField = {
   type: FieldType;
   /** For list fields: the shape of each item. */
   itemFields?: { key: string; label: string; type: "text" | "textarea" | "image" | "url" }[];
+  /** Optional one-line hint shown under the control in the editor. */
+  help?: string;
 };
 
 export type PageSection = {

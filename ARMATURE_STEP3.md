@@ -511,3 +511,36 @@ Ordered by how much they matter.
     holds publishable/anon Supabase keys only — no service-role key, and none of the three
     new publish variables — but it should be untracked and the keys rotated.
 
+---
+
+## Armature connection
+
+The site now follows **Armature's site contract v1** (`docs/SITE_CONTRACT.md` in
+`acts2man/armature`) and is ready to connect in the Armature dashboard with repository
+**`acts2man/treetestprep`** and branch **`armature/git-content`**.
+
+**What was added.**
+
+| File                             | What it does                                                                                                                                                                                       |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `content/schema.json`            | The editable-field map the contract requires: `{ "armatureContract": 1, "pages": [...] }`. Generated, never hand-edited. 8 pages (the `shared` header/footer page first), 28 sections, 126 fields. |
+| `src/lib/armatureSchema.ts`      | Pure builder that turns `pageSchema.ts` into the contract shape with a fixed key order (`slug, label, path, description, sections` / `key, label, fields` / `key, label, type, itemFields, help`). |
+| `scripts/export-schema.ts`       | `bun run export:schema` — writes `content/schema.json` (2-space indent, trailing newline) and verifies the file read back deep-equals every page, section and field in `pageSchema.ts`.            |
+| `scripts/check-content.ts`       | `bun run check:content` now also fails if `content/schema.json` is not byte-identical to what the export would write, so the two can never drift.                                                  |
+| `tests/armatureSchema.test.ts`   | 7 tests: contract version, shared page present, every field carried with the same label/type/help/item fields, contract key order, and the committed file matching the serialiser.                 |
+| `public/assets/uploads/.gitkeep` | The folder the dashboard commits uploaded pictures into. Vite serves `public/` at the web root, so `/assets/uploads/...` resolves.                                                                 |
+| `src/lib/pageSchema.ts`          | One type-only addition: an optional `help` hint on a field, which the contract allows and the export passes through. No field values changed.                                                      |
+
+**Validated with Armature's own code, not a copy.** `shared/schema.ts` and
+`shared/contentValidation.ts` from a fresh clone of `acts2man/armature` were run against this
+branch's files: `validateSiteSchema(content/schema.json)` — 0 errors, 0 warnings;
+`validateContentTree(content/pages.json, schema.pages)` — 0 errors, 0 warnings, 126 fields
+checked. `bun run check:content`, `bun run test` (92 pass), `tsc --noEmit` and
+`NETLIFY=true bun run build` all pass.
+
+**Nothing about the public site changed.** `content/pages.json` values, the page components,
+`vite.config.ts` and `bunfig.toml` are untouched. The existing `/admin` editor keeps working
+from the same `pageSchema.ts`, so it and Armature show the same fields.
+
+**When `pageSchema.ts` changes**, run `bun run export:schema` and commit the result;
+`check:content` fails until you do.

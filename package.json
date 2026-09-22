@@ -12,6 +12,7 @@
     "test": "bun test",
     "check:content": "bun run scripts/check-content.ts",
     "export:defaults": "bun run scripts/export-defaults.ts",
+    "export:schema": "bun run scripts/export-schema.ts",
     "format": "prettier --write ."
   },
   "overrides": {
