@@ -210,37 +210,6 @@
     }
   },
   "registration": {
-    "book": {
-      "cta": {
-        "href": "https://wwv.isa-arbor.com/store/product/7/",
-        "label": "Purchase Book Here"
-      },
-      "heading": "This course uses the Arborist Certification Study Guide, Fourth Edition By Sharon J. Lilly, Corinne G. Bassett, James Komen, and Lindsey Purcell."
-    },
-    "in_person": {
-      "body_one": "Class size is limited to 30 participants.",
-      "body_two": "Once the 30 in-person spots are filled, registration for the in-person option will close. You will still be able to register for the online option.",
-      "cta": {
-        "href": "https://buy.stripe.com/8wM8wMbsjfuL5YkfYY",
-        "label": "In-Person Registration Link"
-      },
-      "heading": "In Person Registration",
-      "image": "/assets/registration-in-person.webp",
-      "image_alt": "Students attending an in-person arborist course"
-    },
-    "intro": {
-      "title": "Registration For In Person & Online Classes"
-    },
-    "online": {
-      "body": "Limited to 100 students",
-      "cta": {
-        "href": "https://buy.stripe.com/cN2aEU53V6Yf2M85kl",
-        "label": "Online Class Registration Link"
-      },
-      "heading": "Online Class Registration",
-      "image": "/assets/registration-online.webp",
-      "image_alt": "Students participating in an online class"
-    },
     "seo": {
       "description": "Register for the ISA Certified Arborist prep course in Sacramento or online. In-person seats are limited to 30 participants.",
       "image": "",

@@ -243,42 +243,7 @@ export const PAGE_SCHEMA: PageDefinition[] = [
     label: "Registration",
     path: "/class-registration-page/",
     description: "In-person and online registration options.",
-    sections: [
-      {
-        key: "intro",
-        label: "Page title",
-        fields: [textField("title", "Headline")],
-      },
-      {
-        key: "in_person",
-        label: "In person option",
-        fields: [
-          textField("heading", "Heading"),
-          imageField("image", "Photo"),
-          textField("image_alt", "Photo alt text"),
-          linkField("cta", "Registration link"),
-          areaField("body_one", "First paragraph"),
-          areaField("body_two", "Second paragraph"),
-        ],
-      },
-      {
-        key: "online",
-        label: "Online option",
-        fields: [
-          textField("heading", "Heading"),
-          imageField("image", "Photo"),
-          textField("image_alt", "Photo alt text"),
-          linkField("cta", "Registration link"),
-          textField("body", "Note"),
-        ],
-      },
-      {
-        key: "book",
-        label: "Course book",
-        fields: [areaField("heading", "Heading"), linkField("cta", "Purchase link")],
-      },
-      seoSection(),
-    ],
+    sections: [seoSection()],
   },
 ];
 
