@@ -28,12 +28,12 @@ describe("kit configuration", () => {
 
   test("is inert outside a browser and returns the committed values unmarked", () => {
     expect(armature.active).toBe(false);
-    const title = armature.text("home", "hero", "title");
-    expect(title).toBe((content as { home: { hero: { title: string } } }).home.hero.title);
+    const title = armature.text("home", "seo", "title");
+    expect(title).toBe((content as { home: { seo: { title: string } } }).home.seo.title);
     expect(hasStega(title)).toBe(false);
-    expect(hasStega(armature.link("home", "hero", "cta").label)).toBe(false);
+    expect(hasStega(armature.link("shared", "footer", "cta").label)).toBe(false);
     expect(
-      armature.list("home", "faq", "items").every((item) => !hasStega(item.question ?? "")),
+      armature.list("shared", "header", "nav").every((item) => !hasStega(item.label ?? "")),
     ).toBe(true);
     expect(armature.getSnapshot()).toEqual(content);
   });
@@ -48,7 +48,7 @@ describe("field types", () => {
         }
       }
     }
-    expect(armatureFieldType("home", "hero", "no_such_field")).toBeUndefined();
+    expect(armatureFieldType("home", "seo", "no_such_field")).toBeUndefined();
   });
 
   test("every public page has a route path the editor can load", () => {

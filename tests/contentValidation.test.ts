@@ -24,22 +24,22 @@ describe("validateContentTree — the check:content rules", () => {
     const report = validateContentTree(liveContent);
     expect(report.errors).toEqual([]);
     expect(report.warnings).toEqual([]);
-    expect(report.checked).toBe(65);
+    expect(report.checked).toBe(42);
   });
 
   it("reports a missing field", () => {
     const tree = content();
-    delete tree["home"]!["hero"]!["title"];
+    delete tree["home"]!["seo"]!["title"];
     const report = validateContentTree(tree);
-    expect(report.errors).toContain("home.hero.title: missing from the content file");
+    expect(report.errors).toContain("home.seo.title: missing from the content file");
   });
 
   it("reports a link field holding a bare string", () => {
     const tree = content();
-    tree["home"]!["hero"]!["cta"] = "/register";
+    tree["shared"]!["footer"]!["cta"] = "/register";
     const report = validateContentTree(tree);
     expect(report.errors.join("\n")).toContain(
-      'home.hero.cta: expected { label, href } for type "link", got string',
+      'shared.footer.cta: expected { label, href } for type "link", got string',
     );
   });
 
@@ -116,12 +116,12 @@ describe("image paths", () => {
 
 describe("validateFieldUpdate", () => {
   it("accepts a normal headline change", () => {
-    const { errors } = validateFieldUpdate("home", "hero", "title", "A New Headline");
+    const { errors } = validateFieldUpdate("home", "seo", "title", "A New Headline");
     expect(errors).toEqual([]);
   });
 
   it("rejects an unknown field, section and page", () => {
-    expect(validateFieldUpdate("home", "hero", "nope", "x").errors.join()).toContain(
+    expect(validateFieldUpdate("home", "seo", "nope", "x").errors.join()).toContain(
       "not a field declared in pageSchema.ts",
     );
     expect(validateFieldUpdate("home", "nope", "title", "x").errors.join()).toContain(
@@ -133,15 +133,15 @@ describe("validateFieldUpdate", () => {
   });
 
   it("rejects the wrong type for a field", () => {
-    expect(validateFieldUpdate("home", "hero", "title", 42).errors.length).toBeGreaterThan(0);
-    expect(validateFieldUpdate("home", "hero", "cta", "/x").errors.length).toBeGreaterThan(0);
+    expect(validateFieldUpdate("home", "seo", "title", 42).errors.length).toBeGreaterThan(0);
+    expect(validateFieldUpdate("shared", "footer", "cta", "/x").errors.length).toBeGreaterThan(0);
     expect(
       validateFieldUpdate("shared", "header", "nav", "not-a-list").errors.length,
     ).toBeGreaterThan(0);
   });
 
   it("rejects an unsafe link destination", () => {
-    const { errors } = validateFieldUpdate("home", "hero", "cta", {
+    const { errors } = validateFieldUpdate("shared", "footer", "cta", {
       label: "Click",
       href: "javascript:alert(1)",
     });
@@ -155,9 +155,9 @@ describe("validateFieldUpdate", () => {
 
   it("rejects an image that is not under /assets/", () => {
     const { errors } = validateFieldUpdate(
-      "home",
-      "hero",
-      "badge",
+      "shared",
+      "footer",
+      "image",
       "https://cdn.example.com/x.png",
     );
     expect(errors.join()).toContain("images must be a path under /assets/");
@@ -165,13 +165,13 @@ describe("validateFieldUpdate", () => {
 
   it("enforces length limits", () => {
     expect(
-      validateFieldUpdate("home", "hero", "title", "x".repeat(LIMITS.text + 1)).errors.join(),
+      validateFieldUpdate("home", "seo", "title", "x".repeat(LIMITS.text + 1)).errors.join(),
     ).toContain("too long");
-    expect(validateFieldUpdate("home", "hero", "title", "x".repeat(LIMITS.text)).errors).toEqual(
+    expect(validateFieldUpdate("home", "seo", "title", "x".repeat(LIMITS.text)).errors).toEqual(
       [],
     );
     expect(
-      validateFieldUpdate("home", "hero", "body", "x".repeat(LIMITS.textarea + 1)).errors.join(),
+      validateFieldUpdate("home", "seo", "description", "x".repeat(LIMITS.textarea + 1)).errors.join(),
     ).toContain("too long");
   });
 
@@ -219,8 +219,8 @@ describe("changedFieldsForPage", () => {
 
   it("finds the one field that differs", () => {
     const after = content();
-    after["home"]!["hero"]!["title"] = "Different";
-    expect([...changedFieldsForPage("home", liveContent, after)]).toEqual(["hero.title"]);
+    after["home"]!["seo"]!["title"] = "Different";
+    expect([...changedFieldsForPage("home", liveContent, after)]).toEqual(["seo.title"]);
   });
 
   it("ignores changes on other pages", () => {

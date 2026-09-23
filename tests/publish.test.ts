@@ -186,9 +186,9 @@ describe("runPublish — rejections commit nothing", () => {
         repo,
         userEmail: "owner@example.com",
         input: {
-          slug: "home",
+          slug: "shared",
           baseCommitSha: BASE_SHA,
-          fields: [{ section: "hero", field: "not_a_real_field", value: "x" }],
+          fields: [{ section: "footer", field: "not_a_real_field", value: "x" }],
           images: [],
         },
       }),
@@ -203,10 +203,10 @@ describe("runPublish — rejections commit nothing", () => {
         repo,
         userEmail: "owner@example.com",
         input: {
-          slug: "home",
+          slug: "shared",
           baseCommitSha: BASE_SHA,
           fields: [
-            { section: "hero", field: "cta", value: { label: "Go", href: "javascript:alert(1)" } },
+            { section: "footer", field: "cta", value: { label: "Go", href: "javascript:alert(1)" } },
           ],
           images: [],
         },
@@ -222,13 +222,13 @@ describe("runPublish — rejections commit nothing", () => {
         repo,
         userEmail: "owner@example.com",
         input: {
-          slug: "home",
+          slug: "shared",
           baseCommitSha: BASE_SHA,
           fields: [],
           images: [
             {
-              section: "hero",
-              field: "badge",
+              section: "footer",
+              field: "image",
               filename: "evil.svg",
               contentType: "image/svg+xml",
               dataBase64: pngBase64,
@@ -249,13 +249,13 @@ describe("runPublish — rejections commit nothing", () => {
         repo,
         userEmail: "owner@example.com",
         input: {
-          slug: "home",
+          slug: "shared",
           baseCommitSha: BASE_SHA,
           fields: [],
           images: [
             {
-              section: "hero",
-              field: "badge",
+              section: "footer",
+              field: "image",
               filename: "huge.png",
               contentType: "image/png",
               dataBase64: oversized,
@@ -273,7 +273,7 @@ describe("runPublish — rejections commit nothing", () => {
       runPublish({
         repo,
         userEmail: "owner@example.com",
-        input: { slug: "home", baseCommitSha: BASE_SHA, fields: [], images: [] },
+        input: { slug: "shared", baseCommitSha: BASE_SHA, fields: [], images: [] },
       }),
     ).rejects.toThrow("no changes to publish");
     expect(commits).toHaveLength(0);
@@ -288,7 +288,7 @@ describe("runPublish — rejections commit nothing", () => {
         input: {
           slug: "not-a-page",
           baseCommitSha: BASE_SHA,
-          fields: [{ section: "hero", field: "title", value: "x" }],
+          fields: [{ section: "footer", field: "copyright", value: "x" }],
           images: [],
         },
       }),
@@ -303,9 +303,9 @@ describe("runPublish — rejections commit nothing", () => {
         repo,
         userEmail: "owner@example.com",
         input: {
-          slug: "home",
+          slug: "shared",
           baseCommitSha: "",
-          fields: [{ section: "hero", field: "title", value: "x" }],
+          fields: [{ section: "footer", field: "copyright", value: "x" }],
           images: [],
         },
       }),
@@ -323,13 +323,13 @@ describe("runPublish — happy path", () => {
       userEmail: "owner@example.com",
       now: () => 1700000000000,
       input: {
-        slug: "home",
+        slug: "shared",
         baseCommitSha: BASE_SHA,
-        fields: [{ section: "hero", field: "title", value: "A Brand New Headline" }],
+        fields: [{ section: "footer", field: "copyright", value: "A Brand New Headline" }],
         images: [
           {
-            section: "hero",
-            field: "badge",
+            section: "footer",
+            field: "image",
             filename: "My New Badge!.PNG",
             contentType: "image/png",
             dataBase64: pngBase64,
@@ -346,7 +346,7 @@ describe("runPublish — happy path", () => {
     expect(commit.parentCommitSha).toBe(BASE_SHA);
     expect(commit.files.map((file) => file.path).sort()).toEqual([
       "content/pages.json",
-      "public/assets/uploads/home-1700000000000-my-new-badge.png",
+      "public/assets/uploads/shared-1700000000000-my-new-badge.png",
     ]);
 
     // The image blob is committed as base64, unchanged.
@@ -356,22 +356,22 @@ describe("runPublish — happy path", () => {
 
     // The text change and the new image path both landed in the content.
     const written = committedContent(commit);
-    expect(written["home"]!["hero"]!["title"]).toBe("A Brand New Headline");
-    expect(written["home"]!["hero"]!["badge"]).toBe(
-      "/assets/uploads/home-1700000000000-my-new-badge.png",
+    expect(written["shared"]!["footer"]!["copyright"]).toBe("A Brand New Headline");
+    expect(written["shared"]!["footer"]!["image"]).toBe(
+      "/assets/uploads/shared-1700000000000-my-new-badge.png",
     );
 
     // Nothing else changed.
     const expected = tree();
-    expected["home"]!["hero"]!["title"] = "A Brand New Headline";
-    expected["home"]!["hero"]!["badge"] = "/assets/uploads/home-1700000000000-my-new-badge.png";
+    expected["shared"]!["footer"]!["copyright"] = "A Brand New Headline";
+    expected["shared"]!["footer"]!["image"] = "/assets/uploads/shared-1700000000000-my-new-badge.png";
     expect(written).toEqual(expected);
 
     // Commit message and returned metadata.
-    expect(commit.message).toBe("Content: Home updated by owner@example.com");
+    expect(commit.message).toBe("Content: Header & Footer updated by owner@example.com");
     expect(outcome.commitSha).toBe("newcommitsha");
     expect(outcome.commitUrl).toContain("/commit/newcommitsha");
-    expect(outcome.images).toEqual(["/assets/uploads/home-1700000000000-my-new-badge.png"]);
+    expect(outcome.images).toEqual(["/assets/uploads/shared-1700000000000-my-new-badge.png"]);
 
     // The written file is in the canonical format check:content expects.
     const file = commit.files.find((entry) => entry.path === CONTENT_PATH)!;
@@ -420,13 +420,13 @@ describe("runPublish — happy path", () => {
         repo,
         userEmail: "owner@example.com",
         input: {
-          slug: "home",
+          slug: "shared",
           baseCommitSha: BASE_SHA,
           fields: [
             {
-              section: "hero",
-              field: "title",
-              value: current["home"]!["hero"]!["title"] as string,
+              section: "footer",
+              field: "copyright",
+              value: current["shared"]!["footer"]!["copyright"] as string,
             },
           ],
           images: [],
@@ -441,7 +441,7 @@ describe("runPublish — the branch moved while editing", () => {
   it("merges field by field when the other change touched different fields", async () => {
     const base = tree();
     const moved = tree();
-    moved["home"]!["hero"]!["body"] = "Someone else rewrote the body copy.";
+    moved["shared"]!["footer"]!["blurb_one"] = "Someone else rewrote the body copy.";
 
     const { repo, commits } = fakeRepo({
       head: MOVED_SHA,
@@ -452,9 +452,9 @@ describe("runPublish — the branch moved while editing", () => {
       repo,
       userEmail: "owner@example.com",
       input: {
-        slug: "home",
+        slug: "shared",
         baseCommitSha: BASE_SHA,
-        fields: [{ section: "hero", field: "title", value: "My New Headline" }],
+        fields: [{ section: "footer", field: "copyright", value: "My New Headline" }],
         images: [],
       },
     });
@@ -462,9 +462,9 @@ describe("runPublish — the branch moved while editing", () => {
     expect(commits).toHaveLength(1);
     const written = committedContent(commits[0]!);
     // Mine applied...
-    expect(written["home"]!["hero"]!["title"]).toBe("My New Headline");
+    expect(written["shared"]!["footer"]!["copyright"]).toBe("My New Headline");
     // ...and theirs preserved.
-    expect(written["home"]!["hero"]!["body"]).toBe("Someone else rewrote the body copy.");
+    expect(written["shared"]!["footer"]!["blurb_one"]).toBe("Someone else rewrote the body copy.");
     // Parented on the moved head, so the ref update is a fast-forward.
     expect(commits[0]!.parentCommitSha).toBe(MOVED_SHA);
   });
@@ -483,22 +483,22 @@ describe("runPublish — the branch moved while editing", () => {
       repo,
       userEmail: "owner@example.com",
       input: {
-        slug: "home",
+        slug: "shared",
         baseCommitSha: BASE_SHA,
-        fields: [{ section: "hero", field: "title", value: "My New Headline" }],
+        fields: [{ section: "footer", field: "copyright", value: "My New Headline" }],
         images: [],
       },
     });
 
     const written = committedContent(commits[0]!);
-    expect(written["home"]!["hero"]!["title"]).toBe("My New Headline");
+    expect(written["shared"]!["footer"]!["copyright"]).toBe("My New Headline");
     expect(written["contact"]!["seo"]!["title"]).toBe("Reach Us");
   });
 
   it("returns a conflict naming the field, and commits nothing, on overlap", async () => {
     const base = tree();
     const moved = tree();
-    moved["home"]!["hero"]!["title"] = "Their Headline";
+    moved["shared"]!["footer"]!["copyright"] = "Their Headline";
 
     const { repo, commits } = fakeRepo({
       head: MOVED_SHA,
@@ -511,9 +511,9 @@ describe("runPublish — the branch moved while editing", () => {
         repo,
         userEmail: "owner@example.com",
         input: {
-          slug: "home",
+          slug: "shared",
           baseCommitSha: BASE_SHA,
-          fields: [{ section: "hero", field: "title", value: "My Headline" }],
+          fields: [{ section: "footer", field: "copyright", value: "My Headline" }],
           images: [],
         },
       });
@@ -524,7 +524,7 @@ describe("runPublish — the branch moved while editing", () => {
     expect(caught).toBeInstanceOf(PublishError);
     expect((caught as PublishError).code).toBe("conflict");
     expect((caught as PublishError).message).toContain("Someone else changed");
-    expect((caught as PublishError).fields).toEqual(["Hero → Headline"]);
+    expect((caught as PublishError).fields).toEqual(["Footer → Copyright line"]);
     expect(commits).toHaveLength(0);
   });
 
@@ -536,9 +536,9 @@ describe("runPublish — the branch moved while editing", () => {
         repo,
         userEmail: "owner@example.com",
         input: {
-          slug: "home",
+          slug: "shared",
           baseCommitSha: BASE_SHA,
-          fields: [{ section: "hero", field: "title", value: "x" }],
+          fields: [{ section: "footer", field: "copyright", value: "x" }],
           images: [],
         },
       }),
@@ -592,7 +592,7 @@ describe("createGithubContentRepo — one commit through the Git Data API", () =
     expect(await repo.getBranchHead()).toBe("headsha");
 
     const result = await repo.commit({
-      message: "Content: Home updated by owner@example.com",
+      message: "Content: Header & Footer updated by owner@example.com",
       parentCommitSha: "headsha",
       files: [
         { path: CONTENT_PATH, content: utf8ToBase64("{}\n"), encoding: "base64" },
