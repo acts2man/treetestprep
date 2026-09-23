@@ -5,7 +5,8 @@
  * the kit breakpoints (tablet and mobile rules only carry the values set at that
  * device, so inheritance falls out of the cascade); hover values become `:hover` rules;
  * kit values become custom properties on `.ae-root`. Everything is scoped under
- * `.ae-root` so builder CSS and the site's own CSS never fight. Pure module.
+ * `.ae-root` so builder CSS and the site's own CSS never fight, and resets never reach
+ * into registered site sections (see `NOT_SITE`). Pure module.
  */
 import { own, perDevice, resolve } from "./responsive.ts";
 import { sanitizeCss } from "./sanitize.ts";
@@ -176,6 +177,8 @@ function styleDecls(style: StyleBase | undefined): Record<Device, Decl[]> {
     if (color !== undefined) decls.push(["color", refToCss(color) ?? "inherit"]);
     const textShadow = own(style.textShadow, device);
     if (textShadow) decls.push(["text-shadow", shadowCss(textShadow)]);
+    const textStroke = own(style.textStroke, device);
+    if (textStroke) decls.push(["-webkit-text-stroke", `${textStroke.width}px ${refToCss(textStroke.color) ?? "currentColor"}`]);
     const boxShadow = own(style.boxShadow, device);
     if (boxShadow) decls.push(["box-shadow", shadowCss(boxShadow)]);
     if (style.border) {
@@ -197,6 +200,8 @@ function styleDecls(style: StyleBase | undefined): Record<Device, Decl[]> {
     decls.push(...backgroundDecls(own(style.background, device)));
     const opacity = own(style.opacity, device);
     if (opacity !== undefined) decls.push(["opacity", String(opacity)]);
+    const blend = own(style.mixBlendMode, device);
+    if (blend) decls.push(["mix-blend-mode", blend]);
   }
   if (style.transition !== undefined) out.desktop.push(["transition", `all ${style.transition}ms ease`]);
   return out;
@@ -241,6 +246,8 @@ function advancedRules(sheet: Sheet, selector: string, advanced: Advanced, kit: 
   sheet.responsive(selector, advanced.order, (value) => [["order", String(value)]]);
   sheet.responsive(selector, advanced.flexGrow, (value) => [["flex-grow", String(value)]]);
   sheet.responsive(selector, advanced.flexShrink, (value) => [["flex-shrink", String(value)]]);
+  sheet.responsive(selector, advanced.gridColumnSpan, (value) => [["grid-column", `span ${Math.max(1, Math.round(value))}`]]);
+  sheet.responsive(selector, advanced.gridRowSpan, (value) => [["grid-row", `span ${Math.max(1, Math.round(value))}`]]);
   if (advanced.position && advanced.position.type !== "default") {
     sheet.add("base", selector, "position", advanced.position.type);
     for (const side of ["top", "right", "bottom", "left"] as const) sheet.responsive(selector, advanced.position[side], (size) => [[side, sizeToCss(size) ?? "auto"]]);
@@ -394,7 +401,11 @@ export function registerStyleTarget(type: string, inner: string): void {
 export const styleTargetOf = (type: string): string | undefined => styleTargets.get(type);
 
 export function elementRules(sheet: Sheet, element: Element, kit: SiteKit, options: CssOptions): void {
-  const selector = `.ae-root .ae-${cssIdent(element.id)}`;
+  // The element class is doubled (.ae-<id>.ae-<id>) so an element's own settings and Style-tab
+  // values always outrank a CSS class attached through Advanced > CSS classes (a legacy site
+  // class on the same element), whatever order the site's own stylesheet loads in.
+  const id = cssIdent(element.id);
+  const selector = `.ae-root .ae-${id}.ae-${id}`;
   const inner = styleTargets.get(element.type);
   const styleSelector = inner ? `${selector} ${inner}` : selector;
   const hoverSelector = inner ? `${selector}:hover ${inner}` : `${selector}:hover`;
@@ -477,9 +488,18 @@ function buttonPresetRules(sheet: Sheet, name: string, preset: ButtonPreset): vo
   }
 }
 
+/**
+ * Registered site sections are hand-coded and rendered inside `.ae-root` (wrapped in
+ * `.ae-site-section`). Builder CSS must never change how they render, so every reset or
+ * base rule that could match arbitrary markup — anything not already scoped to a builder
+ * `.ae-*` class — excludes the section wrapper and everything inside it. `:where()` keeps
+ * the exclusion at zero specificity, so the rule's specificity is unchanged.
+ */
+const NOT_SITE = ":not(:where(.ae-site-section, .ae-site-section *))";
+
 const BASE_CSS = `
 .ae-root { box-sizing: border-box; }
-.ae-root *, .ae-root *::before, .ae-root *::after { box-sizing: border-box; }
+.ae-root *${NOT_SITE}, .ae-root *${NOT_SITE}::before, .ae-root *${NOT_SITE}::after { box-sizing: border-box; }
 .ae-root .ae-el { min-width: 0; }
 .ae-root .ae-con { position: relative; display: flex; flex-direction: column; width: 100%; }
 .ae-root .ae-con > .ae-con-inner { display: flex; flex-direction: column; flex: 1 1 auto; width: 100%; margin: 0 auto; gap: var(--ae-con-gap); min-width: 0; }
