@@ -40,14 +40,26 @@ or `src/lib/publish.server.ts`.
 
 ### Armature site kit (site contract v2: page builder)
 
+**The public pages are builder-native.** Every page's hero, prose, images, buttons, lists,
+video and FAQ live as builder elements (containers + widgets) in `content/layouts/<slug>.json`,
+not as hand-coded React. **Add new page content as builder elements in `content/layouts`
+(through the Armature editor / dashboard), never as a new `registerSiteSection()` coded
+section.** The public site renders the layouts through `<ArmatureSlot>`; the coded page
+components are now just `SiteHeader` + `<ArmatureSlot slug=… defaults={[]} />` + `SiteFooter`.
+The header and footer stay hand-coded. The one remaining registered site section is the
+instructor list on `/meet-your-instructors` (`instructors`), because it renders a live
+Supabase query that no static widget can bind to; it is placed in its layout as a
+`site-section` element. `content/schema.json` / `content/pages.json` now hold only each
+page's SEO fields plus the shared header/footer and the instructor-intro copy.
+
 `src/lib/armature-kit/` is a **verbatim copy** of the `kit/` folder from
-[acts2man/armature](https://github.com/acts2man/armature) (only its upstream unit test,
-`kit.test.ts`, is left out — it imports monorepo-only paths). **AI builders must not edit,
-reformat, lint-fix, remove or restructure it.** It is what lets the Armature dashboard open
-this site in a frame and build it in place (drag widgets, reorder sections, publish
-layouts). To upgrade it, copy the upstream folder over it unchanged. (Two tsconfig flags,
-`noPropertyAccessFromIndexSignature` and `exactOptionalPropertyTypes`, are off for that
-reason; do not turn them back on without re-checking the kit compiles.)
+[acts2man/armature](https://github.com/acts2man/armature) (`KIT_VERSION` 2.2.0), copied
+whole, including its `README.md`; upstream ships no unit test inside `kit/`. **AI builders
+must not edit, reformat, lint-fix, remove or restructure it.** It is what lets the Armature
+dashboard open this site in a frame and build it in place (drag widgets, reorder sections,
+publish layouts). To upgrade it, copy the upstream folder over it unchanged. (Two tsconfig
+flags, `noPropertyAccessFromIndexSignature` and `exactOptionalPropertyTypes`, are off for
+that reason; do not turn them back on without re-checking the kit compiles.)
 
 `content/layouts/` and `content/site-kit.json` are **written by the Armature page builder**
 (committed through the dashboard, like `content/pages.json`). **AI builders must not edit,
