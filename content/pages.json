@@ -94,58 +94,6 @@
     }
   },
   "exam-information": {
-    "apply": {
-      "body": "Once your application is approved, you will be able to register for the exam.",
-      "cta": {
-        "href": "/class-registration-page/",
-        "label": "Register for the course"
-      },
-      "heading": "How to Apply",
-      "intro": "Submit your application to the ISA here:"
-    },
-    "eligibility": {
-      "heading": "Course Eligibility",
-      "intro": "To qualify for the ISA Certified Arborist Exam, you must be able to document one of the following:",
-      "items": [
-        {
-          "text": "Three years of full-time experience in arboriculture"
-        },
-        {
-          "text": "Two years of full-time experience plus a two-year degree in a related field, including at least two courses directly related to arboriculture"
-        },
-        {
-          "text": "One year of full-time experience plus a four-year degree in a related field, including at least four courses directly related to arboriculture"
-        },
-        {
-          "text": "900 hours in an assessment-based certificate program with a minimum of 90 hours directly related to arboriculture, plus two years of full-time practical experience"
-        },
-        {
-          "text": "1,800 hours in an assessment-based certificate program with a minimum of 180 hours directly related to arboriculture, plus one year of full-time practical experience"
-        }
-      ],
-      "note": "Exam registration is separate from course registration. The cost of this course does not include the ISA’s exam fee. Students must register and pay for the exam directly through the ISA.",
-      "note_label": "Important:"
-    },
-    "hero": {
-      "image": "/assets/exam-tree.webp",
-      "title": "Exam Information"
-    },
-    "process": {
-      "body": "This process must be completed directly through the ISA. Please note: this course does not qualify you to take the exam. It is designed only to help you prepare and increase your chances of passing.",
-      "cta": {
-        "href": "https://www.isa-arbor.com/Credentials/Apply-Now/Apply-for-Eligibility",
-        "label": "Apply for Eligibility"
-      },
-      "heading": "The ISA Certification Process",
-      "steps": [
-        {
-          "text": "Apply to sit for the exam."
-        },
-        {
-          "text": "Once your application is approved, you may register for the exam."
-        }
-      ]
-    },
     "seo": {
       "description": "How the ISA Certified Arborist exam works, eligibility requirements, and how to apply and register directly with the ISA.",
       "image": "",

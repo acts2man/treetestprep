@@ -204,58 +204,7 @@ export const PAGE_SCHEMA: PageDefinition[] = [
     label: "Exam Information",
     path: "/exam-information/",
     description: "ISA certification process and eligibility copy.",
-    sections: [
-      {
-        key: "hero",
-        label: "Hero",
-        fields: [
-          textField("title", "Headline"),
-          imageField("image", "Hero photo"),
-        ],
-      },
-      {
-        key: "process",
-        label: "Certification process",
-        fields: [
-          textField("heading", "Heading"),
-          {
-            key: "steps",
-            label: "Steps",
-            type: "list",
-            itemFields: [{ key: "text", label: "Step", type: "textarea" }],
-          },
-          areaField("body", "Body copy"),
-          linkField("cta", "ISA link"),
-        ],
-      },
-      {
-        key: "eligibility",
-        label: "Eligibility",
-        fields: [
-          textField("heading", "Heading"),
-          areaField("intro", "Intro copy"),
-          {
-            key: "items",
-            label: "Eligibility routes",
-            type: "list",
-            itemFields: [{ key: "text", label: "Requirement", type: "textarea" }],
-          },
-          textField("note_label", "Important note label"),
-          areaField("note", "Important note"),
-        ],
-      },
-      {
-        key: "apply",
-        label: "How to apply",
-        fields: [
-          textField("heading", "Heading"),
-          textField("intro", "Sentence before the ISA link"),
-          areaField("body", "Closing paragraph"),
-          linkField("cta", "Register button"),
-        ],
-      },
-      seoSection(),
-    ],
+    sections: [seoSection()],
   },
   {
     slug: "inspiration",
