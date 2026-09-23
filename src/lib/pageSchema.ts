@@ -323,23 +323,7 @@ export const PAGE_SCHEMA: PageDefinition[] = [
     label: "Contact Us",
     path: "/contact-us/",
     description: "Contact hero and email call to action.",
-    sections: [
-      {
-        key: "hero",
-        label: "Hero",
-        fields: [
-          textField("title", "Headline"),
-          textField("subtitle", "Email shown in hero"),
-          imageField("image", "Hero photo"),
-        ],
-      },
-      {
-        key: "message",
-        label: "Message",
-        fields: [areaField("heading", "Heading"), linkField("cta", "Email button")],
-      },
-      seoSection(),
-    ],
+    sections: [seoSection()],
   },
   {
     slug: "registration",

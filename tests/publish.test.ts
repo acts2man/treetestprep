@@ -472,7 +472,7 @@ describe("runPublish — the branch moved while editing", () => {
   it("merges when the other change was on a different page entirely", async () => {
     const base = tree();
     const moved = tree();
-    moved["contact"]!["hero"]!["title"] = "Reach Us";
+    moved["contact"]!["seo"]!["title"] = "Reach Us";
 
     const { repo, commits } = fakeRepo({
       head: MOVED_SHA,
@@ -492,7 +492,7 @@ describe("runPublish — the branch moved while editing", () => {
 
     const written = committedContent(commits[0]!);
     expect(written["home"]!["hero"]!["title"]).toBe("My New Headline");
-    expect(written["contact"]!["hero"]!["title"]).toBe("Reach Us");
+    expect(written["contact"]!["seo"]!["title"]).toBe("Reach Us");
   });
 
   it("returns a conflict naming the field, and commits nothing, on overlap", async () => {

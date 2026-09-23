@@ -24,7 +24,7 @@ describe("validateContentTree — the check:content rules", () => {
     const report = validateContentTree(liveContent);
     expect(report.errors).toEqual([]);
     expect(report.warnings).toEqual([]);
-    expect(report.checked).toBe(126);
+    expect(report.checked).toBe(121);
   });
 
   it("reports a missing field", () => {
@@ -57,10 +57,10 @@ describe("validateContentTree — the check:content rules", () => {
 
   it("reports a text field holding a number", () => {
     const tree = content();
-    tree["contact"]!["hero"]!["title"] = 42;
+    tree["contact"]!["seo"]!["title"] = 42;
     const report = validateContentTree(tree);
     expect(report.errors.join("\n")).toContain(
-      'contact.hero.title: expected a string for type "text", got number',
+      'contact.seo.title: expected a string for type "text", got number',
     );
   });
 
@@ -225,7 +225,7 @@ describe("changedFieldsForPage", () => {
 
   it("ignores changes on other pages", () => {
     const after = content();
-    after["contact"]!["hero"]!["title"] = "Different";
+    after["contact"]!["seo"]!["title"] = "Different";
     expect([...changedFieldsForPage("home", liveContent, after)]).toEqual([]);
   });
 });

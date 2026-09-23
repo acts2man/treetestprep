@@ -91,7 +91,18 @@ describe("hand-mapped fields", () => {
 describe("page-builder layouts (site contract v2)", () => {
   const codedSlugs = new Set(ALL_PAGES.map((page) => page.slug));
 
-  test("every coded page (except the shared header/footer) has a layout of registered site sections", () => {
+  test("every coded page (except the shared header/footer) has a builder-native layout", () => {
+    type El = { type: string; id: string; props: Record<string, unknown>; children?: El[] };
+    const walk = (elements: El[]) => {
+      for (const element of elements) {
+        expect(typeof element.type).toBe("string");
+        expect(element.type.length).toBeGreaterThan(0);
+        expect(element.id).toMatch(/^[a-z0-9]{8}$/);
+        // A section that stays hand-coded still carries a string section key.
+        if (element.type === "site-section") expect(typeof element.props.key).toBe("string");
+        if (element.children) walk(element.children);
+      }
+    };
     for (const page of ALL_PAGES) {
       if (page.slug === "shared") continue;
       const file = `content/layouts/${page.slug}.json`;
@@ -100,17 +111,13 @@ describe("page-builder layouts (site contract v2)", () => {
         version: number;
         pageSlug: string;
         path: string;
-        root: { type: string; id: string; props: { key?: string } }[];
+        root: El[];
       };
       expect(layout.version).toBe(1);
       expect(layout.pageSlug).toBe(page.slug);
       expect(layout.path.replace(/\/+$/, "") || "/").toBe(page.path.replace(/\/+$/, "") || "/");
       expect(layout.root.length).toBeGreaterThan(0);
-      for (const element of layout.root) {
-        expect(element.type).toBe("site-section");
-        expect(element.id).toMatch(/^[a-z0-9]{8}$/);
-        expect(typeof element.props.key).toBe("string");
-      }
+      walk(layout.root);
     }
   });
 

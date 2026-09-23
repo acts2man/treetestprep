@@ -760,43 +760,6 @@
       "description": "Contact hero and email call to action.",
       "sections": [
         {
-          "key": "hero",
-          "label": "Hero",
-          "fields": [
-            {
-              "key": "title",
-              "label": "Headline",
-              "type": "text"
-            },
-            {
-              "key": "subtitle",
-              "label": "Email shown in hero",
-              "type": "text"
-            },
-            {
-              "key": "image",
-              "label": "Hero photo",
-              "type": "image"
-            }
-          ]
-        },
-        {
-          "key": "message",
-          "label": "Message",
-          "fields": [
-            {
-              "key": "heading",
-              "label": "Heading",
-              "type": "textarea"
-            },
-            {
-              "key": "cta",
-              "label": "Email button",
-              "type": "link"
-            }
-          ]
-        },
-        {
           "key": "seo",
           "label": "SEO & sharing",
           "fields": [

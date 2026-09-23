@@ -1,17 +1,5 @@
 {
   "contact": {
-    "hero": {
-      "image": "/assets/contact-tree.webp",
-      "subtitle": "Treetestprep@gmail.com",
-      "title": "Get in Touch"
-    },
-    "message": {
-      "cta": {
-        "href": "mailto:Treetestprep@gmail.com",
-        "label": "Email Tree Test Prep"
-      },
-      "heading": "Have A Question? We're Here To Help. Send Us An Email And A Member Of Our Team Will Get Back To You Within One Business Day."
-    },
     "seo": {
       "description": "Questions about the ISA Certified Arborist prep course? Email Tree Test Prep and a member of our team will reply within one business day.",
       "image": "",
