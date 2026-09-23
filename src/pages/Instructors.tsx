@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { InnerHero, SiteFooter, SiteHeader } from "../components/SiteChrome";
+import { SiteFooter, SiteHeader } from "../components/SiteChrome";
 import { supabase } from "@/integrations/supabase/client";
 import { usePageCopy } from "@/hooks/usePageContent";
 import { armature } from "@/lib/armature";
@@ -13,19 +13,10 @@ type InstructorRow = {
   image_url: string | null;
 };
 
-function InstructorsHero() {
-  const copy = usePageCopy("instructors");
-  return (
-    <InnerHero
-      title={copy.text("hero", "title")}
-      subtitle={copy.text("hero", "subtitle")}
-      image={copy.text("hero", "image")}
-      imageField="instructors.hero.image"
-      className="instructors-hero"
-    />
-  );
-}
-
+// The hero is builder-native (content/layouts/instructors.json). The instructor list
+// below is rendered from a live Supabase query, so it stays a hand-coded site section:
+// no static kit widget can bind to the database. It remains registered and is placed in
+// the layout as a `site-section` element.
 function InstructorsIntro() {
   const copy = usePageCopy("instructors");
   const roleLabel = copy.text("intro", "role_label");
@@ -75,14 +66,13 @@ function InstructorsIntro() {
   );
 }
 
-armature.registerSiteSection("instructors-hero", { label: "Instructors hero", component: InstructorsHero });
 armature.registerSiteSection("instructors", { label: "Meet the instructors", component: InstructorsIntro });
 
 export default function Instructors() {
   return (
     <main>
       <SiteHeader activePath="/meet-your-instructors/" />
-      <ArmatureSlot slug="instructors" defaults={["instructors-hero", "instructors"]} />
+      <ArmatureSlot slug="instructors" defaults={["instructors"]} />
       <SiteFooter />
     </main>
   );

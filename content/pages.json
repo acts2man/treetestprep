@@ -198,11 +198,6 @@
     }
   },
   "instructors": {
-    "hero": {
-      "image": "/assets/instructors-tree.webp",
-      "subtitle": "We are a group of enthusiastic arborists and urban foresters who are raising the bar in the tree care industry.",
-      "title": "Meet The Instructors"
-    },
     "intro": {
       "body": "All of our instructors are ISA Certified Arborists with decades of experience.",
       "heading": "Meet the Instructors",

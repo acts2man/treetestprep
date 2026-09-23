@@ -517,27 +517,6 @@
       "description": "Instructor intro copy. Individual bios live under Instructors.",
       "sections": [
         {
-          "key": "hero",
-          "label": "Hero",
-          "fields": [
-            {
-              "key": "title",
-              "label": "Headline",
-              "type": "text"
-            },
-            {
-              "key": "subtitle",
-              "label": "Sub headline",
-              "type": "textarea"
-            },
-            {
-              "key": "image",
-              "label": "Hero photo",
-              "type": "image"
-            }
-          ]
-        },
-        {
           "key": "intro",
           "label": "Intro",
           "fields": [

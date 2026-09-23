@@ -220,15 +220,6 @@ export const PAGE_SCHEMA: PageDefinition[] = [
     description: "Instructor intro copy. Individual bios live under Instructors.",
     sections: [
       {
-        key: "hero",
-        label: "Hero",
-        fields: [
-          textField("title", "Headline"),
-          areaField("subtitle", "Sub headline"),
-          imageField("image", "Hero photo"),
-        ],
-      },
-      {
         key: "intro",
         label: "Intro",
         fields: [
