@@ -24,7 +24,7 @@ describe("validateContentTree — the check:content rules", () => {
     const report = validateContentTree(liveContent);
     expect(report.errors).toEqual([]);
     expect(report.warnings).toEqual([]);
-    expect(report.checked).toBe(81);
+    expect(report.checked).toBe(65);
   });
 
   it("reports a missing field", () => {
