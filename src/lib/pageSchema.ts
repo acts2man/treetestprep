@@ -211,34 +211,7 @@ export const PAGE_SCHEMA: PageDefinition[] = [
     label: "The Inspiration",
     path: "/about-us/",
     description: "The Ken Menzer story.",
-    sections: [
-      {
-        key: "hero",
-        label: "Hero",
-        fields: [
-          textField("title", "Headline"),
-          areaField("subtitle", "Sub headline"),
-          imageField("image", "Hero photo"),
-        ],
-      },
-      {
-        key: "story",
-        label: "Story",
-        fields: [
-          textField("title", "Name"),
-          textField("subtitle", "Sub heading"),
-          imageField("image", "Photo"),
-          textField("image_alt", "Photo alt text"),
-          {
-            key: "paragraphs",
-            label: "Paragraphs",
-            type: "list",
-            itemFields: [{ key: "text", label: "Paragraph", type: "textarea" }],
-          },
-        ],
-      },
-      seoSection(),
-    ],
+    sections: [seoSection()],
   },
   {
     slug: "instructors",

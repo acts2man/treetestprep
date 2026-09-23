@@ -191,35 +191,10 @@
     }
   },
   "inspiration": {
-    "hero": {
-      "image": "/assets/ken-menzer-hero.webp",
-      "subtitle": "In honor of Ken Menzer, Tree Test Prep was created to help tree care professionals by providing ISA certification training that will help them reach the upper echelons of arboriculture.",
-      "title": "The Inspiration"
-    },
     "seo": {
       "description": "Tree Test Prep was created in honor of Ken Menzer, City Arborist and Community Forester, to help tree care professionals become Certified Arborists.",
       "image": "",
       "title": "The Inspiration Behind Tree Test Prep | Ken Menzer"
-    },
-    "story": {
-      "image": "/assets/ken-menzer-fishing.webp",
-      "image_alt": "Ken Menzer fishing on the ocean",
-      "paragraphs": [
-        {
-          "text": "Tree Test Prep was created in honor of Ken Menzer to help aspiring and seasoned tree care professionals become Certified Arborists."
-        },
-        {
-          "text": "Ken was a Community Forester for the Sacramento Tree Foundation, where he grew shade trees for the Community Shade program. He also served the City of Folsom for 11 years as their City Arborist. In that role, he assisted residents with tree care, organized numerous volunteer plantings, and hosted the annual Arborists Breakfast, which brought professionals from across the metropolitan area together for a day of continuing education."
-        },
-        {
-          "text": "As the City Arborist in Folsom, Ken continually encouraged tree care professionals to expand their skills and pursue certification. He was always willing to share his expertise, meeting with professionals to support their growth. His motto was simple: Educate and elevate."
-        },
-        {
-          "text": "For the last five years of his life, Ken bravely battled non-Hodgkin's lymphoma."
-        }
-      ],
-      "subtitle": "The Inspiration Behind Our Mission",
-      "title": "Ken Menzer"
     }
   },
   "instructors": {
