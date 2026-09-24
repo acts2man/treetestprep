@@ -24,6 +24,8 @@ import { Route as AdminClassesRouteImport } from './routes/admin.classes'
 import { Route as AdminInstructorsRouteImport } from './routes/admin.instructors'
 import { Route as AdminResourcesRouteImport } from './routes/admin.resources'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as EventsLocationRouteImport } from './routes/events.location'
 import { Route as AdminPagesIndexRouteImport } from './routes/admin.pages.index'
 import { Route as AdminPagesSlugRouteImport } from './routes/admin.pages.$slug'
@@ -103,6 +105,16 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AdminRoute,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EventsLocationRoute = EventsLocationRouteImport.update({
   id: '/events/location',
   path: '/events/location',
@@ -134,8 +146,10 @@ export interface FileRoutesByFullPath {
   '/admin/instructors': typeof AdminInstructorsRoute
   '/admin/resources': typeof AdminResourcesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/events/location': typeof EventsLocationRoute
   '/admin/': typeof AdminIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/admin/pages/$slug': typeof AdminPagesSlugRoute
   '/admin/pages/': typeof AdminPagesIndexRoute
 }
@@ -153,8 +167,10 @@ export interface FileRoutesByTo {
   '/admin/instructors': typeof AdminInstructorsRoute
   '/admin/resources': typeof AdminResourcesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/events/location': typeof EventsLocationRoute
   '/admin': typeof AdminIndexRoute
+  '/blog': typeof BlogIndexRoute
   '/admin/pages/$slug': typeof AdminPagesSlugRoute
   '/admin/pages': typeof AdminPagesIndexRoute
 }
@@ -174,8 +190,10 @@ export interface FileRoutesById {
   '/admin/instructors': typeof AdminInstructorsRoute
   '/admin/resources': typeof AdminResourcesRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/events/location': typeof EventsLocationRoute
   '/admin/': typeof AdminIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/admin/pages/$slug': typeof AdminPagesSlugRoute
   '/admin/pages/': typeof AdminPagesIndexRoute
 }
@@ -196,8 +214,10 @@ export interface FileRouteTypes {
     | '/admin/instructors'
     | '/admin/resources'
     | '/admin/settings'
+    | '/blog/$slug'
     | '/events/location'
     | '/admin/'
+    | '/blog/'
     | '/admin/pages/$slug'
     | '/admin/pages/'
   fileRoutesByTo: FileRoutesByTo
@@ -215,8 +235,10 @@ export interface FileRouteTypes {
     | '/admin/instructors'
     | '/admin/resources'
     | '/admin/settings'
+    | '/blog/$slug'
     | '/events/location'
     | '/admin'
+    | '/blog'
     | '/admin/pages/$slug'
     | '/admin/pages'
   id:
@@ -235,8 +257,10 @@ export interface FileRouteTypes {
     | '/admin/instructors'
     | '/admin/resources'
     | '/admin/settings'
+    | '/blog/$slug'
     | '/events/location'
     | '/admin/'
+    | '/blog/'
     | '/admin/pages/$slug'
     | '/admin/pages/'
   fileRoutesById: FileRoutesById
@@ -252,7 +276,9 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   ExamInformationRoute: typeof ExamInformationRoute
   MeetYourInstructorsRoute: typeof MeetYourInstructorsRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   EventsLocationRoute: typeof EventsLocationRoute
+  BlogIndexRoute: typeof BlogIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -362,6 +388,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/events/location': {
       id: '/events/location'
       path: '/events/location'
@@ -419,7 +459,9 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   ExamInformationRoute: ExamInformationRoute,
   MeetYourInstructorsRoute: MeetYourInstructorsRoute,
+  BlogSlugRoute: BlogSlugRoute,
   EventsLocationRoute: EventsLocationRoute,
+  BlogIndexRoute: BlogIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

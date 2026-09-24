@@ -16,11 +16,12 @@
  * keeps working unchanged.
  */
 import { createArmatureKit } from "./armature-kit";
-import type { ContentTree, LayoutDoc, SiteKit } from "./armature-kit";
+import type { ContentTree, LayoutDoc, PostDoc, SiteKit } from "./armature-kit";
 import type { SiteSchemaLike } from "./armature-kit/bridge";
 import schema from "../../content/schema.json";
 import content from "../../content/pages.json";
 import siteKit from "../../content/site-kit.json";
+import postIndex from "../../content/posts/index.json";
 
 // Every committed layout (coded pages here, plus any page the builder publishes later),
 // baked in at build time by Vite so it lands in the server-rendered HTML with no extra
@@ -31,6 +32,15 @@ try {
   layoutModules = import.meta.glob("../../content/layouts/*.json", { eager: true });
 } catch {
   layoutModules = [];
+}
+
+// Blog posts, baked in the same way. The glob also matches content/posts/index.json, which
+// is not a post file — the kit skips anything that is not a `kind: "post"` document.
+let postModules: Record<string, unknown> | PostDoc[] = [];
+try {
+  postModules = import.meta.glob("../../content/posts/*.json", { eager: true });
+} catch {
+  postModules = [];
 }
 
 /** The only origin allowed to embed this site for editing. */
@@ -57,6 +67,9 @@ export const armature = createArmatureKit({
   // Coded pages render their site sections through <ArmatureSlot>; a layout here decides
   // the order and anything the builder puts between them.
   layouts: layoutModules,
+  // Blog posts (content/posts/*.json) and the generated index (content/posts/index.json).
+  posts: postModules,
+  postIndex,
   navigate: (path) => {
     if (routerNavigate) {
       routerNavigate(path);

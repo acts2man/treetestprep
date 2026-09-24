@@ -1,0 +1,16 @@
+{
+  "posts": [
+    {
+      "authorName": "Tree Test Prep",
+      "categories": [],
+      "coverImage": null,
+      "excerpt": "Study tips, exam updates and arboriculture insights for future ISA Certified Arborists — coming soon.",
+      "path": "/blog/welcome-to-the-blog/",
+      "publishedAt": "",
+      "slug": "welcome-to-the-blog",
+      "tags": [],
+      "title": "Welcome to the Tree Test Prep blog"
+    }
+  ],
+  "version": 1
+}

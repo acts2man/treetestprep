@@ -33,12 +33,12 @@
  *
  * Deliberately NOT wired into the build.
  */
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateContentTree } from "../src/lib/contentValidation";
 import { SCHEMA_PATH, serializeSiteSchema } from "../src/lib/armatureSchema";
-import { checkLayout, checkSiteKit, describeProblem } from "../src/lib/armature-kit/validate";
+import { checkLayout, checkPost, checkPostIndex, checkSiteKit, describeProblem } from "../src/lib/armature-kit/validate";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const CONTENT = join(here, "..", "content", "pages.json");
@@ -149,9 +149,48 @@ for (const problem of kitReport.problems) {
   failed = true;
 }
 
+// --- content/posts/*.json (blog) must satisfy the kit -----------------------------
+
+const POSTS_DIR = join(here, "..", "content", "posts");
+let postCount = 0;
+if (existsSync(POSTS_DIR)) {
+  for (const name of readdirSync(POSTS_DIR).filter((file) => file.endsWith(".json")).sort()) {
+    const path = join(POSTS_DIR, name);
+    let raw: unknown;
+    try {
+      raw = JSON.parse(readFileSync(path, "utf8"));
+    } catch (error) {
+      console.error(`error    content/posts/${name}: not valid JSON — ${error instanceof Error ? error.message : error}`);
+      layoutProblems += 1;
+      failed = true;
+      continue;
+    }
+    if (name === "index.json") {
+      for (const problem of checkPostIndex(raw).problems) {
+        console.error(`error    ${describeProblem(problem, "content/posts/index.json")}`);
+        layoutProblems += 1;
+        failed = true;
+      }
+      continue;
+    }
+    const report = checkPost(raw);
+    if (report.value === null) {
+      console.error(`error    content/posts/${name}: not a post file (needs version 1, kind "post", a slug, a path, settings and a root).`);
+      failed = true;
+    } else {
+      postCount += 1;
+    }
+    for (const problem of report.problems) {
+      console.error(`error    ${describeProblem(problem, `content/posts/${name}`)}`);
+      layoutProblems += 1;
+      failed = true;
+    }
+  }
+}
+
 if (failed) {
   if (layoutProblems > 0) {
-    console.error(`\nFAIL: ${layoutProblems} problem(s) the Armature kit flagged in content/layouts or content/site-kit.json.`);
+    console.error(`\nFAIL: ${layoutProblems} problem(s) the Armature kit flagged in content/layouts, content/site-kit.json or content/posts.`);
   }
   process.exit(1);
 }
@@ -160,5 +199,5 @@ console.log(
   `OK: ${SCHEMA_PATH} matches pageSchema.ts; all ${checked} schema fields present and ` +
     `well-shaped in content/pages.json` +
     (warnings.length > 0 ? ` (${warnings.length} warning(s));` : ";") +
-    ` ${layoutFiles.length} builder layout(s) and content/site-kit.json pass the kit validator.`,
+    ` ${layoutFiles.length} builder layout(s), content/site-kit.json and ${postCount} post(s) pass the kit validator.`,
 );

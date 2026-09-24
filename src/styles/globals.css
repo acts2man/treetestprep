@@ -336,3 +336,25 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .hero-copy { font-size: 15px; }
   .course-image, .faq-image, .footer-image { height: 310px; }
 }
+
+/* Blog (kit 2.7 Posts) — native styling with the site's colours and fonts. */
+.blog-index { padding: 56px 0 80px; }
+.blog-index-title { margin: 0 0 8px; color: var(--navy); font-size: 40px; font-weight: 700; line-height: 1.15; }
+.blog-index-lead { margin: 0 0 40px; color: var(--muted); font-size: 18px; max-width: 640px; }
+.blog-empty { padding: 48px 24px; text-align: center; border: 1px dashed rgba(29, 55, 112, .2); border-radius: 12px; background: #f7f8fa; color: var(--muted); font-size: 17px; }
+.ae-post-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px; }
+.ae-post-card { display: flex; flex-direction: column; background: #fff; border: 1px solid rgba(29, 55, 112, .12); border-radius: 12px; overflow: hidden; transition: box-shadow .2s ease, transform .2s ease; }
+.ae-post-card:hover { box-shadow: 0 12px 30px rgba(22, 43, 92, .1); transform: translateY(-2px); }
+.ae-post-card-image img { display: block; width: 100%; height: 200px; object-fit: cover; }
+.ae-post-card-body { padding: 22px 24px 26px; }
+.ae-post-card-title { margin: 0 0 8px; font-size: 22px; font-weight: 700; line-height: 1.25; }
+.ae-post-card-title a { color: var(--navy); }
+.ae-post-card-title a:hover { color: var(--green); }
+.ae-post-card-meta { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 12px; color: var(--muted); font-size: 14px; }
+.ae-post-card-excerpt { margin: 0; color: var(--ink); font-size: 16px; line-height: 1.55; }
+.blog-post { padding: 0 0 64px; }
+@media (max-width: 767px) {
+  .blog-index { padding: 40px 0 60px; }
+  .blog-index-title { font-size: 30px; }
+  .ae-post-list { grid-template-columns: 1fr; }
+}

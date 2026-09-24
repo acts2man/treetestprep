@@ -1,0 +1,134 @@
+{
+  "kind": "post",
+  "path": "/blog/welcome-to-the-blog/",
+  "root": [
+    {
+      "advanced": {
+        "padding": {
+          "desktop": {
+            "bottom": {
+              "unit": "px",
+              "value": 64
+            },
+            "left": {
+              "unit": "px",
+              "value": 20
+            },
+            "right": {
+              "unit": "px",
+              "value": 20
+            },
+            "top": {
+              "unit": "px",
+              "value": 48
+            }
+          }
+        }
+      },
+      "children": [
+        {
+          "advanced": {},
+          "id": "bpwelh1a",
+          "meta": {
+            "createdBy": "armature-conversion",
+            "updatedAt": "2026-09-24T00:00:00.000Z"
+          },
+          "props": {
+            "tag": "h1",
+            "text": "Welcome to the Tree Test Prep blog"
+          },
+          "style": {
+            "typography": {
+              "fontSize": {
+                "desktop": {
+                  "unit": "px",
+                  "value": 40
+                },
+                "mobile": {
+                  "unit": "px",
+                  "value": 30
+                }
+              },
+              "fontWeight": 700,
+              "lineHeight": {
+                "unit": "",
+                "value": 1.15
+              }
+            }
+          },
+          "type": "heading"
+        },
+        {
+          "advanced": {},
+          "id": "bpwelt01",
+          "meta": {
+            "createdBy": "armature-conversion",
+            "updatedAt": "2026-09-24T00:00:00.000Z"
+          },
+          "props": {
+            "doc": {
+              "content": [
+                {
+                  "content": [
+                    {
+                      "text": "This is where we'll share study tips for the ISA Certified Arborist exam, updates about upcoming course dates, and short reads on tree biology, pruning, and urban forestry.",
+                      "type": "text"
+                    }
+                  ],
+                  "type": "paragraph"
+                },
+                {
+                  "content": [
+                    {
+                      "text": "Our first posts are on the way. Check back soon, or register for the course to start preparing today.",
+                      "type": "text"
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "type": "doc"
+            }
+          },
+          "style": {},
+          "type": "text"
+        }
+      ],
+      "id": "bpbodywr",
+      "meta": {
+        "createdBy": "armature-conversion",
+        "updatedAt": "2026-09-24T00:00:00.000Z"
+      },
+      "props": {
+        "direction": {
+          "desktop": "column"
+        },
+        "gap": {
+          "row": {
+            "unit": "px",
+            "value": 18
+          }
+        },
+        "layout": "boxed",
+        "pageBackground": "#ffffff",
+        "tag": "article"
+      },
+      "style": {},
+      "type": "container"
+    }
+  ],
+  "settings": {
+    "authorName": "Tree Test Prep",
+    "categories": [],
+    "excerpt": "Study tips, exam updates and arboriculture insights for future ISA Certified Arborists — coming soon.",
+    "publishedAt": "",
+    "seo": {
+      "description": "Study tips, exam updates and arboriculture insights for future ISA Certified Arborists.",
+      "title": "Welcome to the Tree Test Prep blog"
+    },
+    "tags": [],
+    "title": "Welcome to the Tree Test Prep blog"
+  },
+  "slug": "welcome-to-the-blog",
+  "version": 1
+}
