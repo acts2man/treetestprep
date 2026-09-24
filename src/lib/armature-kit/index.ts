@@ -26,16 +26,37 @@
  *
  * React is the only dependency. Public visitors never run the bridge: it activates
  * only inside the editor's iframe, with the edit flag, from an allowlisted origin.
+ *
+ * Every widget, the widget library's CSS and its glyphs are registered by
+ * `createArmatureKit` itself (`registerBuiltInWidgets`), never by importing a module for
+ * its side effects, so a site's `"sideEffects": false` cannot tree-shake them out of a
+ * production build. Check a site against `npm run build`, not only the dev server.
  */
 import { createBridge, PROTOCOL_VERSION, type SiteSchemaLike } from "./bridge.ts";
+import { LIBRARY_WIDGETS, registerLibrary } from "./library/index.ts";
 import { setKitRuntime, type KitRuntime } from "./renderer.tsx";
 import { createKitStore, type ContentTree, type LinkValue, type ListValue } from "./store.ts";
 import type { LayoutDoc, SiteKit } from "./types.ts";
-import "./widgets.tsx";
-import "./library/index.ts";
+import { CORE_WIDGETS, registerWidgets, type WidgetRender } from "./widgets.tsx";
 
-export const KIT_VERSION = "2.2.0";
+export const KIT_VERSION = "2.5.0";
 export { PROTOCOL_VERSION };
+
+/** Every widget the kit ships, by type: the core widgets, then the library. */
+export const BUILT_IN_WIDGETS: Readonly<Record<string, WidgetRender>> = { ...CORE_WIDGETS, ...LIBRARY_WIDGETS };
+/** The type of every built-in widget. */
+export const BUILT_IN_WIDGET_TYPES: readonly string[] = Object.keys(BUILT_IN_WIDGETS);
+
+/**
+ * Registers every built-in widget, the library's base CSS, its per-widget CSS and (with
+ * the widgets that draw them) its glyphs. `createArmatureKit` calls this, so a site never
+ * has to; calling it again does nothing, and a type the site registered itself with
+ * `registerWidget` beforehand is left alone.
+ */
+export function registerBuiltInWidgets(): void {
+  registerWidgets(CORE_WIDGETS);
+  registerLibrary();
+}
 
 export type ArmatureKitConfig = {
   /** Exact origins of the editor that may embed this site, e.g. ["https://armature-sites.netlify.app"]. */
@@ -74,10 +95,13 @@ export type ArmatureKit = {
 };
 
 export function createArmatureKit(config: ArmatureKitConfig): ArmatureKit {
+  // Explicit, so no bundler can drop the widgets, their CSS or their glyphs from a build.
+  registerBuiltInWidgets();
   const store = createKitStore({ content: config.content, layouts: config.layouts, siteKit: config.siteKit ?? null });
   const runtime: KitRuntime = {
     store,
     codedSlugs: new Set((config.schema?.pages ?? []).map((page) => page.slug)),
+    pagePaths: new Map((config.schema?.pages ?? []).filter((page) => typeof page.path === "string").map((page) => [page.slug, page.path as string])),
     slots: new Map(),
     onSlotsChange: new Set(),
     forms: config.forms && /^https:\/\/[^\s]+$/i.test(config.forms.endpoint) && /^[0-9a-f-]{36}$/i.test(config.forms.siteId) ? config.forms : undefined,
@@ -139,13 +163,15 @@ export function createArmatureKit(config: ArmatureKitConfig): ArmatureKit {
   };
 }
 
-export { ArmaturePage, ArmatureRoute, ArmatureSlot, useBuilderPages, useKitSnapshot } from "./renderer.tsx";
+export { ArmaturePage, ArmatureRoute, ArmatureSlot, ArmatureChrome, useBuilderPages, useKitSnapshot } from "./renderer.tsx";
+export { CHROME_SLUGS, isChromeSlug, chromeSlug } from "./types.ts";
 export { RichText, plainDoc, richTextToPlain } from "./richText.tsx";
 export { Icon } from "./icon.tsx";
 export { pageCss, kitCss, elementsCss, registerBaseCss, registerStyleTarget, registerWidgetCss } from "./css.ts";
-export { registerWidget } from "./widgets.tsx";
+export { registerWidget, registerWidgets, registeredWidgetTypes, type WidgetContext, type WidgetRender } from "./widgets.tsx";
 export { defaultSiteKit } from "./defaults.ts";
 export { resolve, own, setAt, isResponsive, hasOverride } from "./responsive.ts";
 export * from "./values.ts";
+export { checkLayout, checkSiteKit, checkElement, describeProblem, settingLabel, readPath, LAYOUT_LIMITS, isAllowedHref, isAllowedMediaSrc, isAllowedVideoUrl, CONTAINER_TYPES, AGENCY_ONLY_TYPES, isKnownElementType, registerPropsCheck, type Problem, type ProblemPath, type CheckReport } from "./validate.ts";
 export type * from "./types.ts";
 export type { ContentTree, LinkValue, ListValue } from "./store.ts";

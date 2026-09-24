@@ -139,6 +139,53 @@ createArmatureKit({
 
 Without it a form shows "This form is not connected yet" and never sends.
 
+### 7. Let the dashboard build the header and footer (optional, kit 2.4+)
+
+Render the site's header and footer through the kit's chrome part, with the coded ones as
+the fallback:
+
+```tsx
+import { ArmatureChrome } from "./lib/armature-kit";
+
+<ArmatureChrome part="header" fallback={<Header />} />
+<main>…</main>
+<ArmatureChrome part="footer" fallback={<Footer />} />
+```
+
+Nothing changes until someone builds a header or footer under **Appearance › Header /
+Footer** in the dashboard: from then on `content/layouts/_header.json` (or `_footer.json`)
+renders in that place on every page, inside a `<header data-armature-part="header">` (or
+`<footer>`), and the coded one is the fallback again the moment the built part is removed.
+The parts use the same `import.meta.glob("../content/layouts/*.json")` as the pages, so
+nothing else is needed. Two widgets exist for them: **Site Logo** (a picture linked to
+`/`) and **Nav Menu** (one of the menus made under **Appearance › Menus**, stored in
+`content/site-kit.json` as `menus`; page items link to the paths in `content/schema.json`
+and to built pages' own paths, with one level of dropdowns, a hamburger below the width the
+widget sets, and an optional sticky position). Keep `data-armature-chrome` on your coded
+header and footer so the editor keeps telling clients they are coded.
+
+### 8. Verify against a production build, never only the dev server
+
+The kit registers every widget, the widget library's CSS and its glyphs from
+`createArmatureKit()` itself; nothing is registered by importing a module for its side
+effects. So a site whose `package.json` says `"sideEffects": false` (a common line in a
+Vite site) keeps all of them in its production bundle. Prove it on your site anyway, when
+you install the kit and after every update, because **a dev server never tree-shakes and
+so hides this whole class of bug**: a widget the bundler dropped shows perfectly under
+`npm run dev` and renders as nothing on the live site.
+
+```bash
+npm run build && npm run preview   # Vite; an SSR site builds, then starts its production server
+```
+
+Open a page that uses builder widgets (an accordion, a form, a gallery, a video, a nav
+menu…) from the *built* output. Every element must be on the page and the browser console
+must not say `Armature: no widget renders "…"`. This repository runs that check in
+`tests/e2e/production-build.spec.ts`: it builds `examples/demo-site` laid out as a real
+site (the kit under `src/lib/armature-kit/`, `"sideEffects": false` in its package.json),
+serves the built files and checks in a browser that one element of every widget type
+renders. A site's own check can copy it.
+
 ## SSR / TanStack Start
 
 The kit renders on the server unchanged — during SSR there is no `document`, so it stays
@@ -184,7 +231,88 @@ function ArmatureCatchAll() {
 Register the router for the editor's page switcher from the root component in an effect
 (`registerArmatureNavigate((path) => router.navigate({ href: path }))`).
 
+## Validation: one set of rules for the site and the dashboard
+
+`validate.ts` holds every rule for layout files and the site kit, with no dependencies. The
+same file runs in four places, so a site can never pass its own checks while Armature
+rejects its files:
+
+- the kit itself, when it loads `content/layouts/*.json` and `content/site-kit.json`;
+- the site's own content check (below);
+- the dashboard, when it reads a site;
+- the publish function, before it commits.
+
+It is tolerant on purpose. **One bad value never takes a page down:**
+
+- a setting the validator cannot read is ignored (the element keeps its other settings)
+  and reported; a required content setting (a heading's text, a list's items) gets a safe
+  stand-in (`""`, `[]`) so the element still renders with that one value ignored;
+- only an element it cannot read at all (no id, a duplicate id, no widget type, content
+  settings that are not an object) is skipped on the site and shown as "Unsupported
+  element" in the editor;
+- the site kit fills anything unreadable from the default kit;
+- only a file that is not a layout at all (no `root`, no `pageSlug`, `version` not 1)
+  fails to load.
+
+Every problem says, in plain English, the page, the element, the setting, the value found
+and what is allowed, and carries the raw value: **a publish never erases or rewrites a
+value the editor could not read.** It goes back into the file exactly as it was unless
+someone changes that very setting.
+
+The rules are as wide as CSS wherever that is safe: font weights are any whole number 1–1000
+(`650`) or `normal`/`bold`/`lighter`/`bolder`; sizes take decimals, negative values, a bare
+`0`, unitless numbers (line-height `1.4`) and `px`, `%`, `em`, `rem`, `vw`, `vh`, `vmin`,
+`vmax`, `ch`, `ex`, `svh`, `dvh`, `lvh`, `pt`; colours are 3/4/6/8-digit hex, every colour
+function (`rgb()`, `rgba()`, `hsl()`, `hwb()`, `oklch()`, `color-mix()`…), the 148 named
+colours, `transparent`, `currentColor` and `var(--name)`. They stay strict only where a value
+could reach the page as code: links (`https:`, `http:`, `mailto:`, `tel:`, `/`, `#`), media
+addresses (the site itself or `https:`), attribute names (never `on*`, `href`, `src`,
+`style`, `class`, `id`…), and anything emitted into a stylesheet (no quotes, semicolons or
+braces; no `url()` or `expression()`).
+
+### Your site's content check must call it
+
+Whatever script your site runs before a commit or a build (`bun run check:content`,
+`npm run check`, a CI step) must validate the builder files with the kit's validator, so the
+check fails, or warns, on exactly what the dashboard will report:
+
+```ts
+// scripts/check-content.ts (add to the checks you already run)
+import { readdirSync, readFileSync } from "node:fs";
+import { checkLayout, checkSiteKit, describeProblem } from "../src/lib/armature-kit/validate";
+
+let failed = false;
+for (const name of readdirSync("content/layouts").filter((file) => file.endsWith(".json"))) {
+  const report = checkLayout(JSON.parse(readFileSync(`content/layouts/${name}`, "utf8")));
+  for (const problem of report.problems) {
+    // "ignored" problems still render; treat them as errors so they get fixed at the source.
+    console.error(`error    ${describeProblem(problem, `content/layouts/${name}`)}`);
+    failed = true;
+  }
+}
+const kit = checkSiteKit(JSON.parse(readFileSync("content/site-kit.json", "utf8")));
+for (const problem of kit.problems) {
+  console.error(`error    ${describeProblem(problem, "content/site-kit.json")}`);
+  failed = true;
+}
+if (failed) process.exit(1);
+```
+
+`checkLayout(raw)` returns `{ value, problems }`: `value` is the cleaned layout (`null` only
+when the file is not a layout at all) and `problems` lists every value it could not read
+(`path`, `effect`, `setting`, `found`, `allowed`, `value`, and for a setting inside an
+element its `elementId`). `checkSiteKit(raw)` always returns a usable kit. `describeProblem`
+turns one problem into a sentence. The strict form the dashboard uses for values made in the
+editor is simply "no problems at all".
+
+The validator is pure TypeScript with no imports outside this folder, so it runs under `bun`,
+`tsx`, Vite or Deno without a bundler.
+
 ## Files the editor writes
+
+- `content/layouts/_header.json` and `content/layouts/_footer.json`: the header and footer
+  built in the editor (see step 7). `content/trash/<slug>.json`: pages in the bin, never
+  rendered.
 
 ```
 content/layouts/<pageSlug>.json    one layout per page (coded pages: optional; builder pages: always)
@@ -194,7 +322,7 @@ public/assets/uploads/             pictures added in the editor
 ```
 
 A layout is `{ version: 1, pageSlug, path, label?, seo?, pageSettings?, root: Element[] }`.
-The full model is in `kit/types.ts`; the validation rules are in `shared/builder/schema.ts`.
+The full model is in `kit/types.ts`; the validation rules are in `kit/validate.ts`.
 
 ## Versioning
 
@@ -215,5 +343,9 @@ folder's own code, so a site can tell whether its copy is current. Both are expo
 3. **Check `KIT_VERSION`** before and after: compare the `KIT_VERSION` in your copy against
    this repository's `kit/index.ts`. If the editor reports that a site runs an older kit,
    updating the folder is the fix.
+4. **Verify against a production build** (step 8 above): `npm run build && npm run preview`,
+   then open a page with builder widgets from the built output. The dev server cannot show
+   a widget the bundler dropped. Kits before 2.5.0 registered their widgets through
+   side-effect imports and lost every library widget on a site with `"sideEffects": false`.
 
 No dependency changes are needed to update: React remains the only dependency.

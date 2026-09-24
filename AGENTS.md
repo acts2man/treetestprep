@@ -53,7 +53,7 @@ Supabase query that no static widget can bind to; it is placed in its layout as 
 page's SEO fields plus the shared header/footer and the instructor-intro copy.
 
 `src/lib/armature-kit/` is a **verbatim copy** of the `kit/` folder from
-[acts2man/armature](https://github.com/acts2man/armature) (`KIT_VERSION` 2.2.0), copied
+[acts2man/armature](https://github.com/acts2man/armature) (`KIT_VERSION` 2.5.0), copied
 whole, including its `README.md`; upstream ships no unit test inside `kit/`. **AI builders
 must not edit, reformat, lint-fix, remove or restructure it.** It is what lets the Armature
 dashboard open this site in a frame and build it in place (drag widgets, reorder sections,
