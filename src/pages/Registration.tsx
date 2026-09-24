@@ -1,5 +1,5 @@
 import { SiteFooter, SiteHeader } from "../components/SiteChrome";
-import { ArmatureSlot } from "@/lib/armature-kit";
+import { ArmatureChrome, ArmatureSlot } from "@/lib/armature-kit";
 
 // The Registration page is fully builder-native: the title bar, the in-person/online
 // options grid and the course-book note live as builder elements in
@@ -8,9 +8,9 @@ import { ArmatureSlot } from "@/lib/armature-kit";
 export default function Registration() {
   return (
     <main>
-      <SiteHeader activePath="/class-registration-page/" />
+      <ArmatureChrome part="header" fallback={<SiteHeader activePath="/class-registration-page/" />} />
       <ArmatureSlot slug="registration" defaults={[]} />
-      <SiteFooter />
+      <ArmatureChrome part="footer" fallback={<SiteFooter />} />
     </main>
   );
 }

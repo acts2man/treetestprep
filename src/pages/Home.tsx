@@ -1,5 +1,5 @@
 import { SiteFooter, SiteHeader } from "../components/SiteChrome";
-import { ArmatureSlot } from "@/lib/armature-kit";
+import { ArmatureChrome, ArmatureSlot } from "@/lib/armature-kit";
 
 // The home page is fully builder-native: the hero (credential, copy, Wistia video and
 // register button), the course outline (heading, week list, exam note, button, photo) and
@@ -8,9 +8,9 @@ import { ArmatureSlot } from "@/lib/armature-kit";
 export default function Home() {
   return (
     <main id="top">
-      <SiteHeader activePath="/" />
+      <ArmatureChrome part="header" fallback={<SiteHeader activePath="/" />} />
       <ArmatureSlot slug="home" defaults={[]} />
-      <SiteFooter />
+      <ArmatureChrome part="footer" fallback={<SiteFooter />} />
     </main>
   );
 }

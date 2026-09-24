@@ -3,7 +3,7 @@ import { SiteFooter, SiteHeader } from "../components/SiteChrome";
 import { supabase } from "@/integrations/supabase/client";
 import { usePageCopy } from "@/hooks/usePageContent";
 import { armature } from "@/lib/armature";
-import { ArmatureSlot } from "@/lib/armature-kit";
+import { ArmatureChrome, ArmatureSlot } from "@/lib/armature-kit";
 
 type InstructorRow = {
   id: string;
@@ -71,9 +71,9 @@ armature.registerSiteSection("instructors", { label: "Meet the instructors", com
 export default function Instructors() {
   return (
     <main>
-      <SiteHeader activePath="/meet-your-instructors/" />
+      <ArmatureChrome part="header" fallback={<SiteHeader activePath="/meet-your-instructors/" />} />
       <ArmatureSlot slug="instructors" defaults={["instructors"]} />
-      <SiteFooter />
+      <ArmatureChrome part="footer" fallback={<SiteFooter />} />
     </main>
   );
 }

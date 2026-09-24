@@ -1,5 +1,5 @@
 import { SiteFooter, SiteHeader } from "../components/SiteChrome";
-import { ArmatureSlot } from "@/lib/armature-kit";
+import { ArmatureChrome, ArmatureSlot } from "@/lib/armature-kit";
 
 // The Inspiration page is fully builder-native: its hero and the Ken Menzer story
 // (two-column image + prose, with a mobile-only inline image) live as builder
@@ -8,9 +8,9 @@ import { ArmatureSlot } from "@/lib/armature-kit";
 export default function Inspiration() {
   return (
     <main>
-      <SiteHeader activePath="/about-us/" />
+      <ArmatureChrome part="header" fallback={<SiteHeader activePath="/about-us/" />} />
       <ArmatureSlot slug="inspiration" defaults={[]} />
-      <SiteFooter />
+      <ArmatureChrome part="footer" fallback={<SiteFooter />} />
     </main>
   );
 }

@@ -1,0 +1,607 @@
+{
+  "label": "Footer",
+  "pageSlug": "_footer",
+  "path": "/_footer",
+  "root": [
+    {
+      "advanced": {
+        "cssClasses": "footer-main",
+        "padding": {
+          "desktop": {
+            "bottom": {
+              "unit": "px",
+              "value": 40
+            },
+            "left": {
+              "unit": "px",
+              "value": 40
+            },
+            "right": {
+              "unit": "px",
+              "value": 40
+            },
+            "top": {
+              "unit": "px",
+              "value": 40
+            }
+          }
+        }
+      },
+      "children": [
+        {
+          "advanced": {
+            "cssClasses": "footer-grid"
+          },
+          "children": [
+            {
+              "advanced": {
+                "cssClasses": "footer-about"
+              },
+              "children": [
+                {
+                  "advanced": {
+                    "customCss": "selector .ae-logo-img { width: 100%; max-width: 560px; height: auto; } selector { margin-bottom: 22px; }"
+                  },
+                  "id": "ftrlogo0",
+                  "meta": {
+                    "createdBy": "armature-conversion",
+                    "updatedAt": "2026-09-23T00:00:00.000Z"
+                  },
+                  "props": {
+                    "align": {
+                      "desktop": "left"
+                    },
+                    "alt": "Tree Test Prep",
+                    "linkHome": false,
+                    "naturalHeight": 150,
+                    "naturalWidth": 600,
+                    "src": "/assets/tree-test-prep-logo.webp"
+                  },
+                  "style": {},
+                  "type": "site-logo"
+                },
+                {
+                  "advanced": {
+                    "customCss": "selector p { font-size: 18px; margin: 0 0 14px; } selector p:last-child { margin-bottom: 0; }"
+                  },
+                  "id": "ftrblrb0",
+                  "meta": {
+                    "createdBy": "armature-conversion",
+                    "updatedAt": "2026-09-23T00:00:00.000Z"
+                  },
+                  "props": {
+                    "doc": {
+                      "content": [
+                        {
+                          "content": [
+                            {
+                              "text": "Take your tree care career to the next level by becoming an ISA Certified Arborist.",
+                              "type": "text"
+                            }
+                          ],
+                          "type": "paragraph"
+                        },
+                        {
+                          "content": [
+                            {
+                              "text": "Let your customers know that you possess the high degree of knowledge that it takes to become certified by the International Society of Arboriculture.",
+                              "type": "text"
+                            }
+                          ],
+                          "type": "paragraph"
+                        }
+                      ],
+                      "type": "doc"
+                    }
+                  },
+                  "style": {
+                    "color": {
+                      "desktop": "#ffffff"
+                    }
+                  },
+                  "type": "text"
+                },
+                {
+                  "advanced": {
+                    "customCss": "selector { margin-top: 14px; } selector .ae-btn { padding: 14px 36px; background: #349e49; color: #fff; text-transform: uppercase; font-size: 14px; font-weight: 800; line-height: 1.55; letter-spacing: normal; font-family: \"Poppins\", \"Segoe UI\", Arial, sans-serif; border-radius: 0; }"
+                  },
+                  "id": "ftrbtn00",
+                  "meta": {
+                    "createdBy": "armature-conversion",
+                    "updatedAt": "2026-09-23T00:00:00.000Z"
+                  },
+                  "props": {
+                    "align": {
+                      "desktop": "left"
+                    },
+                    "link": {
+                      "href": "/class-registration-page/"
+                    },
+                    "preset": "kit:button.primary",
+                    "size": "md",
+                    "text": "Register For The Course"
+                  },
+                  "style": {},
+                  "type": "button"
+                }
+              ],
+              "id": "ftrabout",
+              "meta": {
+                "createdBy": "armature-conversion",
+                "updatedAt": "2026-09-23T00:00:00.000Z"
+              },
+              "props": {
+                "align": {
+                  "desktop": "stretch"
+                },
+                "direction": {
+                  "desktop": "column"
+                },
+                "gap": {
+                  "row": {
+                    "unit": "px",
+                    "value": 0
+                  }
+                },
+                "layout": "full",
+                "pageBackground": "#ffffff",
+                "tag": "div"
+              },
+              "style": {},
+              "type": "container"
+            },
+            {
+              "advanced": {
+                "cssClasses": "footer-links"
+              },
+              "children": [
+                {
+                  "advanced": {
+                    "customCss": "selector { margin: 0 0 18px; }"
+                  },
+                  "id": "ftrlnkhd",
+                  "meta": {
+                    "createdBy": "armature-conversion",
+                    "updatedAt": "2026-09-23T00:00:00.000Z"
+                  },
+                  "props": {
+                    "tag": "h2",
+                    "text": "Navigation Links"
+                  },
+                  "style": {
+                    "color": {
+                      "desktop": "#cbbd88"
+                    },
+                    "typography": {
+                      "fontFamily": "\"Open Sans\", Arial, sans-serif",
+                      "fontSize": {
+                        "desktop": {
+                          "unit": "px",
+                          "value": 20
+                        }
+                      },
+                      "fontWeight": 800,
+                      "lineHeight": {
+                        "unit": "",
+                        "value": 1.2
+                      }
+                    }
+                  },
+                  "type": "heading"
+                },
+                {
+                  "advanced": {
+                    "customCss": "selector .ae-nav-list { gap: 0; } selector .ae-nav-link { padding: 6px 0; font-family: \"Open Sans\", Arial, sans-serif; font-size: 18px; font-weight: 500; line-height: 1.3; color: #ffffff; border-radius: 0; } selector .ae-nav-link:hover, selector .ae-nav-link[aria-current=\"page\"] { color: #cbbd88; }"
+                  },
+                  "id": "ftrnavmn",
+                  "meta": {
+                    "createdBy": "armature-conversion",
+                    "updatedAt": "2026-09-23T00:00:00.000Z"
+                  },
+                  "props": {
+                    "align": {
+                      "desktop": "left"
+                    },
+                    "breakpoint": 320,
+                    "layout": "vertical",
+                    "menu": "footer-nav"
+                  },
+                  "style": {},
+                  "type": "nav-menu"
+                }
+              ],
+              "id": "ftrlinks",
+              "meta": {
+                "createdBy": "armature-conversion",
+                "updatedAt": "2026-09-23T00:00:00.000Z"
+              },
+              "props": {
+                "align": {
+                  "desktop": "stretch"
+                },
+                "direction": {
+                  "desktop": "column"
+                },
+                "gap": {
+                  "row": {
+                    "unit": "px",
+                    "value": 0
+                  }
+                },
+                "layout": "full",
+                "pageBackground": "#ffffff",
+                "tag": "div"
+              },
+              "style": {},
+              "type": "container"
+            },
+            {
+              "advanced": {
+                "cssClasses": "footer-image",
+                "customCss": "@media (max-width: 470px) { selector img { height: 310px; } }"
+              },
+              "id": "ftrimg00",
+              "meta": {
+                "createdBy": "armature-conversion",
+                "updatedAt": "2026-09-23T00:00:00.000Z"
+              },
+              "props": {
+                "alt": "Flowering tree in bloom beside a marsh with hills behind it",
+                "fit": "cover",
+                "height": {
+                  "desktop": {
+                    "unit": "px",
+                    "value": 430
+                  },
+                  "mobile": {
+                    "unit": "px",
+                    "value": 300
+                  }
+                },
+                "src": "/assets/flowering-tree-in-bloom-beside-a-marsh-with-hills-behind-it.webp",
+                "width": {
+                  "desktop": {
+                    "unit": "%",
+                    "value": 100
+                  }
+                }
+              },
+              "style": {},
+              "type": "image"
+            }
+          ],
+          "id": "ftrgrid0",
+          "meta": {
+            "createdBy": "armature-conversion",
+            "updatedAt": "2026-09-23T00:00:00.000Z"
+          },
+          "props": {
+            "alignItems": {
+              "desktop": "start"
+            },
+            "columns": {
+              "desktop": "1.05fr .62fr 1.1fr",
+              "mobile": "1fr"
+            },
+            "contentWidth": {
+              "desktop": {
+                "unit": "px",
+                "value": 1800
+              }
+            },
+            "gap": {
+              "column": {
+                "unit": "px",
+                "value": 46
+              },
+              "row": {
+                "unit": "px",
+                "value": 46
+              }
+            },
+            "layout": "boxed",
+            "pageBackground": "#ffffff"
+          },
+          "style": {},
+          "type": "grid"
+        }
+      ],
+      "id": "ftrmain0",
+      "meta": {
+        "createdBy": "armature-conversion",
+        "updatedAt": "2026-09-23T00:00:00.000Z"
+      },
+      "props": {
+        "direction": {
+          "desktop": "column"
+        },
+        "layout": "full",
+        "pageBackground": "#ffffff",
+        "tag": "div"
+      },
+      "style": {
+        "background": {
+          "desktop": {
+            "color": "#162b5c",
+            "kind": "color"
+          }
+        },
+        "color": {
+          "desktop": "#ffffff"
+        }
+      },
+      "type": "container"
+    },
+    {
+      "advanced": {
+        "cssClasses": "footer-bottom",
+        "padding": {
+          "desktop": {
+            "bottom": {
+              "unit": "px",
+              "value": 0
+            },
+            "left": {
+              "unit": "px",
+              "value": 40
+            },
+            "right": {
+              "unit": "px",
+              "value": 40
+            },
+            "top": {
+              "unit": "px",
+              "value": 0
+            }
+          }
+        }
+      },
+      "children": [
+        {
+          "advanced": {
+            "cssClasses": "footer-bottom-grid"
+          },
+          "children": [
+            {
+              "advanced": {
+                "customCss": "selector p { margin: 0; }"
+              },
+              "id": "ftrcopy0",
+              "meta": {
+                "createdBy": "armature-conversion",
+                "updatedAt": "2026-09-23T00:00:00.000Z"
+              },
+              "props": {
+                "doc": {
+                  "content": [
+                    {
+                      "content": [
+                        {
+                          "text": "© 2026 Tree Test Prep. All Rights Reserved.",
+                          "type": "text"
+                        }
+                      ],
+                      "type": "paragraph"
+                    }
+                  ],
+                  "type": "doc"
+                }
+              },
+              "style": {
+                "color": {
+                  "desktop": "#ffffff"
+                },
+                "typography": {
+                  "fontSize": {
+                    "desktop": {
+                      "unit": "px",
+                      "value": 13
+                    }
+                  },
+                  "textAlign": {
+                    "desktop": "left",
+                    "mobile": "center"
+                  }
+                }
+              },
+              "type": "text"
+            },
+            {
+              "advanced": {
+                "customCss": "selector p { margin: 0; }"
+              },
+              "id": "ftrlegal",
+              "meta": {
+                "createdBy": "armature-conversion",
+                "updatedAt": "2026-09-23T00:00:00.000Z"
+              },
+              "props": {
+                "doc": {
+                  "content": [
+                    {
+                      "content": [
+                        {
+                          "marks": [
+                            {
+                              "attrs": {
+                                "href": "https://treetestprep.com/privacy-policy",
+                                "target": null
+                              },
+                              "type": "link"
+                            }
+                          ],
+                          "text": "Privacy Policy",
+                          "type": "text"
+                        },
+                        {
+                          "text": " | ",
+                          "type": "text"
+                        },
+                        {
+                          "marks": [
+                            {
+                              "attrs": {
+                                "href": "https://treetestprep.com/terms-of-service",
+                                "target": null
+                              },
+                              "type": "link"
+                            }
+                          ],
+                          "text": "Terms of Service",
+                          "type": "text"
+                        }
+                      ],
+                      "type": "paragraph"
+                    }
+                  ],
+                  "type": "doc"
+                }
+              },
+              "style": {
+                "color": {
+                  "desktop": "#ffffff"
+                },
+                "typography": {
+                  "fontSize": {
+                    "desktop": {
+                      "unit": "px",
+                      "value": 13
+                    }
+                  },
+                  "textAlign": {
+                    "desktop": "center"
+                  }
+                }
+              },
+              "type": "text"
+            },
+            {
+              "advanced": {
+                "customCss": "selector p { margin: 0; } selector strong, selector a { font-weight: 700; }"
+              },
+              "id": "ftrcred0",
+              "meta": {
+                "createdBy": "armature-conversion",
+                "updatedAt": "2026-09-23T00:00:00.000Z"
+              },
+              "props": {
+                "doc": {
+                  "content": [
+                    {
+                      "content": [
+                        {
+                          "text": "Site designed by ",
+                          "type": "text"
+                        },
+                        {
+                          "marks": [
+                            {
+                              "attrs": {
+                                "href": "https://reputationguardians.net/",
+                                "target": null
+                              },
+                              "type": "link"
+                            }
+                          ],
+                          "text": "Reputation Guardians",
+                          "type": "text"
+                        }
+                      ],
+                      "type": "paragraph"
+                    }
+                  ],
+                  "type": "doc"
+                }
+              },
+              "style": {
+                "color": {
+                  "desktop": "#ffffff"
+                },
+                "typography": {
+                  "fontSize": {
+                    "desktop": {
+                      "unit": "px",
+                      "value": 13
+                    }
+                  },
+                  "textAlign": {
+                    "desktop": "right",
+                    "mobile": "center"
+                  }
+                }
+              },
+              "type": "text"
+            }
+          ],
+          "id": "ftrbotg0",
+          "meta": {
+            "createdBy": "armature-conversion",
+            "updatedAt": "2026-09-23T00:00:00.000Z"
+          },
+          "props": {
+            "alignItems": {
+              "desktop": "center"
+            },
+            "columns": {
+              "desktop": "1fr 1fr 1fr",
+              "mobile": "1fr"
+            },
+            "contentWidth": {
+              "desktop": {
+                "unit": "px",
+                "value": 1800
+              }
+            },
+            "gap": {
+              "column": {
+                "unit": "px",
+                "value": 18
+              },
+              "row": {
+                "unit": "px",
+                "value": 5
+              }
+            },
+            "layout": "boxed",
+            "minHeight": {
+              "desktop": {
+                "unit": "px",
+                "value": 60
+              }
+            },
+            "pageBackground": "#ffffff"
+          },
+          "style": {},
+          "type": "grid"
+        }
+      ],
+      "id": "ftrbot00",
+      "meta": {
+        "createdBy": "armature-conversion",
+        "updatedAt": "2026-09-23T00:00:00.000Z"
+      },
+      "props": {
+        "direction": {
+          "desktop": "column"
+        },
+        "layout": "full",
+        "pageBackground": "#ffffff",
+        "tag": "div"
+      },
+      "style": {
+        "background": {
+          "desktop": {
+            "color": "#000000",
+            "kind": "color"
+          }
+        },
+        "color": {
+          "desktop": "#ffffff"
+        }
+      },
+      "type": "container"
+    }
+  ],
+  "seo": {},
+  "version": 1
+}

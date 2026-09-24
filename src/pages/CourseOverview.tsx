@@ -1,5 +1,5 @@
 import { SiteFooter, SiteHeader } from "../components/SiteChrome";
-import { ArmatureSlot } from "@/lib/armature-kit";
+import { ArmatureChrome, ArmatureSlot } from "@/lib/armature-kit";
 
 // The Course Overview page is fully builder-native: the two-column layout (course
 // description with per-week details, and the info/pricing card) lives as builder
@@ -8,9 +8,9 @@ import { ArmatureSlot } from "@/lib/armature-kit";
 export default function CourseOverview() {
   return (
     <main>
-      <SiteHeader activePath="/events/location/" />
+      <ArmatureChrome part="header" fallback={<SiteHeader activePath="/events/location/" />} />
       <ArmatureSlot slug="course-overview" defaults={[]} />
-      <SiteFooter />
+      <ArmatureChrome part="footer" fallback={<SiteFooter />} />
     </main>
   );
 }

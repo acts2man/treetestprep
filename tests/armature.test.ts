@@ -12,6 +12,7 @@ import {
   KIT_VERSION,
   PROTOCOL_VERSION,
 } from "../src/lib/armature";
+import { isChromeSlug } from "../src/lib/armature-kit";
 import { ALL_PAGES } from "../src/lib/pageSchema";
 import content from "../content/pages.json";
 
@@ -121,10 +122,12 @@ describe("page-builder layouts (site contract v2)", () => {
     }
   });
 
-  test("layout files only exist for coded pages (no orphan builder pages committed)", () => {
+  test("layout files only exist for coded pages or the header/footer parts (no orphan builder pages committed)", () => {
     for (const file of readdirSync("content/layouts").filter((f) => f.endsWith(".json"))) {
       const slug = file.replace(/\.json$/, "");
-      expect(codedSlugs.has(slug)).toBe(true);
+      // A layout is legitimate when it belongs to a coded page, or when it is one of the
+      // builder chrome parts (content/layouts/_header.json, _footer.json).
+      expect(codedSlugs.has(slug) || isChromeSlug(slug)).toBe(true);
     }
   });
 
