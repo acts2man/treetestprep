@@ -46,6 +46,22 @@ try {
 /** The only origin allowed to embed this site for editing. */
 export const ARMATURE_EDITOR_ORIGINS = ["https://armature-sites.netlify.app"];
 
+/**
+ * Cookie-free visitor stats (kit 2.7). The beacon sends one payload per page view to
+ * Armature's `stats-ingest` endpoint; it skips bots, the editor preview, prerendering,
+ * Do Not Track and Global Privacy Control, sets no cookies and stores no IP. The endpoint
+ * and the site's id come from the Armature dashboard (Site Stats screen) and are set as
+ * `VITE_ARMATURE_STATS_ENDPOINT` and `VITE_ARMATURE_STATS_SITE_ID` (Netlify env / .env), so
+ * the URL and id are not committed. With either missing the beacon stays off.
+ */
+const statsEndpoint =
+  (typeof import.meta !== "undefined" ? import.meta.env?.["VITE_ARMATURE_STATS_ENDPOINT"] : undefined) ||
+  (typeof process !== "undefined" ? process.env?.["VITE_ARMATURE_STATS_ENDPOINT"] : undefined);
+const statsSiteId =
+  (typeof import.meta !== "undefined" ? import.meta.env?.["VITE_ARMATURE_STATS_SITE_ID"] : undefined) ||
+  (typeof process !== "undefined" ? process.env?.["VITE_ARMATURE_STATS_SITE_ID"] : undefined);
+const stats = statsEndpoint && statsSiteId ? { endpoint: statsEndpoint, siteId: statsSiteId } : undefined;
+
 const EDIT_FLAG = "armature=edit";
 
 let routerNavigate: ((path: string) => void) | null = null;
@@ -70,6 +86,8 @@ export const armature = createArmatureKit({
   // Blog posts (content/posts/*.json) and the generated index (content/posts/index.json).
   posts: postModules,
   postIndex,
+  // Cookie-free visitor stats; off until the endpoint and site id are configured (see above).
+  ...(stats ? { stats } : {}),
   navigate: (path) => {
     if (routerNavigate) {
       routerNavigate(path);
