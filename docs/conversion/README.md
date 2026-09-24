@@ -67,3 +67,100 @@ Every page is under the 0.5 % budget at every width (max 0.132 %).
   converted. Closest widget option had it been static: repeated **Image Box** elements.
 
 All other 14 registered sections across the 7 pages were converted to builder elements.
+
+---
+
+# Kit 2.5.0 upgrade + header/footer as builder parts
+
+A later change (this directory's `kit250-*`, `header-*`, `footer-*`, `menu-open-*` crops)
+did three things: updated the kit, made the site's own content check use the kit's
+validator, and converted the header and footer from hand-coded React into Armature
+builder parts.
+
+## Kit
+
+`src/lib/armature-kit/` was updated to the upstream `kit/` folder verbatim:
+`KIT_VERSION` **2.2.0 → 2.5.0**. The important fix: kits before 2.5.0 registered their
+widget library through side-effect imports, which a site with `"sideEffects": false`
+(this one) tree-shook out of the **production** bundle — so the home page's Wistia video
+and FAQ accordion rendered under the dev server but were **missing from the built site**.
+2.5.0 registers every widget explicitly inside `createArmatureKit()`, so they survive the
+production build. The upgrade also adds `library/chrome.tsx` (the Site Logo and Nav Menu
+widgets and `<ArmatureChrome>`) and `validate.ts` (one validator for layouts and the site
+kit), now wired into `bun run check:content`.
+
+### Restored home regions (kit250-home-* crops)
+
+These three regions were **missing from the 2.2.0 production build** and are restored by
+the upgrade. They are compared against branch `main` (the original coded site), which they
+now match:
+
+- **Hero Wistia video** (`kit250-home-hero-video-*`). 2.2.0: blank (widget dropped).
+  2.5.0: the privacy-friendly Wistia facade (black box + play triangle). `main`: the same
+  video region (a broken-image box in the sandbox, where the Wistia thumbnail host is
+  blocked; on a live visit both show the play affordance).
+- **Course-outline icon list** and **FAQ accordion** (`kit250-home-faq-*`). 2.2.0: the FAQ
+  was an empty heading with no items. 2.5.0: the accordion and the week list render, and
+  match `main`.
+
+## Header and footer
+
+The header and footer now render through `<ArmatureChrome part="header"|"footer"
+fallback={…}>` from `content/layouts/_header.json` and `_footer.json`. The coded
+`SiteHeader`/`SiteFooter` stay as the fallback (rendered only if a part file is removed).
+The header is a Site Logo + email + a **Nav Menu** (the `main-nav` menu in
+`content/site-kit.json`); the footer is the logo, blurb, CTA button, a vertical **Nav
+Menu** (`footer-nav`) and the images. The existing CSS class names ride along via
+Advanced > CSS classes; spacing, colours and typography are expressed as real builder
+settings, with scoped per-element CSS only where a widget's own styles had to be matched.
+
+## Result: pixel diff (existing pages, coded header/footer vs built)
+
+Production build, animations disabled, external video/map hosts blocked. Home is listed
+separately because its restored video/course/FAQ regions are *expected* to change.
+
+| Page (route)                              | 1440   | 820    | 390    |
+| ----------------------------------------- | ------ | ------ | ------ |
+| The Inspiration (`/about-us`)             | 0.245% | 0.390% | 0.678% |
+| Contact (`/contact-us`)                   | 0.313% | 0.531% | 0.977% |
+| Course Overview (`/events/location`)      | 0.310% | 0.412% | 0.651% |
+| Instructors (`/meet-your-instructors`)    | 0.396% | 0.681% | 0.873% |
+| Exam Information (`/exam-information`)     | 0.431% | 0.716% | 1.010% |
+| Registration (`/class-registration-page`) | 0.583% | 1.041% | 1.043% |
+
+Desktop is at or under ~0.5%; phone widths reach ~1%, driven by the two documented
+differences below. Home: 1440 33% / 820 4% / 390 56% — all inside the restored
+video/course/FAQ regions (which match `main`), plus the mobile menu (below).
+
+## Differing regions (before/after crops in `crops/`)
+
+1. **Mobile menu** (`menu-open-390-*`). The coded header carried a full-height slide-in
+   panel (dark overlay, a second copy of the logo, the nav links at 22px, a "Register For
+   The Course" CTA and an email + ISA social-icon row). The builder **Nav Menu** widget
+   opens its own **drop-down fold** at the same 767px breakpoint instead. This is the one
+   region that genuinely changes on phones: the widget cannot reproduce the slide-in panel
+   or its CTA/social row. Consequence for the DOM (below): the panel's **ISA link**
+   (`https://www.isa-arbor.com/`, only ever reachable from that panel) is no longer
+   present; every other link is kept.
+2. **Header nav "current page" underline** (`header-1440-*`). The coded nav underlined the
+   active page from a server-known `activePath`. The Nav Menu widget marks the current
+   item from `window.location`, which is `/` during SSR, so on a non-home page the
+   server-rendered HTML underlines **Home** until the client re-renders. A kit behaviour;
+   the underline is ~90×2px.
+3. **Footer** (`footer-1440-*`, `footer-390-*`). Matches the coded footer within the
+   budget at every width after the button/rhythm fixes; included for the record.
+
+## Visible text / links / alts / head (existing pages)
+
+- **Heading outline, image alts: identical.** **No invisible characters** in the public
+  HTML.
+- **Links:** every unique href is kept **except** the mobile panel's ISA link (region 1).
+  The coded header rendered the mobile panel in the DOM on every width (hidden off-screen),
+  so the pre-conversion DOM carried a *hidden duplicate* of the nav links, logo and CTA;
+  the builder header has each once. Nothing visible changes.
+- **Visible text: identical** (the removed text is the hidden mobile-panel duplicate).
+- **Head tags: authored SEO tags identical** (title, description, canonical, `og:*`,
+  JSON-LD, viewport). The footer image's `<link rel="preload">` gains `fetchpriority=high`
+  because the kit marks the first image of each rendered part (here the footer photo) as
+  its LCP candidate — a non-visual hint, not an authored-tag change. Asset-bundle hashes
+  change, as they do on any code change.
