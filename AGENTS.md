@@ -119,3 +119,48 @@ Around it:
   https://armature-sites.netlify.app`. Never add `X-Frame-Options`.
 - Every public page keeps a `path` in `src/lib/pageSchema.ts` that matches its route; the
   editor's page switcher relies on it.
+
+### SEO (kit-driven head), sitemap and robots
+
+**Each page's `<head>` is built by the kit, not by hand-written route `head()` tags.**
+`src/lib/pageHead.ts` calls the kit's `computePageHead(layout, siteKit, { pageUrl })` and
+maps the result to TanStack's `head()` shape; every public route calls `buildHead(slug, path)`.
+The title, description, canonical, Open Graph and Twitter tags therefore come from **the
+Armature SEO panel**: the per-page `seo: { title, description }` block in
+`content/layouts/<slug>.json`, plus the site-wide `seo: { siteName, siteUrl, titlePattern }`
+(and the optional Search Console `googleVerification`, left empty here) in
+`content/site-kit.json`. **Edit SEO copy through the dashboard's SEO panel**, which writes
+those blocks — do not add `<meta>`/`<title>` tags to a route file. `src/routes/__root.tsx`
+still owns only the truly global tags (charset, viewport, `og:locale`, the default
+`twitter:card`, the `EducationalOrganization` JSON-LD, icons, stylesheet); per-page tags
+must not duplicate them.
+
+**`public/sitemap.xml` and `public/robots.txt` are generated, not hand-written.** Run
+`bun run export:seo` (`scripts/export-seo.ts`), which uses the kit's `sitemapXml()` /
+`robotsTxt()` and lists exactly the real public pages from `src/lib/pageSchema.ts` (any
+`noindex` page is left out; the empty `/blog` index is not listed until it has a public
+post). Re-run it whenever a public page is added, removed or renamed, and commit the result.
+
+### Blog
+
+Posts live in `content/posts/<slug>.json` (each a `kind: "post"` builder document) with a
+generated `content/posts/index.json`; both are **written by the Armature dashboard** and,
+like layouts, must not be hand-formatted (same canonical serialization). `/blog` and
+`/blog/<slug>` render through `src/pages/Blog.tsx` and `src/pages/BlogPost.tsx` using the
+kit's `ArmaturePostList` / `ArmaturePost` widgets, so posts inherit the site's fonts and
+colours; native styling lives under `.blog-*` / `.ae-post-*` in `src/styles/globals.css`.
+A post is **public only when its `settings.publishedAt` is a past timestamp** — an empty
+`publishedAt` is a draft and a future one is scheduled; both are filtered from the public
+list and 404 at `/blog/<slug>` while still previewable in the dashboard's edit mode.
+`bun run check:content` validates every post and the index with the kit's `checkPost` /
+`checkPostIndex`. The Blog is intentionally **not** in `main-nav`/`footer-nav`.
+
+### Visitor stats (cookie-free beacon)
+
+The kit's stats beacon is wired in `src/lib/armature.ts` but **off unless configured**: it
+reads `VITE_ARMATURE_STATS_ENDPOINT` and `VITE_ARMATURE_STATS_SITE_ID` (from the Armature
+dashboard's Site Stats screen) at build time and passes `stats: { endpoint, siteId }` to
+`createArmatureKit()` only when both are set. **These values are not committed** — set them
+as Netlify build env vars (or a local `.env`). The beacon sends one payload per page view,
+sets no cookies, stores no IP, and stays silent in the editor preview, for bots, and under
+Do Not Track / Global Privacy Control.
