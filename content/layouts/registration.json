@@ -837,6 +837,9 @@
       "type": "container"
     }
   ],
-  "seo": {},
+  "seo": {
+    "description": "Register for the ISA Certified Arborist prep course in Sacramento or online. In-person seats are limited to 30 participants.",
+    "title": "Register For The Arborist Prep Course | In Person & Online"
+  },
   "version": 1
 }

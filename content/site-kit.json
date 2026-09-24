@@ -273,6 +273,11 @@
     }
   ],
   "pageBackground": "#ffffff",
+  "seo": {
+    "siteName": "Tree Test Prep",
+    "siteUrl": "https://treetestprep.lovable.app",
+    "titlePattern": "%page%"
+  },
   "typography": {
     "body": {
       "fontFamily": "kit:font.body",

@@ -2730,6 +2730,9 @@
       "type": "grid"
     }
   ],
-  "seo": {},
+  "seo": {
+    "description": "Week-by-week breakdown of the ISA Certified Arborist prep course: dates, times, Sacramento location, price and every chapter covered.",
+    "title": "8-Week Arborist Prep Course Overview | Tree Test Prep"
+  },
   "version": 1
 }

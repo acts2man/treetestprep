@@ -1648,6 +1648,9 @@
       "type": "container"
     }
   ],
-  "seo": {},
+  "seo": {
+    "description": "Pass the ISA Certified Arborist exam with an 8-week instructor-led prep course in Sacramento, CA or live online — chapter-by-chapter study guide included.",
+    "title": "ISA Certified Arborist Exam Prep Course | Tree Test Prep"
+  },
   "version": 1
 }

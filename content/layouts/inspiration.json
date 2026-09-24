@@ -723,6 +723,9 @@
       "type": "grid"
     }
   ],
-  "seo": {},
+  "seo": {
+    "description": "Tree Test Prep was created in honor of Ken Menzer, City Arborist and Community Forester, to help tree care professionals become Certified Arborists.",
+    "title": "The Inspiration Behind Tree Test Prep | Ken Menzer"
+  },
   "version": 1
 }

@@ -13,6 +13,7 @@
     "check:content": "bun run scripts/check-content.ts",
     "export:defaults": "bun run scripts/export-defaults.ts",
     "export:schema": "bun run scripts/export-schema.ts",
+    "export:seo": "bun run scripts/export-seo.ts",
     "format": "prettier --write ."
   },
   "overrides": {

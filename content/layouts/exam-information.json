@@ -816,6 +816,9 @@
       "type": "container"
     }
   ],
-  "seo": {},
+  "seo": {
+    "description": "How the ISA Certified Arborist exam works, eligibility requirements, and how to apply and register directly with the ISA.",
+    "title": "ISA Certified Arborist Exam Information & Eligibility | Tree Test Prep"
+  },
   "version": 1
 }
