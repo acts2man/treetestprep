@@ -21,7 +21,7 @@
  * No React, no dependencies.
  */
 import { defaultSiteKit } from "./defaults.ts";
-import { CHROME_SLUGS, type Element, type LayoutDoc, type SiteKit } from "./types.ts";
+import { CHROME_SLUGS, type Element, type LayoutDoc, type PostDoc, type PostIndex, type SiteKit, type Taxonomies } from "./types.ts";
 import { UNSUPPORTED_TYPE } from "./types.ts";
 import { UNITS, isColorValue, parseKitRef, parseSize } from "./values.ts";
 
@@ -899,8 +899,86 @@ export function checkElement(raw: unknown): CheckReport<Element> {
 
 const PATH_ALLOWED = "a page address that starts with / and has no spaces or quotes, such as /about-us/";
 const pagePath = str(200, { pattern: /^\/[^\s"'<>\\]*$/, allowed: PATH_ALLOWED });
-const pageSeo = obj({ title: str(200), description: str(500), ogImage: mediaSrc, noindex: bool() }, "page SEO settings");
+const absoluteUrl: Check<string> = {
+  allowed: "an https:// or http:// address up to 2000 characters",
+  empty: () => "",
+  run: (value, ctx, path) => (typeof value === "string" && value.length <= 2000 && /^https?:\/\/[^\s]+$/i.test(value) ? value : fail(ctx, path, "an https:// or http:// address up to 2000 characters", value)),
+};
+const breadcrumbItem = obj({ name: req(str(200)), url: req(union([absoluteUrl, href], "an address on this site (/...) or a full https URL")) }, "a breadcrumb item with a name and address");
+const articleData = obj(
+  {
+    headline: str(300),
+    description: str(1000),
+    image: mediaSrc,
+    author: str(200),
+    datePublished: str(60),
+    dateModified: str(60),
+  },
+  "article structured data",
+);
+const localBusinessData = obj(
+  {
+    name: str(200),
+    type: str(80, { pattern: /^[A-Za-z][A-Za-z0-9]*$/, allowed: "a schema.org type such as LocalBusiness, Restaurant, HomeAndConstructionBusiness" }),
+    telephone: str(60),
+    email: str(200),
+    streetAddress: str(300),
+    addressLocality: str(200),
+    addressRegion: str(200),
+    postalCode: str(40),
+    addressCountry: str(80),
+    logo: mediaSrc,
+    latitude: num(-90, 90),
+    longitude: num(-180, 180),
+    openingHours: str(500),
+    sameAs: arr(absoluteUrl, 20),
+    priceRange: str(20),
+  },
+  "the business details for structured data",
+);
+const structuredData = union(
+  [
+    obj({ kind: req(lit("none")) }, "no structured data"),
+    obj({ kind: req(lit("LocalBusiness")), override: localBusinessData }, "LocalBusiness structured data"),
+    obj({ kind: req(lit("Organization")), override: localBusinessData }, "Organization structured data"),
+    obj({ kind: req(lit("Article")), article: req(articleData) }, "Article structured data with the article fields"),
+    obj({ kind: req(lit("FAQ")), fromAccordionId: str(20, { pattern: /^[a-z0-9]{8}$/, allowed: "an element id (eight characters)" }) }, "FAQ structured data from an accordion on the page"),
+    obj({ kind: req(lit("BreadcrumbList")), items: req(arr(breadcrumbItem, 20, 1)) }, "BreadcrumbList structured data with at least one item"),
+  ],
+  'structured data: { kind: "none" | "LocalBusiness" | "Organization" | "Article" | "FAQ" | "BreadcrumbList", … }',
+);
+const pageSeo = obj(
+  {
+    title: str(200),
+    description: str(500),
+    ogImage: mediaSrc,
+    ogTitle: str(200),
+    ogDescription: str(500),
+    twitterTitle: str(200),
+    twitterDescription: str(500),
+    twitterImage: mediaSrc,
+    canonical: absoluteUrl,
+    noindex: bool(),
+    nofollow: bool(),
+    structuredData: structuredData,
+  },
+  "page SEO settings",
+);
 const pageSettings = obj({ hideTitle: bool(), bodyBackground: nullable(color), fullCanvas: bool() }, "page settings");
+
+const siteSeoCheck = obj(
+  {
+    siteName: str(200),
+    siteUrl: absoluteUrl,
+    defaultShareImage: mediaSrc,
+    titlePattern: str(200),
+    googleVerification: str(200, { pattern: /^[A-Za-z0-9_-]{20,200}$/, allowed: "a Google Search Console verification code (letters, digits, - and _)" }),
+    defaultDescription: str(500),
+    business: localBusinessData,
+    robotsExtras: str(2000),
+  },
+  "site-wide SEO settings",
+);
 
 /**
  * Check a parsed layout file. `value` is null only when the file is not a layout at all;
@@ -941,6 +1019,83 @@ export function checkLayout(raw: unknown): CheckReport<LayoutDoc> {
   return { value: layout, problems: ctx.problems };
 }
 
+// --- posts (the blog) ---------------------------------------------------------------------------------------
+
+const POST_SLUG_PATTERN = /^[a-z0-9][a-z0-9-]{0,80}$/;
+const taxonomySlug = str(80, { pattern: POST_SLUG_PATTERN, allowed: "a slug of lowercase letters, digits and hyphens" });
+const isoDate = str(60, { pattern: /^(|\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})?)?)$/, allowed: "an ISO date like 2026-05-01 or 2026-05-01T14:00:00Z (empty means draft)" });
+const postSettings = obj(
+  {
+    title: req(str(300)),
+    excerpt: str(500),
+    coverImage: mediaSrc,
+    author: str(40, { pattern: /^[A-Za-z0-9-]{1,40}$/, allowed: "an id up to 40 characters" }),
+    authorName: str(200),
+    publishedAt: isoDate,
+    categories: arr(taxonomySlug, 30),
+    tags: arr(taxonomySlug, 60),
+    seo: pageSeo,
+  },
+  "the post settings (title, excerpt, cover image, author, publishedAt, categories, tags)",
+);
+
+/**
+ * Check a parsed post file (content/posts/<slug>.json). Returns null only when the file
+ * is not a post at all; otherwise the cleaned post, with every problem listed.
+ */
+export function checkPost(raw: unknown): CheckReport<PostDoc> {
+  const ctx: ElementCtx = { problems: [], detail: null, ids: new Set(), count: 0 };
+  const fatal = (path: ProblemPath, allowed: string, value: unknown): CheckReport<PostDoc> => {
+    ctx.problems.push({ path, effect: "file", setting: settingLabel(path), found: shortText(value), allowed, value });
+    return { value: null, problems: ctx.problems };
+  };
+  if (!isRecord(raw)) return fatal([], "a post file: an object with version 1, kind: \"post\", a slug, a path, settings and a root list of elements", raw);
+  if (raw["version"] !== 1) return fatal(["version"], "version 1", raw["version"]);
+  if (raw["kind"] !== "post") return fatal(["kind"], 'exactly "post"', raw["kind"]);
+  if (typeof raw["slug"] !== "string" || !POST_SLUG_PATTERN.test(raw["slug"])) return fatal(["slug"], "a slug of lowercase letters, digits and hyphens", raw["slug"]);
+  if (!Array.isArray(raw["root"])) return fatal(["root"], "a root list of elements", raw["root"]);
+  const path = pagePath.run(raw["path"], ctx, ["path"]);
+  if (path === INVALID) return fatal(["path"], PATH_ALLOWED, raw["path"]);
+  const settings = postSettings.run(raw["settings"], ctx, ["settings"]);
+  if (settings === INVALID) return fatal(["settings"], "the post settings, with at least a title", raw["settings"]);
+  const post: PostDoc = { version: 1, kind: "post", slug: raw["slug"], path, settings: settings as unknown as PostDoc["settings"], root: [] };
+  post.root = raw["root"].map((element, index) => checkOneElement(element, ctx, ["root", index], 1));
+  return { value: post, problems: ctx.problems };
+}
+
+const postIndexEntry = obj(
+  {
+    slug: req(taxonomySlug),
+    path: req(pagePath),
+    title: req(str(300)),
+    excerpt: req(str(500)),
+    coverImage: nullable(mediaSrc),
+    authorName: req(str(200)),
+    publishedAt: req(isoDate),
+    categories: req(arr(taxonomySlug, 30)),
+    tags: req(arr(taxonomySlug, 60)),
+  },
+  "an entry with a slug, path, title and publishedAt",
+);
+const postIndexCheck = obj({ version: req(lit(1)), posts: req(arr(postIndexEntry, 10_000)) }, "an index of every post");
+
+export function checkPostIndex(raw: unknown): CheckReport<PostIndex> {
+  const ctx: Ctx = { problems: [], detail: null };
+  if (!isRecord(raw)) return { value: { version: 1, posts: [] }, problems: [] };
+  const result = postIndexCheck.run(raw, ctx, []);
+  return { value: result === INVALID ? { version: 1, posts: [] } : (result as unknown as PostIndex), problems: ctx.problems };
+}
+
+const taxonomyTerm = obj({ slug: req(taxonomySlug), name: req(str(120)), description: str(500) }, "a taxonomy term with a slug and name");
+const taxonomiesCheck = obj({ categories: req(arr(taxonomyTerm, 500)), tags: req(arr(taxonomyTerm, 2000)) }, "categories and tags");
+
+export function checkTaxonomies(raw: unknown): CheckReport<Taxonomies> {
+  const ctx: Ctx = { problems: [], detail: null };
+  if (!isRecord(raw)) return { value: { categories: [], tags: [] }, problems: [] };
+  const result = taxonomiesCheck.run(raw, ctx, []);
+  return { value: result === INVALID ? { categories: [], tags: [] } : (result as unknown as Taxonomies), problems: ctx.problems };
+}
+
 // --- the site kit ---------------------------------------------------------------------------------------------
 
 const typographyPreset = obj({ fontFamily: fontRef, fontSize: req(responsive(size)), fontWeight, lineHeight: size, letterSpacing: size, textTransform }, "a text style with a size");
@@ -978,6 +1133,7 @@ const siteKitCheck = obj(
     imageRadius: req(size),
     pageBackground: req(color),
     menus: arr(menuCheck, 20),
+    seo: siteSeoCheck,
   },
   "a site kit",
 );
@@ -1046,6 +1202,35 @@ const SETTING_WORDS: Record<string, string> = {
   fullCanvas: "Full canvas",
   hideTitle: "Hide title",
   ogImage: "Share image",
+  ogTitle: "Share title (Open Graph)",
+  ogDescription: "Share description (Open Graph)",
+  twitterTitle: "Share title (X/Twitter)",
+  twitterDescription: "Share description (X/Twitter)",
+  twitterImage: "Share picture (X/Twitter)",
+  canonical: "Canonical URL",
+  noindex: "Hide from search engines",
+  nofollow: "Don't follow links",
+  structuredData: "Structured data",
+  siteName: "Site name",
+  siteUrl: "Site URL",
+  defaultShareImage: "Default share picture",
+  titlePattern: "Title pattern",
+  googleVerification: "Google verification code",
+  defaultDescription: "Default description",
+  business: "Business details",
+  robotsExtras: "Extra robots.txt lines",
+  streetAddress: "Street address",
+  addressLocality: "City",
+  addressRegion: "Region or state",
+  postalCode: "Postal code",
+  addressCountry: "Country",
+  openingHours: "Opening hours",
+  sameAs: "Also known as",
+  priceRange: "Price range",
+  headline: "Article headline",
+  datePublished: "Date published",
+  dateModified: "Date modified",
+  fromAccordionId: "From accordion",
   pageBackground: "Page background",
   imageRadius: "Picture corners",
   fieldBackground: "Field background",

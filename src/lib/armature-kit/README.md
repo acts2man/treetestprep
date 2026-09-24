@@ -231,6 +231,179 @@ function ArmatureCatchAll() {
 Register the router for the editor's page switcher from the root component in an effect
 (`registerArmatureNavigate((path) => router.navigate({ href: path }))`).
 
+## Blog posts (kit 2.7+)
+
+The kit ships a small blog: each post lives as its own JSON file at
+`content/posts/<slug>.json` (a layout with `kind: "post"` and post fields in
+`settings`), and `content/posts/index.json` is the site's list — the dashboard's
+publish function regenerates it on every post commit. `public/rss.xml` is written
+alongside so `/rss.xml` stays in step.
+
+Add the two globs to `createArmatureKit` so posts flow through the store:
+
+```ts
+export const armature = createArmatureKit({
+  /* … */
+  posts: import.meta.glob("../../content/posts/*.json", { eager: true }),
+  postIndex: postIndexJson,   // optional; from content/posts/index.json
+});
+```
+
+Then add two routes to your router:
+
+```tsx
+import { ArmaturePost, ArmaturePostList } from "@/lib/armature-kit";
+
+<Route path="/blog" element={<ArmaturePostList />} />
+<Route path="/blog/:slug" element={<PostRoute />} />
+```
+
+```tsx
+function PostRoute() {
+  const { slug = "" } = useParams();
+  return <ArmaturePost slug={slug} />;
+}
+```
+
+Scheduled posts (a `publishedAt` in the future) sit in the repo. The dashboard
+schedules a pg_cron job (see the migration
+`20260924000300_posts_and_stats.sql`) that fires an edge function every
+five minutes; when the moment arrives it re-commits the file (identical
+bytes), Netlify rebuilds, and the site starts showing it. The kit filters
+scheduled posts out of `ArmaturePost` and `ArmaturePostList` until then.
+
+## Stats: cookie-free visitor numbers (kit 2.7+)
+
+Off by default; on with one config line:
+
+```ts
+createArmatureKit({
+  /* … */
+  stats: {
+    endpoint: "https://<project>.supabase.co/functions/v1/stats-ingest",
+    siteId: "<site id from Armature Projects>",
+  },
+});
+```
+
+The beacon sends one payload per page load and per client-side navigation — the
+path, the referrer's domain (only when it isn't your own), the device (mobile /
+tablet / desktop) and a screen-size bucket (xs / sm / md / lg / xl). No cookies
+are set; no personal data is stored. Bots, the editor preview (`?armature=edit`),
+prerendering, Do Not Track and Global Privacy Control are all skipped
+automatically.
+
+On the server the edge function checks the request's origin against the site's
+`live_url`, rate-limits each visitor (120 per minute per site) and stores the
+event with a **daily-rotating salted hash of IP + user-agent** — the IP itself
+is never stored. A nightly `pg_cron` job (`rollup_site_stats_daily`) rolls raw
+events up into per-day totals and prunes raw events older than 30 days, so the
+database stays small.
+
+The dashboard's **Stats** screen (in the site menu, right after Dashboard) reads
+`public.site_stats_daily` under RLS and shows totals, top pages, top referrers
+and devices. Each site's stats are visible only to that site's members and the
+agency.
+
+## SEO: head tags Google actually sees
+
+Every page has its own SEO fields in the editor's Page settings (search title,
+description, canonical URL, noindex/nofollow, Open Graph and X/Twitter share fields,
+and structured data presets — LocalBusiness, Organization, Article, FAQ from an
+accordion on the page, BreadcrumbList). The site-wide defaults live in Site settings ›
+SEO (site name, site URL, default share picture, title pattern, Google Search Console
+code, business details). Every publish also writes `public/sitemap.xml` (every page
+that isn't noindex) and `public/robots.txt` (with the `Sitemap:` line) in the same
+commit, so the search-engine files stay in step with the pages that exist.
+
+The kit ships one pure function, `computePageHead(layout, siteKit, opts)`, that turns a
+layout and the site kit's SEO block into the exact head tags Google should see — the
+`<title>`, meta description, robots, canonical, Open Graph, Twitter card, Google
+verification and JSON-LD script for structured data. Use it in the way that fits your
+framework:
+
+### An SPA (React Router, Vite, plain React)
+
+Import `ArmatureHead` from the kit and render it near your page component. It writes
+the tags into `document.head` via useEffect. Google reads what its crawler sees when it
+executes JavaScript, so an SPA reaches Google — but adding the tags to the initial
+HTML always beats leaving them to run-time. If you can, upgrade to SSR.
+
+```tsx
+import { ArmatureHead, ArmaturePage, useKitSnapshot } from "@/lib/armature-kit";
+
+function BuilderPage({ slug }: { slug: string }) {
+  const { layouts } = useKitSnapshot();
+  const layout = layouts[slug];
+  if (!layout) return null;
+  return (
+    <>
+      <ArmatureHead layout={layout} pageUrl={typeof window !== "undefined" ? window.location.href : undefined} />
+      <ArmaturePage slug={slug} layout={layout} />
+    </>
+  );
+}
+```
+
+### An SSR site: TanStack Start
+
+TanStack Start routes take a `head()` function whose return value the framework
+inserts into the served HTML. Compute the tags with the kit and hand them back:
+
+```tsx
+// src/routes/$.tsx
+import { createFileRoute, useRouterState } from "@tanstack/react-router";
+import { ArmatureRoute, computePageHead, useKitSnapshot } from "@/lib/armature-kit";
+import { NotFound } from "@/components/NotFound";
+import { armature } from "@/lib/armature";
+import siteKit from "../../content/site-kit.json";
+
+export const Route = createFileRoute("/$")({
+  component: ArmatureCatchAll,
+  head({ params }) {
+    // The framework reads content/layouts/*.json at build time.
+    const layout = armature.getSnapshot().layouts?.[params._splat ?? "home"];
+    if (!layout) return {};
+    const tags = computePageHead(layout, siteKit, { pageUrl: `${siteKit.seo?.siteUrl ?? ""}${layout.path ?? "/"}` });
+    return {
+      title: tags.find((tag) => tag.tag === "title")?.content,
+      meta: tags.filter((tag) => tag.tag === "meta").map((tag) => ({ ...tag.attrs })),
+      links: tags.filter((tag) => tag.tag === "link").map((tag) => ({ ...tag.attrs })),
+      scripts: tags.filter((tag) => tag.tag === "script").map((tag) => ({ type: "application/ld+json", children: (tag as { content: string }).content })),
+    };
+  },
+});
+```
+
+### An SSR site: Next.js
+
+`computePageHead` also works from Next's Metadata API (or the app router `generateMetadata`)
+— read the layout you need, compute the tags, and shape them into Metadata.
+
+### A plain HTML template
+
+`renderHeadHtml(tags)` returns the tags as one HTML string, ready to inject into any
+server template that has an `<head>` section.
+
+### How Google sees a non-SSR site
+
+Google's crawler executes JavaScript, so an SPA using `ArmatureHead` reaches Google —
+but the initial HTML the crawler downloads has none of the SEO tags. On sites that need
+the strongest signal (marketing landing pages, blog posts you promote heavily), upgrade
+to SSR (TanStack Start, Next.js) and use `computePageHead()` inside `head()` /
+`generateMetadata()` so the tags are already in the HTML.
+
+### Verifying with Google Search Console (no Google Cloud setup)
+
+1. Get the verification code from Google Search Console (Settings › Ownership
+   verification › HTML tag), paste the `content=""` value into **Site settings › SEO
+   › Google Search Console code** and publish.
+2. Google opens the site, sees the meta tag, and marks ownership verified.
+3. Submit the sitemap once at Search Console › Sitemaps › `https://your-site.com/sitemap.xml`.
+
+Nothing else in Google Cloud is needed. From here on Armature keeps the sitemap in step
+with every publish.
+
 ## Validation: one set of rules for the site and the dashboard
 
 `validate.ts` holds every rule for layout files and the site kit, with no dependencies. The
