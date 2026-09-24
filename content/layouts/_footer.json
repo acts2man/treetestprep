@@ -24,6 +24,24 @@
               "unit": "px",
               "value": 40
             }
+          },
+          "mobile": {
+            "bottom": {
+              "unit": "px",
+              "value": 40
+            },
+            "left": {
+              "unit": "px",
+              "value": 14
+            },
+            "right": {
+              "unit": "px",
+              "value": 14
+            },
+            "top": {
+              "unit": "px",
+              "value": 40
+            }
           }
         }
       },
@@ -62,7 +80,7 @@
                 },
                 {
                   "advanced": {
-                    "customCss": "selector p { font-size: 18px; margin: 0 0 14px; } selector p:last-child { margin-bottom: 0; }"
+                    "customCss": "selector p { font-size: 18px; margin: 0 0 14px; }"
                   },
                   "id": "ftrblrb0",
                   "meta": {
@@ -103,7 +121,7 @@
                 },
                 {
                   "advanced": {
-                    "customCss": "selector { margin-top: 14px; } selector .ae-btn { padding: 14px 36px; background: #349e49; color: #fff; text-transform: uppercase; font-size: 14px; font-weight: 800; line-height: 1.55; letter-spacing: normal; font-family: \"Poppins\", \"Segoe UI\", Arial, sans-serif; border-radius: 0; }"
+                    "customCss": "selector { margin-top: 12px; } selector .ae-btn { padding: 14px 36px; background: #349e49; color: #fff; text-transform: uppercase; font-size: 14px; font-weight: 800; line-height: 1.55; letter-spacing: normal; font-family: \"Poppins\", \"Segoe UI\", Arial, sans-serif; border-radius: 0; }"
                   },
                   "id": "ftrbtn00",
                   "meta": {
@@ -348,6 +366,24 @@
             "right": {
               "unit": "px",
               "value": 40
+            },
+            "top": {
+              "unit": "px",
+              "value": 0
+            }
+          },
+          "mobile": {
+            "bottom": {
+              "unit": "px",
+              "value": 0
+            },
+            "left": {
+              "unit": "px",
+              "value": 14
+            },
+            "right": {
+              "unit": "px",
+              "value": 14
             },
             "top": {
               "unit": "px",
