@@ -23,17 +23,28 @@
  * pageSchema.ts today. If the two have drifted (a field was added or relabelled in
  * TypeScript without re-running the export), this fails and says so.
  *
+ * Finally, it validates the page-builder files — every content/layouts/<slug>.json
+ * (pages plus the _header/_footer chrome parts) and content/site-kit.json — with the
+ * Armature kit's own validator (src/lib/armature-kit/validate.ts). That is the one set
+ * of rules the kit, the dashboard and the publish function all run, so this check fails
+ * on exactly what Armature would flag. Every value the validator could not read is an
+ * error here, even the ones the kit renders around ("ignored"), so they get fixed at
+ * the source. See kit/README.md, "Your site's content check must call it".
+ *
  * Deliberately NOT wired into the build.
  */
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateContentTree } from "../src/lib/contentValidation";
 import { SCHEMA_PATH, serializeSiteSchema } from "../src/lib/armatureSchema";
+import { checkLayout, checkSiteKit, describeProblem } from "../src/lib/armature-kit/validate";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const CONTENT = join(here, "..", "content", "pages.json");
 const SCHEMA = join(here, "..", SCHEMA_PATH);
+const LAYOUTS_DIR = join(here, "..", "content", "layouts");
+const SITE_KIT = join(here, "..", "content", "site-kit.json");
 
 // --- content/schema.json must match pageSchema.ts -------------------------------
 
@@ -72,16 +83,82 @@ const { errors, warnings, checked } = validateContentTree(parsed);
 
 for (const warning of warnings) console.warn(`warning  ${warning}`);
 
+let failed = false;
+
 if (errors.length > 0) {
   for (const error of errors) console.error(`error    ${error}`);
   console.error(
     `\nFAIL: ${errors.length} problem(s) in content/pages.json (${checked} fields checked).`,
   );
+  failed = true;
+}
+
+// --- content/layouts/*.json and content/site-kit.json must satisfy the kit --------
+
+let layoutProblems = 0;
+let layoutFiles: string[] = [];
+try {
+  layoutFiles = readdirSync(LAYOUTS_DIR)
+    .filter((name) => name.endsWith(".json"))
+    .sort();
+} catch (error) {
+  console.error(
+    `FAIL: could not read content/layouts — ${error instanceof Error ? error.message : error}`,
+  );
+  process.exit(1);
+}
+
+for (const name of layoutFiles) {
+  const path = join(LAYOUTS_DIR, name);
+  let raw: unknown;
+  try {
+    raw = JSON.parse(readFileSync(path, "utf8"));
+  } catch (error) {
+    console.error(
+      `error    content/layouts/${name}: not valid JSON — ${error instanceof Error ? error.message : error}`,
+    );
+    failed = true;
+    continue;
+  }
+  const report = checkLayout(raw);
+  if (report.value === null) {
+    console.error(`error    content/layouts/${name}: not a layout file (no root, no pageSlug, or wrong version).`);
+    failed = true;
+  }
+  for (const problem of report.problems) {
+    // "ignored" problems still render; treat them as errors so they get fixed at the source.
+    console.error(`error    ${describeProblem(problem, `content/layouts/${name}`)}`);
+    layoutProblems += 1;
+    failed = true;
+  }
+}
+
+let kitRaw: unknown;
+try {
+  kitRaw = JSON.parse(readFileSync(SITE_KIT, "utf8"));
+} catch (error) {
+  console.error(
+    `FAIL: could not read content/site-kit.json — ${error instanceof Error ? error.message : error}`,
+  );
+  process.exit(1);
+}
+const kitReport = checkSiteKit(kitRaw);
+for (const problem of kitReport.problems) {
+  console.error(`error    ${describeProblem(problem, "content/site-kit.json")}`);
+  layoutProblems += 1;
+  failed = true;
+}
+
+if (failed) {
+  if (layoutProblems > 0) {
+    console.error(`\nFAIL: ${layoutProblems} problem(s) the Armature kit flagged in content/layouts or content/site-kit.json.`);
+  }
   process.exit(1);
 }
 
 console.log(
   `OK: ${SCHEMA_PATH} matches pageSchema.ts; all ${checked} schema fields present and ` +
     `well-shaped in content/pages.json` +
-    (warnings.length > 0 ? ` (${warnings.length} warning(s)).` : "."),
+    (warnings.length > 0 ? ` (${warnings.length} warning(s));` : ";") +
+    ` ${layoutFiles.length} builder layout(s) and content/site-kit.json pass the kit validator.`,
 );
