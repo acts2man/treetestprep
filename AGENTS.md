@@ -44,13 +44,26 @@ or `src/lib/publish.server.ts`.
 video and FAQ live as builder elements (containers + widgets) in `content/layouts/<slug>.json`,
 not as hand-coded React. **Add new page content as builder elements in `content/layouts`
 (through the Armature editor / dashboard), never as a new `registerSiteSection()` coded
-section.** The public site renders the layouts through `<ArmatureSlot>`; the coded page
-components are now just `SiteHeader` + `<ArmatureSlot slug=… defaults={[]} />` + `SiteFooter`.
-The header and footer stay hand-coded. The one remaining registered site section is the
+section.** The public site renders the layouts through `<ArmatureSlot>`; each coded page is
+now `<ArmatureChrome part="header" fallback={<SiteHeader …/>} />` + `<ArmatureSlot slug=…
+defaults={[]} />` + `<ArmatureChrome part="footer" fallback={<SiteFooter />} />`.
+
+**The header and footer are builder parts.** They live in `content/layouts/_header.json`
+and `content/layouts/_footer.json` and render through `<ArmatureChrome>` (kit 2.4+): a
+Site Logo, the email, and a Nav Menu in the header; the logo, blurb, CTA, a Nav Menu and
+the images in the footer. The menus they use (`main-nav`, `footer-nav`) live in
+`content/site-kit.json` under `menus`. **Change the header/footer design in those files
+through the Armature editor (Appearance › Header / Footer and Menus), never in the coded
+`SiteHeader`/`SiteFooter`.** Those coded components stay only as the `fallback` that
+renders if a part file is removed — do not edit them for design changes. Removing
+`_header.json`/`_footer.json` reverts that part to the coded fallback.
+
+The one remaining registered site section is the
 instructor list on `/meet-your-instructors` (`instructors`), because it renders a live
 Supabase query that no static widget can bind to; it is placed in its layout as a
 `site-section` element. `content/schema.json` / `content/pages.json` now hold only each
-page's SEO fields plus the shared header/footer and the instructor-intro copy.
+page's SEO fields plus the shared header/footer copy (still read by the coded fallbacks)
+and the instructor-intro copy.
 
 `src/lib/armature-kit/` is a **verbatim copy** of the `kit/` folder from
 [acts2man/armature](https://github.com/acts2man/armature) (`KIT_VERSION` 2.5.0), copied
@@ -65,8 +78,20 @@ that reason; do not turn them back on without re-checking the kit compiles.)
 (committed through the dashboard, like `content/pages.json`). **AI builders must not edit,
 remove, restructure or hand-format them.** `content/layouts/<slug>.json` is one layout per
 page (element order and anything the builder places between the site sections);
-`content/site-kit.json` holds the global colours, fonts, typography, button presets and
-container defaults new builder elements inherit. Treat both as live data, not source.
+`content/layouts/_header.json` and `content/layouts/_footer.json` are the header and footer
+parts; `content/site-kit.json` holds the global colours, fonts, typography, button presets,
+container defaults and the navigation `menus` new builder elements inherit. Treat all of
+them as live data, not source. Their on-disk form is the kit's canonical serialization
+(`JSON.stringify(sortDeep(x), null, 2)` + newline); if you must regenerate one, match that
+exactly so it does not collide with the next publish.
+
+**Every visual check uses the site's production build, never only the dev server.** The kit
+registers its widgets from `createArmatureKit()`, so a production bundle with
+`"sideEffects": false` (this site) keeps them — but a dev server never tree-shakes, so it
+hides a whole class of bug where a widget renders in dev and is missing on the live site.
+Build and serve the output before comparing (`NITRO_PRESET=node-server bun run build`, then
+`node .output/server/index.mjs`; or `bun run build` and preview the Cloudflare/Netlify
+output), and confirm the browser console never says `Armature: no widget renders "…"`.
 
 Around it:
 
